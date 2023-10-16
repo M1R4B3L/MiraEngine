@@ -4,7 +4,7 @@
 template <typename T>
 class Vec3
 {
-public:
+private:
 	T x = 0.0;
 	T y = 0.0;
 	T z = 0.0;
