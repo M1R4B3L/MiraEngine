@@ -397,4 +397,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Lib
+!/Engine/Source/SDL/lib/x64/
 !/Engine/Source/Glew/lib/x64/
