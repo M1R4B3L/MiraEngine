@@ -47,13 +47,6 @@ update_status ModuleOpenGL::PreUpdate()
 	glEnable(GL_CULL_FACE); // Enable cull backward faces
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
 
-	int w = 0;
-	int h = 0;
-
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-
-	glViewport(0, 0, w, h);
-
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -89,5 +82,12 @@ bool ModuleOpenGL::CleanUp()
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
+	int w = 0;
+	int h = 0;
+
+	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
+
+	glViewport(0, 0, w, h);
+
 }
 
