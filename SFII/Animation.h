@@ -22,22 +22,19 @@ public:
 	{
 		current_frame += speed;
 		if (current_frame >= frames.size())
-		{
-			current_frame = (loop) ? 0.0f: frames.size() - 1;
-			loops++;
-		}
+			current_frame = 0.0f;
+		
 
 		return frames[(int)current_frame];
 	}
 
 	bool Finished() const
 	{
-		return loops > 0; 
+		return current_frame >= (frames.size() - 1); 
 	}
 
 	void Reset()
 	{
 		current_frame = 0.0f;
-		loops = 0;
 	}
 };

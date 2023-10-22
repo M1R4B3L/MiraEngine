@@ -42,7 +42,8 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	jab.frames.push_back({108,272,92,91});
 	jab.frames.push_back({108,272,92,91});
 	jab.frames.push_back({108,272,92,91});
-	jab.speed = 0.5f;
+	jab.frames.push_back({19,272,67,91 });
+	jab.speed = 0.38f;
 	jab.loop = false;
 }
 
@@ -174,6 +175,9 @@ update_status ModulePlayer::Update()
 			}
 
 			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//static int i = 0;
+			//i++;
+			//LOG("%d", i);
 			break;
 		}
 	}

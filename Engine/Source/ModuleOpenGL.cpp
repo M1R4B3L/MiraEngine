@@ -82,12 +82,6 @@ bool ModuleOpenGL::CleanUp()
 
 void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
-	int w = 0;
-	int h = 0;
-
-	SDL_GetWindowSize(App->GetWindow()->window, &w, &h);
-
-	glViewport(0, 0, w, h);
-
+	glViewport(0, 0, width, height);
 }
 
