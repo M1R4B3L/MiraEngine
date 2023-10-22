@@ -53,16 +53,28 @@ update_status ModuleRender::Update()
 	int speed = 5;
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->renderer->camera.y += speed;
+		camera.y += speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->renderer->camera.y -= speed;
+		camera.y -= speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->renderer->camera.x += speed;
+		camera.x += speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->renderer->camera.x -= speed;
+		camera.x -= speed;
+
+	/*
+	if (camera.x >= 0)
+	{
+		camera.x = 0;
+	}
+	
+	if (camera.x < (-SCREEN_WIDTH - 128)*SCREEN_SIZE)
+	{
+		camera.x = (-SCREEN_WIDTH - 128)*SCREEN_SIZE;
+	}
+	*/
 
 	return UPDATE_CONTINUE;
 }

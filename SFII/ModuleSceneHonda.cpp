@@ -51,14 +51,15 @@ ModuleSceneHonda::~ModuleSceneHonda()
 // Load assets
 bool ModuleSceneHonda::Start()
 {
-	LOG("Loading ken scene");
+	LOG("Loading honda scene");
 	
-	graphics = App->textures->Load("ken_stage.png");
+	graphics = App->textures->Load("honda_stage.png");
 
 	// TODO 7: Enable the player module
+	App->player->Enable();
 	// TODO 0: trigger background music
 
-	App->audio->PlayMusic("ken.ogg", 2.0f);
+	App->audio->PlayMusic("honda.ogg", 1, 2.0f);
 	
 	return true;
 }
@@ -66,11 +67,11 @@ bool ModuleSceneHonda::Start()
 // UnLoad assets
 bool ModuleSceneHonda::CleanUp()
 {
-	LOG("Unloading ken scene");
+	LOG("Unloading honda scene");
 
 	App->textures->Unload(graphics);
 	App->player->Disable();
-	
+		
 	return true;
 }
 
@@ -108,6 +109,8 @@ update_status ModuleSceneHonda::Update()
 
 	// TODO 11: Make that pressing space triggers a switch to honda logic module
 	// using FadeToBlack module
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+		App->fade->FadeToBlack((Module*)App->scene_ken, App->scene_honda, 5.0f);
 
 	return UPDATE_CONTINUE;
 }

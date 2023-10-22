@@ -24,7 +24,14 @@ public:
 	SDL_Rect background;
 	SDL_Rect foreground;
 	Animation flag;
+
+	Animation orangeBoy;
+	Animation purpleBoy;
+	Animation greyPair;
 	Animation redGirl;
+	Animation greenBoy;
+	Animation blueBoy;
+
 };
 
 #endif // __MODULESCENEKEN_H__

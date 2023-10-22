@@ -5,6 +5,7 @@
 #include "Module.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
+#define MAX_VOLUME 128
 
 struct _Mix_Music;
 struct Mix_Chunk;
@@ -21,7 +22,7 @@ public:
 	bool CleanUp();
 
 	// Play a music file
-	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(const char* path, int volume = MAX_VOLUME, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);

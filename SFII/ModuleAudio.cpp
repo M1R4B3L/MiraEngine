@@ -69,7 +69,7 @@ bool ModuleAudio::CleanUp()
 }
 
 // Play a music file
-bool ModuleAudio::PlayMusic(const char* path, float fade_time)
+bool ModuleAudio::PlayMusic(const char* path, int volume, float fade_time)
 {
 	bool ret = true;
 
@@ -115,6 +115,8 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 		}
 	}
 
+	Mix_VolumeMusic(volume);
+
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -151,3 +153,4 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
