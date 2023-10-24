@@ -164,6 +164,10 @@
     <ClInclude Include="ModuleRenderExercise.h" />
     <ClInclude Include="ModuleWindow.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Fragment.glsl" />
+    <None Include="Shaders\Vertex.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

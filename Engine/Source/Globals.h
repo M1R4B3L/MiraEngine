@@ -14,8 +14,8 @@ enum update_status
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 1280 / 2	
-#define SCREEN_HEIGHT 720 / 2
+#define SCREEN_WIDTH 1280	
+#define SCREEN_HEIGHT 720
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "Yes Darling"

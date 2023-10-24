@@ -22,5 +22,5 @@ public:
 
 private:
 	void* context;
-	unsigned int vertexbuffer;
+	unsigned vertexbuffer;
 };

@@ -10,6 +10,15 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	unsigned int CompileShader(unsigned int shaderType, const char* shaderSource);
+	char* LoadShaderSource(const char* shaderFileName);
+	unsigned CompileShader(unsigned shaderType, const char* shaderSource);
+	unsigned CreateProgram(unsigned vertexShader, unsigned fragmentShader);
+
+public:
+	unsigned programId;
+
+private:
+	unsigned vertexShaderId;
+	unsigned fragmentShaderId;
 };
 

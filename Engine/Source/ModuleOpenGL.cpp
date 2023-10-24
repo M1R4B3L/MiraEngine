@@ -57,7 +57,6 @@ update_status ModuleOpenGL::PreUpdate()
 // Called every draw update
 update_status ModuleOpenGL::Update()
 {
-
 	return UPDATE_CONTINUE;
 }
 
