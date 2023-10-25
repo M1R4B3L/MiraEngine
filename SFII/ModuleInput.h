@@ -32,19 +32,19 @@ public:
 	ModuleInput();
 
 	// Destructor
-	virtual ~ModuleInput();
+	~ModuleInput();
 
 	// Called before render is available
-	bool Init();
+	bool Init() override;
 
 	// Called before the first frame
-	bool Start();
+	bool Start() override;
 
 	// Called each loop iteration
-	update_status PreUpdate();
+	update_status PreUpdate() override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
 	// Check key states (includes mouse and joy buttons)
 	KeyState GetKey(int id) const

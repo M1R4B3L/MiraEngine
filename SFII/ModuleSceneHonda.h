@@ -13,11 +13,11 @@ public:
 	ModuleSceneHonda( bool start_enabled = true);
 	~ModuleSceneHonda();
 
-	bool Start();
-	update_status Update();
-	bool CleanUp();
+	bool Start() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
-public:
+private:
 	
 	SDL_Texture* graphics = nullptr;
 	SDL_Rect ground;

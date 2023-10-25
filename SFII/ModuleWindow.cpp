@@ -56,7 +56,6 @@ bool ModuleWindow::Init()
 bool ModuleWindow::CleanUp()
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
-
 	//Destroy window
 	if(window != nullptr)
 	{

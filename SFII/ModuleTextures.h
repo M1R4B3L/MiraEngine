@@ -13,8 +13,8 @@ public:
 	ModuleTextures();
 	~ModuleTextures();
 
-	bool Init();
-	bool CleanUp();
+	bool Init() override;
+	bool CleanUp() override;
 
 	SDL_Texture* const Load(const char* path);
 	void Unload(SDL_Texture* texture);

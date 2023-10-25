@@ -52,7 +52,7 @@ ModuleSceneHonda::~ModuleSceneHonda()
 bool ModuleSceneHonda::Start()
 {
 	LOG("Loading honda scene");
-	
+
 	graphics = App->textures->Load("honda_stage.png");
 
 	// TODO 7: Enable the player module

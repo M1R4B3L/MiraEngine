@@ -10,8 +10,8 @@ public:
 	ModuleFadeToBlack(bool start_enabled = true);
 	~ModuleFadeToBlack();
 
-	bool Start();
-	update_status Update();
+	bool Start() override;
+	update_status Update() override;
 	void FadeToBlack(Module* module_on, Module* module_off = nullptr, float time = 1.0f);
 	bool isFading() const;
 
