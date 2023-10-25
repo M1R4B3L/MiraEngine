@@ -11,15 +11,19 @@ public:
 	bool CleanUp() override;
 
 private:
-	unsigned int CreateVAO();
+	unsigned CreateVAO();
+	unsigned CreateTriangleVBO();
+	unsigned CreateEBO();
 
-	unsigned int CreateTriangleVBO();
-	void DestroyVBO();
-	void RenderVBO(unsigned vbo);
+	void RenderTriangle();//unsigned vao, unsigned vbo, unsigned ebo);
 
+	void DestroyVAO();
+	void DestroyVBO();	
+	void DestroyEBO();
 
 private:
-	unsigned int vao;
-	unsigned int vbo;
+	unsigned vao;
+	unsigned vbo;
+	unsigned ebo;
 };
 

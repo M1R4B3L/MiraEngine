@@ -39,6 +39,9 @@ update_status ModuleProgram::Update()
 bool ModuleProgram::CleanUp()
 {
     bool ret = true;
+
+    glDeleteProgram(programId);
+
     return ret;
 }
 
