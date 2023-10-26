@@ -16,9 +16,15 @@ public:
 	enum class PlayerState
 	{
 		IDLE,
+		CROUCH,
 		BCKWRD,
 		FORWRD,
-		JAB
+		STANDING_LP,
+		STANDING_MP,
+		STANDING_HP,
+		CROUCHING_LP,
+		CROUCHING_MP,
+		CROUCHING_HP
 	};
 
 	ModulePlayer(bool start_enabled = true);
@@ -37,9 +43,15 @@ private:
 	iPoint position;
 
 	Animation idle;
+	Animation crouch;
 	Animation backward;
 	Animation forward;
-	Animation jab;
+	Animation standingLP;
+	Animation standingMP;
+	Animation standingHP;	
+	Animation crouchingLP;
+	Animation crouchingMP;
+	Animation crouchingHP;
 
 	Collider* playerCollider = nullptr;
 };

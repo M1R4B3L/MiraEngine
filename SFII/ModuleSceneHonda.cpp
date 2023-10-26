@@ -57,6 +57,7 @@ bool ModuleSceneHonda::Start()
 
 	// TODO 7: Enable the player module
 	App->player->Enable();
+
 	// TODO 0: trigger background music
 
 	App->audio->PlayMusic("honda.ogg", 1, 2.0f);

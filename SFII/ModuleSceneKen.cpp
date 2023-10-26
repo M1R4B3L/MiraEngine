@@ -83,7 +83,7 @@ bool ModuleSceneKen::Start()
 	App->player->Enable();
 	// TODO 0: trigger background music
 
-	App->audio->PlayMusic("ken.ogg", 1, 2.0f);
+	App->audio->PlayMusic("ken.ogg", 1);
 	
 	return true;
 }

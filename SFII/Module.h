@@ -18,7 +18,7 @@ public:
 		return active;
 	}
 
-	 bool Enable()
+	bool Enable()
 	{
 		if(active == false)
 			return active = Start();
@@ -26,13 +26,13 @@ public:
 		return true;
 	}
 
-	 bool Disable()
-	 {
-		 if(active == true)
-			 return active = !CleanUp();
+	bool Disable()
+	{
+		if(active == true)
+			return active = !CleanUp();
 
-		 return true;
-	 }
+		return true;
+	}
 
 	virtual bool Init() 
 	{
