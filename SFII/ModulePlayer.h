@@ -17,6 +17,7 @@ public:
 	{
 		IDLE,
 		CROUCH,
+		JUMP,
 		BCKWRD,
 		FORWRD,
 		STANDING_LP,
@@ -41,9 +42,11 @@ private:
 
 	PlayerState playerState;
 	iPoint position;
+	bool jumping = false;
 
 	Animation idle;
 	Animation crouch;
+	Animation jump;
 	Animation backward;
 	Animation forward;
 	Animation standingLP;

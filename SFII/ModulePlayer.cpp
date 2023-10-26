@@ -29,6 +29,16 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	crouch.speed = 0.3f;
 	crouch.loop = false;
 
+	jump.frames.push_back({17,843,60,89});
+	jump.frames.push_back({100,823,56,104});
+	jump.frames.push_back({176,805,50,89});
+	jump.frames.push_back({251,798,54,77});
+	jump.frames.push_back({327,813,48,70});
+	jump.frames.push_back({397,810,48,89});
+	jump.frames.push_back({464,819,55,109});
+	jump.speed = 0.15f;
+	jump.loop = false;
+
 	// walk backward animation (arcade sprite sheet)
 	backward.frames.push_back({542, 131, 61, 87});
 	backward.frames.push_back({628, 129, 59, 90});
@@ -142,6 +152,12 @@ update_status ModulePlayer::Update()
 			playerSpeed = 0;
 
 			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			
+			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+			{
+				jumping = true;
+				playerState = PlayerState::JUMP;
+			}
 
 			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
@@ -205,6 +221,30 @@ update_status ModulePlayer::Update()
 			break;
 		}
 		//Movement
+	case PlayerState::JUMP:
+		{
+			currAnim = &jump;
+			if ((position.y >= 10) && jumping)
+			{
+				playerSpeed = 4;
+				position.y -= playerSpeed;
+			}
+			else
+			{
+				jumping = false;
+				position.y += playerSpeed;
+			}
+		
+			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			
+			if (currAnim->Finished() && position.y >= 110)
+			{
+				position.y = 110;
+				currAnim->Reset();
+				playerState = PlayerState::IDLE;
+			}
+			break;
+		}
 	case PlayerState::FORWRD:
 		{	
 			currAnim = &forward;
