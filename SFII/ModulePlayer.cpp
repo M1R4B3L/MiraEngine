@@ -36,7 +36,7 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	jump.frames.push_back({327,813,48,70});
 	jump.frames.push_back({397,810,48,89});
 	jump.frames.push_back({464,819,55,109});
-	jump.speed = 0.15f;
+	jump.speed = 0.25f;
 	jump.loop = false;
 
 	// walk backward animation (arcade sprite sheet)
@@ -98,12 +98,12 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	crouchingMP.speed = 0.19f;
 	crouchingMP.loop = false;
 
-	crouchingHP.frames.push_back({ 592,1316,60,89 });
-	crouchingHP.frames.push_back({ 677,1315,73,91 });
+	crouchingHP.frames.push_back({ 592,1279,60,125 });
+	crouchingHP.frames.push_back({ 677,1279,73,127});
 	crouchingHP.frames.push_back({ 772,1279,57,126 });
-	crouchingHP.frames.push_back({ 677,1315,73,91 });
-	crouchingHP.frames.push_back({ 592,1316,60,89 });
-	crouchingHP.speed = 0.045f;
+	crouchingHP.frames.push_back({ 677,1279,73,127 });
+	crouchingHP.frames.push_back({ 592,1279,60,125 });
+	crouchingHP.speed = 0.05f;
 	crouchingHP.loop = false;
 }
 
@@ -151,7 +151,7 @@ update_status ModulePlayer::Update()
 			currAnim = &idle;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 			
 			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
 			{
@@ -195,7 +195,7 @@ update_status ModulePlayer::Update()
 			currAnim = &crouch;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (!(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
 			{
@@ -224,7 +224,7 @@ update_status ModulePlayer::Update()
 	case PlayerState::JUMP:
 		{
 			currAnim = &jump;
-			if ((position.y >= 10) && jumping)
+			if ((position.y >= 20) && jumping)
 			{
 				playerSpeed = 4;
 				position.y -= playerSpeed;
@@ -235,7 +235,7 @@ update_status ModulePlayer::Update()
 				position.y += playerSpeed;
 			}
 		
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 			
 			if (currAnim->Finished() && position.y >= 110)
 			{
@@ -252,7 +252,7 @@ update_status ModulePlayer::Update()
 			position.x += playerSpeed;
 			App->renderer->camera.x -= 1.25f;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (!(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
 			{
@@ -293,7 +293,7 @@ update_status ModulePlayer::Update()
 			position.x -= playerSpeed;
 			App->renderer->camera.x += 1.25f; 
 			
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (!(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
 			{
@@ -332,7 +332,7 @@ update_status ModulePlayer::Update()
 			currAnim = &standingLP;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (currAnim->Finished())
 			{
@@ -349,7 +349,7 @@ update_status ModulePlayer::Update()
 			currAnim = &standingMP;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (currAnim->Finished())
 			{
@@ -366,7 +366,7 @@ update_status ModulePlayer::Update()
 			currAnim = &standingHP;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (currAnim->Finished())
 			{
@@ -383,7 +383,7 @@ update_status ModulePlayer::Update()
 			currAnim = &crouchingLP;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (currAnim->Finished() && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
 			{
@@ -407,7 +407,7 @@ update_status ModulePlayer::Update()
 			currAnim = &crouchingMP;
 			playerSpeed = 0;
 
-			App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (currAnim->Finished() && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
 			{
@@ -430,27 +430,20 @@ update_status ModulePlayer::Update()
 		{
 			currAnim = &crouchingHP;
 			playerSpeed = 0;
-
-			if (currAnim->GetCurrentFrame().y == 1279)
-			{
-				position.y = 110 - 37;
-				App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
-			}
-			else
-			{
-				position.y = 110;
-				App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
-			}
+			position.y = 110 - 37;
+			//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 			if (currAnim->Finished() && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
 			{
 				currAnim->Reset();
+				position.y = 110;
 				playerState = PlayerState::CROUCH;
 			}
 
 			if (currAnim->Finished() && !(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
 			{
 				currAnim->Reset();
+				position.y = 110;
 				playerState = PlayerState::IDLE;
 			}
 			//static int i = 0;
@@ -461,7 +454,7 @@ update_status ModulePlayer::Update()
 	}
 
 	//TODO 102: Render Only once cause position problems. Move to PostUpdate 
-	//App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
+	App->renderer->Blit(graphics, position.x, position.y, &(currAnim->GetCurrentFrame()));
 
 	return UPDATE_CONTINUE;
 }

@@ -37,7 +37,7 @@ public:
 
 	void Reset()
 	{
-		current_frame = 0.0f;
+		current_frame = 0;
 		loops = 0;
 	}
 };
