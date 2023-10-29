@@ -19,7 +19,9 @@ public:
 		CROUCH,
 		JUMP,
 		BCKWRD,
-		FORWRD,
+		FRWRD,
+		JUMP_BCKWRD,
+		JUMP_FORWRD,
 		STANDING_LP,
 		STANDING_MP,
 		STANDING_HP,
@@ -47,8 +49,10 @@ private:
 	Animation idle;
 	Animation crouch;
 	Animation jump;
-	Animation backward;
+	Animation backward;	
 	Animation forward;
+	Animation jumpBackward;	
+	Animation jumpForward;
 	Animation standingLP;
 	Animation standingMP;
 	Animation standingHP;	
