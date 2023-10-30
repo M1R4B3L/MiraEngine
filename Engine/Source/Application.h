@@ -10,6 +10,7 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleProgram;
 class ModuleRenderExercise;
+class ModuleEditor;
 
 class Application
 {
@@ -27,6 +28,7 @@ public:
     ModuleInput*  GetInput() { return input; }
     ModuleProgram* GetProgram() { return program; }
     ModuleRenderExercise* GetRenderExercise() { return renderExercise; }
+    ModuleEditor* GetEditor() { return editor; }
 
 private:
 
@@ -35,6 +37,7 @@ private:
     ModuleInput* input = nullptr;
     ModuleProgram* program = nullptr;
     ModuleRenderExercise* renderExercise = nullptr;
+    ModuleEditor* editor = nullptr;
 
     std::list<Module*> modules;
 

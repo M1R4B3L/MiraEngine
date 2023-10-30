@@ -99,12 +99,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SDL\include;.\Glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\Glew\include;.\External\ImGui\include;.\External\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\Glew\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\External\SDL\lib\x64;.\External\Glew\lib\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -132,21 +132,29 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SDL\include;.\Glew\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\External\Glew\include;.\External\ImGui\include;.\External\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\Glew\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\External\SDL\lib\x64;.\External\Glew\lib\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="External\ImGui\include\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="External\ImGui\include\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="External\ImGui\include\imgui.cpp" />
+    <ClCompile Include="External\ImGui\include\imgui_demo.cpp" />
+    <ClCompile Include="External\ImGui\include\imgui_draw.cpp" />
+    <ClCompile Include="External\ImGui\include\imgui_tables.cpp" />
+    <ClCompile Include="External\ImGui\include\imgui_widgets.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleOpenGL.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
@@ -156,8 +164,18 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="External\ImGui\include\backends\imgui_impl_sdl2.h" />
+    <ClInclude Include="External\ImGui\include\imconfig.h" />
+    <ClInclude Include="External\ImGui\include\imgui.h" />
+    <ClInclude Include="External\ImGui\include\imgui_internal.h" />
+    <ClInclude Include="External\ImGui\include\imstb_rectpack.h" />
+    <ClInclude Include="External\ImGui\include\imstb_textedit.h" />
+    <ClInclude Include="External\ImGui\include\imstb_truetype.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleOpenGL.h" />
     <ClInclude Include="ModuleProgram.h" />

@@ -1,25 +1,113 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="log.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleOpenGL.cpp" />
-    <ClCompile Include="ModuleProgram.cpp" />
-    <ClCompile Include="ModuleRenderExercise.cpp" />
-    <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Application.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleOpenGL.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleProgram.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleRenderExercise.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleWindow.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\imgui.cpp">
+      <Filter>External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\imgui_demo.cpp">
+      <Filter>External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\imgui_draw.cpp">
+      <Filter>External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\imgui_tables.cpp">
+      <Filter>External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\imgui_widgets.cpp">
+      <Filter>External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\backends\imgui_impl_opengl3.cpp">
+      <Filter>External\ImGui\backend</Filter>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\include\backends\imgui_impl_sdl2.cpp">
+      <Filter>External\ImGui\backend</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Dummy.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Module.h" />
-    <ClInclude Include="ModuleInput.h" />
-    <ClInclude Include="ModuleOpenGL.h" />
-    <ClInclude Include="ModuleProgram.h" />
-    <ClInclude Include="ModuleRenderExercise.h" />
-    <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Application.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleInput.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleOpenGL.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleProgram.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleRenderExercise.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleWindow.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\imconfig.h">
+      <Filter>External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\imgui.h">
+      <Filter>External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\imgui_internal.h">
+      <Filter>External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\imstb_rectpack.h">
+      <Filter>External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\imstb_textedit.h">
+      <Filter>External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\imstb_truetype.h">
+      <Filter>External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3.h">
+      <Filter>External\ImGui\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\backends\imgui_impl_sdl2.h">
+      <Filter>External\ImGui\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3_loader.h">
+      <Filter>External\ImGui\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Vertex.glsl">
@@ -32,6 +120,18 @@
   <ItemGroup>
     <Filter Include="Shaders">
       <UniqueIdentifier>{cce3c809-c928-4e58-9ebd-ed18d2304deb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b3576ccb-eb7c-4ea2-b9ed-8ce4e2a5ddd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{026279ae-35d1-4281-8b97-f54a539224f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\ImGui">
+      <UniqueIdentifier>{59598120-cff5-4f2a-bf2b-1ae27ca659cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\ImGui\backend">
+      <UniqueIdentifier>{9d2aeaa4-b023-4cc2-9baf-48868f546ceb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
