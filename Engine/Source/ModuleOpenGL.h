@@ -11,7 +11,7 @@ class ModuleOpenGL : public Module
 {
 public:
 	ModuleOpenGL();
-	~ModuleOpenGL();
+	~ModuleOpenGL() override;
 
 	bool Init();
 	update_status PreUpdate();

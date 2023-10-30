@@ -4,7 +4,7 @@ class ModuleRenderExercise : public Module
 {
 public:
 	ModuleRenderExercise();
-	~ModuleRenderExercise();
+	~ModuleRenderExercise() override;
 
 	bool Init() override;
 	update_status Update() override;
