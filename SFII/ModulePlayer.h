@@ -9,6 +9,21 @@
 struct SDL_Texture;
 struct Collider;
 
+struct PlayerInput
+{
+	bool W_active;
+	bool A_active;
+	bool S_active;
+	bool D_active;
+
+	bool U_active;
+	bool I_active;
+	bool O_active;	
+	bool J_active;
+	bool K_active;
+	bool L_active;
+};
+
 class ModulePlayer : public Module
 {
 public:
@@ -31,9 +46,10 @@ public:
 	};
 
 	ModulePlayer(bool start_enabled = true);
-	~ModulePlayer();
+	~ModulePlayer() override;
 
 	bool Start() override;
+	update_status PreUpdate() override;
 	update_status Update() override;
 	bool CleanUp() override;
 
@@ -42,6 +58,7 @@ private:
 	SDL_Texture* graphics = nullptr;
 	Animation* currAnim = nullptr;
 
+	PlayerInput playerInput;
 	PlayerState playerState;
 	iPoint position;
 	bool jumping = false;
@@ -59,6 +76,9 @@ private:
 	Animation crouchingLP;
 	Animation crouchingMP;
 	Animation crouchingHP;
+	Animation standingLK;
+	Animation standingMK;
+	Animation standingHK;
 
 	Collider* playerCollider = nullptr;
 };

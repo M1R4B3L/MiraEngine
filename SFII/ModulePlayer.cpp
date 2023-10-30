@@ -57,7 +57,6 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	forward.frames.push_back({432,128,76,92});
 	forward.speed = 0.08f;
 
-	//TODO Frw/bck jump
 	jumpBackward.frames.push_back({ 1064,806,71,87 });
 	jumpBackward.frames.push_back({ 927,808,122,44 });
 	jumpBackward.frames.push_back({ 864,791,53,82 });
@@ -78,6 +77,8 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	jumpForward.speed = 0.09f;
 	jumpForward.loop = false;
 
+	//--------------------------ATTACKS-----------------------------------
+	//PUNCHS
 	standingLP.frames.push_back({19,272,67,91});
 	standingLP.frames.push_back({108,272,92,91});
 	standingLP.frames.push_back({108,272,92,91});
@@ -126,6 +127,13 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	crouchingHP.frames.push_back({ 592,1279,60,125 });
 	crouchingHP.speed = 0.075f;
 	crouchingHP.loop = false;
+
+	//KICKS
+	standingLK.frames.push_back({});
+
+	standingMK.frames.push_back({});
+
+	standingHK.frames.push_back({});
 }
 
 ModulePlayer::~ModulePlayer()
@@ -154,6 +162,24 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
+update_status ModulePlayer::PreUpdate()
+{
+	playerInput.W_active = (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN);	//JUMP
+	playerInput.S_active = (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT);														//CROUCH
+	playerInput.D_active = (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT);														//LEFT
+	playerInput.A_active = (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT);														//RIGHT
+
+	playerInput.U_active = (App->input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN);	//LP
+	playerInput.I_active = (App->input->GetKey(SDL_SCANCODE_I) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN);	//MP
+	playerInput.O_active = (App->input->GetKey(SDL_SCANCODE_O) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN);	//HP	
+	playerInput.J_active = (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN);	//LK
+	playerInput.K_active = (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN);	//MK
+	playerInput.L_active = (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN);	//HK
+
+	return UPDATE_CONTINUE;
+}
+
+
 // Update
 update_status ModulePlayer::Update()
 {
@@ -163,8 +189,6 @@ update_status ModulePlayer::Update()
 
 	static int playerSpeed = 0;
 
-	//TODO 100: Switch App->input for better optimization
-	//TODO 101: Switch App->renderer->Blit for a function pls :)
 	switch (playerState)
 	{
 	case PlayerState::IDLE:
@@ -173,38 +197,38 @@ update_status ModulePlayer::Update()
 			playerSpeed = 0;
 			position.y = 110;
 			
-			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+			if (playerInput.W_active)
 			{
 				jumping = true;
 				playerState = PlayerState::JUMP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			if (playerInput.S_active)
 			{
 				playerState = PlayerState::CROUCH;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			if (playerInput.D_active)
 			{
 				playerState = PlayerState::FRWRD;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			if (playerInput.A_active)
 			{
 				playerState = PlayerState::BCKWRD;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			if (playerInput.U_active)
 			{
 				playerState = PlayerState::STANDING_LP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+			if (playerInput.I_active)
 			{
 				playerState = PlayerState::STANDING_MP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+			if (playerInput.O_active)
 			{
 				playerState = PlayerState::STANDING_HP;
 			}
@@ -216,29 +240,29 @@ update_status ModulePlayer::Update()
 			playerSpeed = 0;
 			position.y = 110;
 
-			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+			if (playerInput.W_active)
 			{
 				jumping = true;
 				playerState = PlayerState::JUMP;
 			}
 
-			if (!(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (!playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::IDLE;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			if (playerInput.U_active)
 			{
 				playerState = PlayerState::CROUCHING_LP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+			if (playerInput.I_active)
 			{
 				playerState = PlayerState::CROUCHING_MP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+			if (playerInput.O_active)
 			{
 				playerState = PlayerState::CROUCHING_HP;
 			}
@@ -275,38 +299,38 @@ update_status ModulePlayer::Update()
 			position.x -= playerSpeed;
 			App->renderer->camera.x += 1.25f; 
 
-			if (!(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT))
+			if (!playerInput.A_active)
 			{
 				playerState = PlayerState::IDLE;
 			}
 
-			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+			if (playerInput.W_active)
 			{
 				jumping = true;
 				playerState = PlayerState::JUMP_BCKWRD;
 			}
 
-			if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (playerInput.S_active)
 			{
 				playerState = PlayerState::CROUCH;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			if (playerInput.D_active)
 			{
 				playerState = PlayerState::FRWRD;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			if (playerInput.U_active)
 			{
 				playerState = PlayerState::STANDING_LP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+			if (playerInput.I_active)
 			{
 				playerState = PlayerState::STANDING_MP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+			if (playerInput.O_active)
 			{
 				playerState = PlayerState::STANDING_HP;
 			}
@@ -319,38 +343,38 @@ update_status ModulePlayer::Update()
 			position.x += playerSpeed;
 			App->renderer->camera.x -= 1.25f;
 
-			if (!(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT))
+			if (!playerInput.D_active)
 			{
 				playerState = PlayerState::IDLE;
 			}
 
-			if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+			if (playerInput.W_active)
 			{
 				jumping = true;
 				playerState = PlayerState::JUMP_FORWRD;
 			}
 
-			if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (playerInput.S_active)
 			{
 				playerState = PlayerState::CROUCH;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			if (playerInput.A_active)
 			{
 				playerState = PlayerState::BCKWRD;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			if (playerInput.U_active)
 			{
 				playerState = PlayerState::STANDING_LP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)
+			if (playerInput.I_active)
 			{
 				playerState = PlayerState::STANDING_MP;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+			if (playerInput.O_active)
 			{
 				playerState = PlayerState::STANDING_HP;
 			}
@@ -459,13 +483,13 @@ update_status ModulePlayer::Update()
 			currAnim = &crouchingLP;
 			playerSpeed = 0;
 
-			if (currAnim->Finished() && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (currAnim->Finished() && playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::CROUCH;
 			}
 
-			if(currAnim->Finished() && !(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if(currAnim->Finished() && !playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::IDLE;
@@ -481,13 +505,13 @@ update_status ModulePlayer::Update()
 			currAnim = &crouchingMP;
 			playerSpeed = 0;
 
-			if (currAnim->Finished() && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (currAnim->Finished() && playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::CROUCH;
 			}
 
-			if (currAnim->Finished() && !(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (currAnim->Finished() && !playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::IDLE;
@@ -504,13 +528,13 @@ update_status ModulePlayer::Update()
 			playerSpeed = 0;
 			position.y = 110 - 37;
 
-			if (currAnim->Finished() && (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (currAnim->Finished() && playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::CROUCH;
 			}
 
-			if (currAnim->Finished() && !(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT))
+			if (currAnim->Finished() && !playerInput.S_active)
 			{
 				currAnim->Reset();
 				playerState = PlayerState::IDLE;
