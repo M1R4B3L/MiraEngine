@@ -2,7 +2,7 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
-#include "External/SDL/include/SDL.h"
+#include "SDL.h"
 
 class Application;
 
@@ -11,22 +11,17 @@ class ModuleWindow : public Module
 public:
 
 	ModuleWindow();
-
-	// Destructor
 	~ModuleWindow() override;
 
-	// Called before quitting
-	bool Init();
+	bool Init() override;
 
-	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
-public:
-	//The window we'll be rendering to
-	SDL_Window* window = NULL;
+	SDL_Window* GetWindow() { return window; }
 
-	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
+private:
+	SDL_Window* window = nullptr;
+	SDL_Surface* screen_surface = nullptr;
 };
 
 #endif // __ModuleWindow_H__

@@ -27,7 +27,7 @@ bool ModuleOpenGL::Init()
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-	context = SDL_GL_CreateContext(App->GetWindow()->window);
+	context = SDL_GL_CreateContext(App->window->GetWindow());
 
 	GLenum err = glewInit();
 
@@ -46,11 +46,9 @@ update_status ModuleOpenGL::PreUpdate()
 	glEnable(GL_DEPTH_TEST); // Enable depth test
 	glEnable(GL_CULL_FACE); // Enable cull backward faces
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
-
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -62,8 +60,7 @@ update_status ModuleOpenGL::Update()
 
 update_status ModuleOpenGL::PostUpdate()
 {
-
-	SDL_GL_SwapWindow(App->GetWindow()->window);
+	SDL_GL_SwapWindow(App->window->GetWindow());
 
 	return UPDATE_CONTINUE;
 }

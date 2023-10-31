@@ -15,6 +15,6 @@ public:
 	bool CleanUp() override;
 
 private:
-	ImGuiIO io;
+	ImGuiIO* io;
 };
 

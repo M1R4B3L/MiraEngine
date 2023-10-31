@@ -398,5 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Lib
-!/Engine/Source/SDL/lib/x64/
-!/Engine/Source/Glew/lib/x64/
+!/Engine/Source/External/SDL/lib/x64/
+!/Engine/Source/External/Glew/lib/x64/

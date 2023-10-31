@@ -23,14 +23,15 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-    ModuleOpenGL* GetOpenGL() { return render; }
-    ModuleWindow* GetWindow() { return window; }
-    ModuleInput*  GetInput() { return input; }
-    ModuleProgram* GetProgram() { return program; }
-    ModuleRenderExercise* GetRenderExercise() { return renderExercise; }
-    ModuleEditor* GetEditor() { return editor; }
+    //Confusing @DEL
+    //ModuleOpenGL* GetOpenGL() { return render; }
+    //ModuleWindow* GetWindow() { return window; }
+    //ModuleInput*  GetInput() { return input; }
+    //ModuleProgram* GetProgram() { return program; }
+    //ModuleRenderExercise* GetRenderExercise() { return renderExercise; }
+    //ModuleEditor* GetEditor() { return editor; }
 
-private:
+public:
 
     ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
@@ -39,6 +40,7 @@ private:
     ModuleRenderExercise* renderExercise = nullptr;
     ModuleEditor* editor = nullptr;
 
+private:
     std::list<Module*> modules;
 
 };
