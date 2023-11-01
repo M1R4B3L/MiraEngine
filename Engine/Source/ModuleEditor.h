@@ -1,8 +1,8 @@
 #pragma once
 #include "Module.h"
-#include "imgui.h"
 
 class Application;
+struct ImGuiIO;
 
 class ModuleEditor : public Module
 {

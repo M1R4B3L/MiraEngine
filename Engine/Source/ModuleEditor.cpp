@@ -25,7 +25,7 @@ bool ModuleEditor::Init()
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-
+    io->DisplaySize = ImGui::GetMainViewport()->Size;
     ImGui_ImplOpenGL3_Init("#version 460");
     ImGui_ImplSDL2_InitForOpenGL(App->window->GetWindow(), App->render->GetContext());
 
@@ -59,10 +59,7 @@ update_status ModuleEditor::Update()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
         //Need to watch out for the Viewport resizing TODO No se como arreglar esta mierda
-        int width, height;
-        SDL_GetWindowSize(App->window->GetWindow(), &width, &height);
-        //App->render->WindowResized(width,height);
-        SDL_GL_MakeCurrent(App->window->GetWindow(), App->render->GetContext());
+        SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
 
     return UPDATE_CONTINUE;
