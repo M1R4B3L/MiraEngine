@@ -14,6 +14,8 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
+	void Draw(ImGuiIO& io);
+
 private:
 	ImGuiIO* io;
 };

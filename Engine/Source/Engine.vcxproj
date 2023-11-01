@@ -104,7 +104,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\External\SDL\lib\x64;.\External\Glew\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\External\SDL\lib\x64;.\External\Glew\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -139,12 +139,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\External\SDL\lib\x64;.\External\Glew\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\External\SDL\lib\x64;.\External\Glew\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="External\ImGui\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\ImGui\include\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="External\ImGui\include\imgui.cpp" />
@@ -162,8 +164,10 @@
     <ClCompile Include="ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="EditorManager.h" />
     <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="External\ImGui\include\backends\imgui_impl_sdl2.h" />

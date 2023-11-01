@@ -73,3 +73,8 @@ bool ModuleEditor::CleanUp()
 
     return true;
 }
+
+void ModuleEditor::Draw(ImGuiIO& io)
+{
+
+}

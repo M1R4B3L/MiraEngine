@@ -49,6 +49,12 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="EditorManager.cpp">
+      <Filter>Source\Editor UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutPanel.cpp">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -108,6 +114,12 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="EditorManager.h">
+      <Filter>Source\Editor UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutPanel.h">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Vertex.glsl">
@@ -132,6 +144,12 @@
     </Filter>
     <Filter Include="External\ImGui\backend">
       <UniqueIdentifier>{9d2aeaa4-b023-4cc2-9baf-48868f546ceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Editor UI">
+      <UniqueIdentifier>{a9628a24-9f20-46a1-a35a-a79f7f8e3a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Editor UI\Editor Panels">
+      <UniqueIdentifier>{4609b8ee-2bb9-43d3-8449-da1e9b67fd5d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
