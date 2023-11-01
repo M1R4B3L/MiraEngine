@@ -35,7 +35,7 @@ bool ModuleEditor::Init()
 update_status ModuleEditor::Update()
 {
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame(App->window->GetWindow());
+    ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
     static bool demo = true;
@@ -43,9 +43,9 @@ update_status ModuleEditor::Update()
     if(demo)
         ImGui::ShowDemoWindow(&demo);
 
-    if (ImGui::Begin("Hello, world!", &demo))                        // Create a window called "Hello, world!" and append into it.
+    if (ImGui::Begin("Hello, world!", &demo))                       
     {
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+        ImGui::Text("This is some useful text.");           
         ImGui::End();
     }
 

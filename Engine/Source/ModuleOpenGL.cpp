@@ -55,6 +55,11 @@ update_status ModuleOpenGL::PreUpdate()
 // Called every draw update
 update_status ModuleOpenGL::Update()
 {
+	//Should not do this each frame solve this TODO :)
+	int width, height;
+	SDL_GetWindowSize(App->window->GetWindow(), &width, &height);
+	glViewport(0, 0, width, height);
+
 	return UPDATE_CONTINUE;
 }
 
