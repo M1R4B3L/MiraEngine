@@ -11,6 +11,7 @@ class ModuleInput;
 class ModuleProgram;
 class ModuleRenderExercise;
 class ModuleEditor;
+class ModuleDebugDraw;
 
 class Application
 {
@@ -39,6 +40,7 @@ public:
     ModuleProgram* program = nullptr;
     ModuleRenderExercise* renderExercise = nullptr;
     ModuleEditor* editor = nullptr;
+    ModuleDebugDraw* debugDraw = nullptr;
 
 private:
     std::list<Module*> modules;

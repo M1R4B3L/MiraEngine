@@ -59,7 +59,7 @@ char* ModuleProgram::LoadShaderSource(const char* shaderFileName)
         data = (char*)malloc(size + 1);
         fseek(file, 0, SEEK_SET);
         fread(data, 1, size, file);
-        data[size] = 0;
+        data[size] = 0;      
         fclose(file);
     }
 
