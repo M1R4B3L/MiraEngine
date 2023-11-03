@@ -19,9 +19,18 @@ public:
 
 	SDL_Window* GetWindow() { return window; }
 
+	const int GetWidth() const { return width; }
+	const int GetHeight() const { return height; }
+
+	void SetWidth(int _width) { width = _width; }
+	void SetHeight(int _height) { height = _height; }
+
 private:
 	SDL_Window* window = nullptr;
 	SDL_Surface* screen_surface = nullptr;
+
+	int width;
+	int height;
 };
 
 #endif // __ModuleWindow_H__

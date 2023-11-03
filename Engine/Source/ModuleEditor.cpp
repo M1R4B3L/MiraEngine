@@ -42,7 +42,7 @@ update_status ModuleEditor::Update()
 
     if(demo)
         ImGui::ShowDemoWindow(&demo);
-
+    
     if (ImGui::Begin("Hello, world!", &demo))                       
     {
         ImGui::Text("This is some useful text.");           

@@ -1,5 +1,8 @@
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleWindow.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleRenderExercise.h"
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -608,8 +611,15 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
+    //Triangle does not work
+    //dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
+    //
+    //Draw(App->renderExercise->view, App->renderExercise->projection, App->window->GetWidth(), App->window->GetHeight());
+
 	return UPDATE_CONTINUE;
 }
+
+
 
 void ModuleDebugDraw::Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height)
 {

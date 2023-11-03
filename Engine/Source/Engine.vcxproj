@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\External\Glew\include;.\External\ImGui\include;.\External\SDL\include;.\External\MathGeolib\include;.\External\DebugDraw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)External\Glew\include;$(ProjectDir)External\ImGui\include;$(ProjectDir)External\SDL\include;$(ProjectDir)External\MathGeolib\include;$(ProjectDir)External\DebugDraw\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\External\Glew\include;.\External\ImGui\include;.\External\SDL\include;.\External\MathGeolib\include;.\External\DebugDraw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)External\Glew\include;$(ProjectDir)External\ImGui\include;$(ProjectDir)External\SDL\include;$(ProjectDir)External\MathGeolib\include;$(ProjectDir)External\DebugDraw\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
