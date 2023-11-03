@@ -15,8 +15,6 @@ public:
 	bool CleanUp() override;
 
 private:
-	void CreateMatrices(float4x4 &model, float4x4 &view, float4x4 &projection);
-
 	unsigned CreateVAO();
 	unsigned CreateTriangleVBO();
 	unsigned CreateEBO();
@@ -27,6 +25,7 @@ private:
 	void DestroyVBO();	
 	void DestroyEBO();
 
+	void CreateMatrices(float4x4& model, float4x4& view, float4x4& projection);
 	float4x4 LookAtMatrix(float3 pos, float3 forward, float3 up);
 
 private:
