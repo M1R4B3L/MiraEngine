@@ -26,8 +26,9 @@ bool ModuleEditor::Init()
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
     io->DisplaySize = ImGui::GetMainViewport()->Size;
-    ImGui_ImplOpenGL3_Init("#version 460");
+
     ImGui_ImplSDL2_InitForOpenGL(App->window->GetWindow(), App->render->GetContext());
+    ImGui_ImplOpenGL3_Init("#version 460");
 
     return true;
 }
@@ -58,7 +59,7 @@ update_status ModuleEditor::Update()
         SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
-        //Need to watch out for the Viewport resizing TODO No se como arreglar esta mierda
+        
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
 
