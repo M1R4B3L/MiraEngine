@@ -37,7 +37,6 @@ update_status ModuleInput::Update()
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
         ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-
         switch (sdlEvent.type)
         {
             case SDL_QUIT:
@@ -45,6 +44,8 @@ update_status ModuleInput::Update()
             case SDL_WINDOWEVENT:
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED) //|| sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                     App->render->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+                    return UPDATE_STOP;
                 break;
         }
     }

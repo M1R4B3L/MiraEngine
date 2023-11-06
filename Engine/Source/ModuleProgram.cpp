@@ -13,8 +13,8 @@ bool ModuleProgram::Init()
 {
     bool ret = true;
 
-    const char* vertexData = LoadShaderSource("../Source/Shaders/Vertex.glsl");
-    const char* fragmentData = LoadShaderSource("../Source/Shaders/Fragment.glsl");
+    const char* vertexData = LoadShaderSource("Shaders/Vertex.glsl");
+    const char* fragmentData = LoadShaderSource("Shaders/Fragment.glsl");
 
     if (vertexData == nullptr || fragmentData == nullptr)
     {

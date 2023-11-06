@@ -17,6 +17,6 @@ public:
 	void Draw(ImGuiIO& io);
 
 private:
-	ImGuiIO* io;
+	ImGuiIO* io = nullptr;
 };
 

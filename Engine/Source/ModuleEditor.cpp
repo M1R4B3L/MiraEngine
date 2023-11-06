@@ -40,13 +40,25 @@ update_status ModuleEditor::Update()
     ImGui::NewFrame();
 
     static bool demo = true;
+    static bool other = true;
 
     if(demo)
         ImGui::ShowDemoWindow(&demo);
     
-    if (ImGui::Begin("Hello, world!", &demo))                       
+    //if (ImGui::Begin("Hello, world!", &other))
+    //{
+    //    ImGui::Text("This is some useful text.");           
+    //    ImGui::End();
+    //}
+
+    if (other)
     {
-        ImGui::Text("This is some useful text.");           
+        if (ImGui::Begin("Another Window", &other))
+        {// Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            ImGui::Text("Hello from another window!");
+            if (ImGui::Button("Close Me"))
+                other = false;
+        }
         ImGui::End();
     }
 

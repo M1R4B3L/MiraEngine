@@ -142,7 +142,7 @@ void ModuleRenderExercise::CreateMatrices(math::float4x4& model, math::float4x4&
     model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f),
         float4x4::RotateZ(0.0f),
         float3(1.0f, 1.0f, 1.0f));
-
+    
     view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
 }
 
