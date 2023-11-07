@@ -154,6 +154,9 @@
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="MenuBarPanel.cpp">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -407,6 +410,9 @@
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuBarPanel.h">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

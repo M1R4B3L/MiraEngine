@@ -4,6 +4,7 @@
 #include "ModuleEditor.h"
 #include "EditorPanelManager.h"
 #include "AboutPanel.h"
+#include "MenuBarPanel.h"
 
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -12,9 +13,13 @@
 
 ModuleEditor::ModuleEditor()
 {
-    editorPanels.reserve(1);
+    editorPanels.reserve(2);
 
+    editorPanels.push_back(menuBar = new MenuBarPanel());
     editorPanels.push_back(about = new AboutPanel());
+
+
+    aboutOpen = true;
 }
 
 ModuleEditor::~ModuleEditor()
@@ -57,7 +62,7 @@ update_status ModuleEditor::Update()
         bool draw = true;
         for (unsigned i = 0; i < editorPanels.size(); ++i)
         {
-            if (editorPanels[i]->IsActive())
+            if (editorPanels[i]->IsOpen())
             {
                 draw = editorPanels[i]->Draw();
 

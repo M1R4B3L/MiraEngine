@@ -4,18 +4,23 @@ class EditorPanelManager
 {
 public:
 	EditorPanelManager();
-	EditorPanelManager(const char* name, bool active = true);
+	EditorPanelManager(const char* name, bool open = true);
 	virtual ~EditorPanelManager();
 
 	virtual bool Draw(int windowFlags = 0);
 
 	const char* GetName();
-	bool IsActive();
+	bool IsOpen();
+	bool IsHovered();
+	bool isCliked();
+
+protected:
+	bool open;
 
 private:
-	const char* panelName = nullptr;
-	bool isActive;
-	bool isHovered;
-	bool isClicked;
+	const char* name = nullptr;
+
+	bool hovered;
+	bool clicked;
 };
 

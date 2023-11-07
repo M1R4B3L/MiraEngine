@@ -9,6 +9,7 @@ class Application;
 class EditorPanelManager;
 
 class AboutPanel;
+class MenuBarPanel;
 
 class ModuleEditor : public Module
 {
@@ -28,6 +29,9 @@ public:
 	std::vector<EditorPanelManager*> editorPanels;
 
 	AboutPanel* about;
+	MenuBarPanel* menuBar;
+
+	bool aboutOpen;
 
 private:
 	ImGuiIO* io = nullptr;

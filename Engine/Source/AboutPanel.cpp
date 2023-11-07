@@ -1,4 +1,5 @@
-#include "Globals.h"
+#include "Application.h"
+#include "ModuleEditor.h"
 #include "AboutPanel.h"
 
 #include "imgui.h"
@@ -15,17 +16,11 @@ bool AboutPanel::Draw(int windowFlags)
 {
 	bool ret = true;
 
-	static bool open = true;
-
-	if (open)
+	if (ImGui::Begin(GetName(), &open, windowFlags))
 	{
-		if (ImGui::Begin(GetName(), &open, windowFlags))
-		{
-			
-		}
-
-		ImGui::End();
+		
 	}
+	ImGui::End();
 
 	return ret;
 }
