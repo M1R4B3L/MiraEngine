@@ -18,6 +18,7 @@ ModuleEditor::~ModuleEditor()
 
 bool ModuleEditor::Init()
 {
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
     io = &(ImGui::GetIO());
@@ -25,8 +26,9 @@ bool ModuleEditor::Init()
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-    io->DisplaySize = ImGui::GetMainViewport()->Size;
 
+    //TODO ImGui::Style
+    
     ImGui_ImplSDL2_InitForOpenGL(App->window->GetWindow(), App->render->GetContext());
     ImGui_ImplOpenGL3_Init("#version 460");
 
@@ -39,28 +41,44 @@ update_status ModuleEditor::Update()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    static bool demo = true;
-    static bool other = true;
+    static bool rootWindow = true;
+    static bool docking = true;
 
-    if(demo)
-        ImGui::ShowDemoWindow(&demo);
-    
-    //if (ImGui::Begin("Hello, world!", &other))
-    //{
-    //    ImGui::Text("This is some useful text.");           
-    //    ImGui::End();
-    //}
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar;
 
-    if (other)
+    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+        | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus
+        | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
+
+    //TODO Only if window resize
+    ImGuiViewport* viewport = ImGui::GetWindowViewport();
+
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    //Resize
+
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+    ImGui::Begin("Root Window", &rootWindow, windowFlags);
+
+    ImGui::PopStyleVar(2);
+      
+    if (docking)
     {
-        if (ImGui::Begin("Another Window", &other))
-        {// Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                other = false;
+        if (io->ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        {
+            ImGuiID dckspace_id = ImGui::GetID("Root Window");
+            ImGui::DockSpace(dckspace_id, ImVec2(0.0,0.0), ImGuiDockNodeFlags_PassthruCentralNode);
         }
-        ImGui::End();
     }
+
+    ImGui::End();
+    
+
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
