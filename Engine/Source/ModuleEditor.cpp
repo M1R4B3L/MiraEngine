@@ -1,9 +1,9 @@
-
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
 #include "EditorPanelManager.h"
+#include "AboutPanel.h"
 
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -12,6 +12,9 @@
 
 ModuleEditor::ModuleEditor()
 {
+    editorPanels.reserve(1);
+
+    editorPanels.push_back(about = new AboutPanel());
 }
 
 ModuleEditor::~ModuleEditor()
@@ -39,26 +42,31 @@ bool ModuleEditor::Init()
 
 update_status ModuleEditor::Update()
 {
+    update_status ret = update_status::UPDATE_CONTINUE;
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
     static bool docking = true;
     
-    if (CreateRootDockWindow("Root Window", true, ImGuiWindowFlags_MenuBar))
+    if (CreateDockWindow("Root Window", true, ImGuiWindowFlags_MenuBar))
     {
         //TODO Change to handle if is active
+      
         bool draw = true;
         for (unsigned i = 0; i < editorPanels.size(); ++i)
         {
-            if (!editorPanels[i]->IsActive())
+            if (editorPanels[i]->IsActive())
             {
-                LOG("[EDITOR] Skipped %s Panel", editorPanels[i]->GetName());
-                continue;   
-            }
-            else
-            {
-                editorPanels[i]->Draw();
+                draw = editorPanels[i]->Draw();
+
+                if (!draw)
+                {
+                    ret = update_status::UPDATE_STOP;
+                    LOG("[EDITOR] Exited through %s Panel", editorPanels[i]->GetName());
+                    break;
+                }
             }
         }
 
@@ -80,7 +88,7 @@ update_status ModuleEditor::Update()
         SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
     }
 
-    return UPDATE_CONTINUE;
+    return ret;
 }
 
 bool ModuleEditor::CleanUp()
@@ -92,7 +100,7 @@ bool ModuleEditor::CleanUp()
     return true;
 }
 
-bool ModuleEditor::CreateRootDockWindow(const char* name, bool open, int windowFlags)
+bool ModuleEditor::CreateDockWindow(const char* name, bool open, int windowFlags)
 {
     bool ret = true;
 

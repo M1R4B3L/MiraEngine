@@ -3,10 +3,12 @@
 
 #include "Module.h"
 
+struct ImGuiIO;
+
 class Application;
 class EditorPanelManager;
 
-struct ImGuiIO;
+class AboutPanel;
 
 class ModuleEditor : public Module
 {
@@ -20,10 +22,12 @@ public:
 
 private:
 
-	bool CreateRootDockWindow(const char* name, bool open, int windowFlags);
+	bool CreateDockWindow(const char* name, bool open, int windowFlags);
 
 public:
 	std::vector<EditorPanelManager*> editorPanels;
+
+	AboutPanel* about;
 
 private:
 	ImGuiIO* io = nullptr;

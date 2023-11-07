@@ -4,17 +4,21 @@ EditorPanelManager::EditorPanelManager()
 {
 }
 
-EditorPanelManager::EditorPanelManager(const char* name, bool isActive)
+EditorPanelManager::EditorPanelManager(const char* name, bool active)
 {
+    panelName = name;
+    isActive = active;
+    isHovered = false;
+    isClicked = false;
 }
 
 EditorPanelManager::~EditorPanelManager()
 {
 }
 
-void EditorPanelManager::Draw()
+bool EditorPanelManager::Draw(int windowFlags)
 {
-
+    return true;
 }
 
 const char* EditorPanelManager::GetName()
@@ -24,5 +28,5 @@ const char* EditorPanelManager::GetName()
 
 bool EditorPanelManager::IsActive()
 {
-    return active;
+    return isActive;
 }
