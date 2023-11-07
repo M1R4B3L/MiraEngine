@@ -1,8 +1,12 @@
 #pragma once
-#include "EditorManager.h"
+#include "EditorPanelManager.h"
 
-class AboutPanel : public EditorManager
+class AboutPanel : public EditorPanelManager
 {
+public:
+	AboutPanel();
+	~AboutPanel();
 
+	void Draw() override;
 };
 

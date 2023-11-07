@@ -1,7 +1,9 @@
+
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleOpenGL.h"
 #include "ModuleEditor.h"
+#include "EditorPanelManager.h"
 
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -41,42 +43,27 @@ update_status ModuleEditor::Update()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    static bool rootWindow = true;
     static bool docking = true;
-
-    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar;
-
-    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
-        | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus
-        | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
-
-    //TODO Only if window resize
-    ImGuiViewport* viewport = ImGui::GetWindowViewport();
-
-    ImGui::SetNextWindowPos(viewport->Pos);
-    ImGui::SetNextWindowSize(viewport->Size);
-    ImGui::SetNextWindowViewport(viewport->ID);
-    //Resize
-
-    //ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
-    ImGui::Begin("Root Window", &rootWindow, windowFlags);
-
-    ImGui::PopStyleVar(2);
-      
-    if (docking)
-    {
-        if (io->ConfigFlags & ImGuiConfigFlags_DockingEnable)
-        {
-            ImGuiID dckspace_id = ImGui::GetID("Root Window");
-            ImGui::DockSpace(dckspace_id, ImVec2(0.0,0.0), ImGuiDockNodeFlags_PassthruCentralNode);
-        }
-    }
-
-    ImGui::End();
     
+    if (CreateRootDockWindow("Root Window", true, ImGuiWindowFlags_MenuBar))
+    {
+        //TODO Change to handle if is active
+        bool draw = true;
+        for (unsigned i = 0; i < editorPanels.size(); ++i)
+        {
+            if (!editorPanels[i]->IsActive())
+            {
+                LOG("[EDITOR] Skipped %s Panel", editorPanels[i]->GetName());
+                continue;   
+            }
+            else
+            {
+                editorPanels[i]->Draw();
+            }
+        }
+
+        ImGui::End();
+    }
 
     ImGui::ShowDemoWindow();
 
@@ -105,7 +92,40 @@ bool ModuleEditor::CleanUp()
     return true;
 }
 
-void ModuleEditor::Draw(ImGuiIO& io)
+bool ModuleEditor::CreateRootDockWindow(const char* name, bool open, int windowFlags)
 {
+    bool ret = true;
 
+    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+        | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus
+        | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
+
+    //TODO Only if window resize
+    ImGuiViewport* viewport = ImGui::GetWindowViewport();
+
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    //Resize
+
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+    ret = ImGui::Begin(name, &open, windowFlags);
+
+    ImGui::PopStyleVar(2);
+
+    //Deactivate Docking???
+    //if (docking)
+    {
+        if (io->ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        {
+            ImGuiID dckspace_id = ImGui::GetID("Root Window");
+            ImGui::DockSpace(dckspace_id, ImVec2(0.0, 0.0), ImGuiDockNodeFlags_PassthruCentralNode);
+        }
+    }
+
+    return ret;
 }
+

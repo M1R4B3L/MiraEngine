@@ -49,7 +49,7 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="EditorManager.cpp">
+    <ClCompile Include="EditorPanelManager.cpp">
       <Filter>Source\Editor UI</Filter>
     </ClCompile>
     <ClCompile Include="AboutPanel.cpp">
@@ -213,7 +213,7 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="EditorManager.h">
+    <ClInclude Include="EditorPanelManager.h">
       <Filter>Source\Editor UI</Filter>
     </ClInclude>
     <ClInclude Include="AboutPanel.h">

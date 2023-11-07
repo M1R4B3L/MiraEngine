@@ -146,7 +146,7 @@
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="EditorManager.cpp" />
+    <ClCompile Include="EditorPanelManager.cpp" />
     <ClCompile Include="External\ImGui\include\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\ImGui\include\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="External\ImGui\include\imgui.cpp" />
@@ -200,7 +200,7 @@
     <ClInclude Include="AboutPanel.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Dummy.h" />
-    <ClInclude Include="EditorManager.h" />
+    <ClInclude Include="EditorPanelManager.h" />
     <ClInclude Include="External\DebugDraw\include\debugdraw.h" />
     <ClInclude Include="External\DebugDraw\include\debug_draw.hpp" />
     <ClInclude Include="External\ImGui\include\backends\imgui_impl_opengl3.h" />
