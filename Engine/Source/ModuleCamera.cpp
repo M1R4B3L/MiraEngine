@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
 #include "ModuleCamera.h"
 
 #include "MathGeoLib.h"
@@ -36,6 +37,7 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
+    Move();
 
     return UPDATE_CONTINUE;
 }
@@ -67,4 +69,52 @@ float4x4 ModuleCamera::LookAtMatrix(float3 pos, float3 forward, float3 up)
                            0,         0,           0,          1 };
 
     return matrix;
+}
+
+void ModuleCamera::RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& view)
+{
+    projection = frustum.ProjectionMatrix();
+    view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
+}
+
+void ModuleCamera::Move()
+{
+    float3 front = frustum.front;
+
+    float deltaTime = 0.2;
+
+    float dot = frustum.pos.Dot(-frustum.front);
+
+    //TODO CAMERA ROTATION
+
+    if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos += (frustum.front * (cameraSpeed * deltaTime));
+    }
+    if (App->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos += -(frustum.front * (cameraSpeed * deltaTime));
+    }
+    if (App->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos += (frustum.WorldRight() * (cameraSpeed * deltaTime));
+    }
+    if (App->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos += -(frustum.WorldRight() * (cameraSpeed * deltaTime));
+    }
+    LOG("%f", frustum.pos.x);
+    LOG("%f", frustum.pos.y);
+    LOG("%f", frustum.pos.z);
+
+    if (App->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos.y += cameraSpeed;
+    }
+    if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos.y -= cameraSpeed;
+    }
+
+    RecalculateMatrices(frustum.pos, projection, view);
 }

@@ -29,6 +29,10 @@ public:
 	float4x4 GetViewMatrix() const; 
 	float4x4 LookAtMatrix(float3 pos, float3 forward, float3 up);
 
+	void RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& view) ;
+
+	void Move();
+
 public:
 	Frustum frustum;
 	float aspectRatio;
@@ -36,5 +40,7 @@ public:
 private:
 	float4x4 view;
 	float4x4 projection;
+
+	float cameraSpeed = 2.0f;
 };
 

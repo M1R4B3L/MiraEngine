@@ -7,7 +7,12 @@
 #include "backends/imgui_impl_sdl2.h"
 
 ModuleInput::ModuleInput()
-{}
+{
+	keyboard = new KeyState[MAX_KEYBOARD_BUTTONS];
+	memset(keyboard, 0, sizeof(KeyState) * MAX_KEYBOARD_BUTTONS);
+
+	memset(mouseButtons, 0, sizeof(KeyState) * MAX_MOUSE_BUTTONS);
+}
 
 // Destructor
 ModuleInput::~ModuleInput()
@@ -47,10 +52,50 @@ update_status ModuleInput::Update()
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
                     return UPDATE_STOP;
                 break;
+			case SDL_MOUSEBUTTONDOWN:
+				mouseButtons[sdlEvent.button.button - 1] = KEY_DOWN;
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouseButtons[sdlEvent.button.button - 1] = KEY_UP;
+				break;
+			case SDL_MOUSEMOTION:
+				mouseMotionX = sdlEvent.motion.xrel / SCREEN_SIZE;
+				mouseMotionY = sdlEvent.motion.yrel / SCREEN_SIZE;
+				mouseX = sdlEvent.motion.x / SCREEN_SIZE;
+				mouseY = sdlEvent.motion.y / SCREEN_SIZE;
+				//LOG("%u %u %u %u", mouseMotionX, mouseMotionY, mouseX, mouseY);
+				break;
         }
     }
 
-    keyboard = SDL_GetKeyboardState(NULL);
+	const Uint8* keys = SDL_GetKeyboardState(NULL);
+
+	for (int i = 0; i < MAX_KEYBOARD_BUTTONS; ++i)
+	{
+		if (keys[i] == 1)
+		{
+			if (keyboard[i] == KEY_IDLE)
+				keyboard[i] = KEY_DOWN;
+			else
+				keyboard[i] = KEY_REPEAT;
+		}
+		else
+		{
+			if (keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
+				keyboard[i] = KEY_UP;
+			else
+				keyboard[i] = KEY_IDLE;
+		}
+	}
+
+	for (int i = 0; i < MAX_MOUSE_BUTTONS; ++i)
+	{
+		if (mouseButtons[i] == KEY_DOWN)
+			mouseButtons[i] = KEY_REPEAT;
+
+		if (mouseButtons[i] == KEY_UP)
+			mouseButtons[i] = KEY_IDLE;
+	}
 
     return UPDATE_CONTINUE;
 }
@@ -61,4 +106,14 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+const KeyState ModuleInput::GetKey(int id) const
+{
+    return keyboard[id];
+}
+
+const KeyState ModuleInput::GetMouseButtonDown(int id) const
+{
+	return mouseButtons[id - 1];
 }
