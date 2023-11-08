@@ -1,6 +1,7 @@
 #pragma once
 
-#include<list>
+#include<vector>
+
 #include "Globals.h"
 #include "Module.h"
 
@@ -12,6 +13,7 @@ class ModuleProgram;
 class ModuleRenderExercise;
 class ModuleEditor;
 class ModuleDebugDraw;
+class ModuleCamera;
 
 class Application
 {
@@ -41,9 +43,10 @@ public:
     ModuleRenderExercise* renderExercise = nullptr;
     ModuleEditor* editor = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
+    ModuleCamera* camera = nullptr;
 
 private:
-    std::list<Module*> modules;
+    std::vector<Module*> modules;
 
 };
 

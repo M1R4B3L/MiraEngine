@@ -157,6 +157,9 @@
     <ClCompile Include="MenuBarPanel.cpp">
       <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -414,14 +417,11 @@
     <ClInclude Include="MenuBarPanel.h">
       <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Vertex.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\Fragment.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="External\MathGeolib\include\Math\Matrix.inl">
       <Filter>External\MathGeoLib\Math</Filter>
     </None>
@@ -439,6 +439,12 @@
     </None>
     <None Include="External\MathGeolib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>External\MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\Game\Shaders\Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\Vertex.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -2,10 +2,9 @@
 #include "MathGeoLib.h"
 
 #include "Application.h"
-#include "ModuleWindow.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleProgram.h"
-
+#include "ModuleCamera.h"
 
 
 ModuleRenderExercise::ModuleRenderExercise()
@@ -21,13 +20,18 @@ bool ModuleRenderExercise::Init()
 {
     bool ret = true;
 
-    CreateMatrices(model, view, projection);
+    model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f),
+        float4x4::RotateZ(0.0f),
+        float3(1.0f, 1.0f, 1.0f));
+
+    projection = App->camera->GetProjectionMatrix();
+    view = App->camera->GetViewMatrix();
+
     //
     CreateVAO();
     CreateTriangleVBO();
     CreateEBO();
-    
-   
+     
     return ret;
 }
 
@@ -123,43 +127,6 @@ void ModuleRenderExercise::DestroyEBO()
 {
     glDeleteBuffers(1, &ebo);
 }
-
-void ModuleRenderExercise::CreateMatrices(math::float4x4& model, math::float4x4& view, math::float4x4& projection)
-{
-    aspectRatio = (float)App->window->GetWidth() / (float)App->window->GetHeight();
-
-    frustum.type = FrustumType::PerspectiveFrustum;
-    frustum.pos = float3(0.0f, 2.0f, 15.0f);
-    frustum.front = -float3::unitZ;
-    frustum.up = float3::unitY;
-
-    frustum.nearPlaneDistance = 0.1f;
-    frustum.farPlaneDistance = 100.0f;
-    frustum.verticalFov = math::pi / 4.0f;
-    frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
-
-    projection = frustum.ProjectionMatrix();
-    model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f),
-        float4x4::RotateZ(0.0f),
-        float3(1.0f, 1.0f, 1.0f));
-    
-    view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
-}
-
-float4x4 ModuleRenderExercise::LookAtMatrix(float3 pos, float3 forward, float3 up)
-{
-    forward.Normalized();
-    float3 right = (forward.Cross(up)).Normalized();  
-    up = (right.Cross(forward)).Normalized();
-
-    float4x4 matrix = {right.x,     right.y,    right.z,    -(pos.Dot(right)),
-                       up.x,        up.y,       up.z,       -(pos.Dot(up)),
-                       -forward.x,  -forward.y, -forward.z,  (pos.Dot(forward)),
-                           0,         0,           0,          1};
-
-    return matrix;
-}
-
 
 
 

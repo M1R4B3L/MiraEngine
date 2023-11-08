@@ -24,6 +24,12 @@ ModuleEditor::ModuleEditor()
 
 ModuleEditor::~ModuleEditor()
 {
+    for (std::vector<EditorPanelManager*>::iterator it = editorPanels.begin(); it != editorPanels.end(); ++it)
+    {
+        delete* it;
+    }
+
+    editorPanels.clear();
 }
 
 bool ModuleEditor::Init()

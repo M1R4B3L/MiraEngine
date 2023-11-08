@@ -9,18 +9,23 @@ public:
 
 	virtual bool Draw(int windowFlags = 0);
 
-	const char* GetName();
-	bool IsOpen();
-	bool IsHovered();
-	bool isCliked();
+	const char* GetName()const;
+	bool IsOpen()const;
+	bool IsHovered()const;
+	bool isSelected()const;
+
+	void OpenWindow();
+	void CloseWindow();
+
+	void SetIsHovered();
+	void SetIsSelected();
 
 protected:
 	bool open;
 
 private:
 	const char* name = nullptr;
-
 	bool hovered;
-	bool clicked;
+	bool selected;
 };
 

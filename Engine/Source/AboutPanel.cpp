@@ -18,7 +18,10 @@ bool AboutPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &open, windowFlags))
 	{
-		
+		if (!open)
+			CloseWindow();
+
+
 	}
 	ImGui::End();
 

@@ -4,6 +4,8 @@
 
 ModuleWindow::ModuleWindow()
 {
+	width = SCREEN_WIDTH;
+	height = SCREEN_HEIGHT;
 }
 
 // Destructor
@@ -24,9 +26,7 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
-		//Create window
-		width = SCREEN_WIDTH;
-		height = SCREEN_HEIGHT;
+
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
 		if(FULLSCREEN == true)

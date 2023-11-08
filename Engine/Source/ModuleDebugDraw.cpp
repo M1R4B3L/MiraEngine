@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleCamera.h"
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -615,7 +615,7 @@ update_status  ModuleDebugDraw::Update()
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
     dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
     
-    Draw(App->renderExercise->view, App->renderExercise->projection, App->window->GetWidth(), App->window->GetHeight());
+    Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->window->GetWidth(), App->window->GetHeight());
 
 	return UPDATE_CONTINUE;
 }
