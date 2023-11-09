@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 
+#include "Math/float2.h"
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 
@@ -31,6 +32,7 @@ public:
 
 	void RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& view) ;
 
+	void Rotate();
 	void PanCamera();
 	void Move();
 
@@ -44,12 +46,7 @@ private:
 	float4x4 projection;
 
 	float cameraSpeed = 2.0f;
-
-	float lastX;
-	float lastY;
-
-	float pitch = 0.0f;
-	float yaw = -90.0f;
-	float roll;
+	
+	float2 oldPos;
 };
 

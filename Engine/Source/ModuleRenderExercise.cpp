@@ -24,9 +24,6 @@ bool ModuleRenderExercise::Init()
         float4x4::RotateZ(0.0f),
         float3(1.0f, 1.0f, 1.0f));
 
-    projection = App->camera->GetProjectionMatrix();
-    view = App->camera->GetViewMatrix();
-
     //
     CreateVAO();
     CreateTriangleVBO();
@@ -37,7 +34,8 @@ bool ModuleRenderExercise::Init()
 
 update_status ModuleRenderExercise::Update()
 {
-    RenderTriangle();// vao, vbo, ebo);
+    RenderTriangle();
+
     return UPDATE_CONTINUE;
 }
 
@@ -71,6 +69,9 @@ unsigned ModuleRenderExercise::CreateTriangleVBO()
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+
+    float4x4 view = App->camera->GetViewMatrix();
+    float4x4 projection = App->camera->GetProjectionMatrix();
 
     glUseProgram(App->program->programId);
     glUniformMatrix4fv(0, 1, GL_TRUE, (GLfloat*)&model);
@@ -107,10 +108,14 @@ unsigned ModuleRenderExercise::CreateEBO()
 void ModuleRenderExercise::RenderTriangle()//unsigned vao, unsigned vbo, unsigned ebo)
 {
     glUseProgram(App->program->programId);
+    float4x4 view = App->camera->GetViewMatrix();
+    float4x4 projection = App->camera->GetProjectionMatrix();
+    glUniformMatrix4fv(1, 1, GL_TRUE, (GLfloat*)&view);
+    glUniformMatrix4fv(2, 1, GL_TRUE, (GLfloat*)&projection);
 
     glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void ModuleRenderExercise::DestroyVAO()

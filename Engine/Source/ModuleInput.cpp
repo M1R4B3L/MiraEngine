@@ -35,39 +35,8 @@ bool ModuleInput::Init()
 }
 
 // Called every draw update
-update_status ModuleInput::Update()
+update_status ModuleInput::PreUpdate()
 {
-    SDL_Event sdlEvent;
-
-    while (SDL_PollEvent(&sdlEvent) != 0)
-    {
-        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
-        switch (sdlEvent.type)
-        {
-            case SDL_QUIT:
-                return UPDATE_STOP;
-            case SDL_WINDOWEVENT:
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED) //|| sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-                    App->render->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
-                    return UPDATE_STOP;
-                break;
-			case SDL_MOUSEBUTTONDOWN:
-				mouseButtons[sdlEvent.button.button - 1] = KEY_DOWN;
-				break;
-			case SDL_MOUSEBUTTONUP:
-				mouseButtons[sdlEvent.button.button - 1] = KEY_UP;
-				break;
-			case SDL_MOUSEMOTION:
-				mouseMotionX = sdlEvent.motion.xrel / SCREEN_SIZE;
-				mouseMotionY = sdlEvent.motion.yrel / SCREEN_SIZE;
-				mouseX = sdlEvent.motion.x / SCREEN_SIZE;
-				mouseY = sdlEvent.motion.y / SCREEN_SIZE;
-				//LOG("%u %u %u %u", mouseMotionX, mouseMotionY, mouseX, mouseY);
-				break;
-        }
-    }
-
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	for (int i = 0; i < MAX_KEYBOARD_BUTTONS; ++i)
@@ -88,6 +57,8 @@ update_status ModuleInput::Update()
 		}
 	}
 
+	//Uint32 buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
 	for (int i = 0; i < MAX_MOUSE_BUTTONS; ++i)
 	{
 		if (mouseButtons[i] == KEY_DOWN)
@@ -96,6 +67,40 @@ update_status ModuleInput::Update()
 		if (mouseButtons[i] == KEY_UP)
 			mouseButtons[i] = KEY_IDLE;
 	}
+
+	mouseMotion = float2::zero;
+
+    SDL_Event sdlEvent;
+    while (SDL_PollEvent(&sdlEvent) != 0)
+    {
+        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+        switch (sdlEvent.type)
+        {
+            case SDL_QUIT:
+                return UPDATE_STOP;
+            case SDL_WINDOWEVENT:
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED) //|| sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                    App->render->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+                    return UPDATE_STOP;
+                break;
+			case SDL_MOUSEBUTTONDOWN:
+				mouseButtons[sdlEvent.button.button - 1] = KEY_DOWN;
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouseButtons[sdlEvent.button.button - 1] = KEY_UP;
+				break;
+			case SDL_MOUSEMOTION:
+				mouseMotion.x = sdlEvent.motion.xrel / SCREEN_SIZE;
+				mouseMotion.y = sdlEvent.motion.yrel / SCREEN_SIZE;
+				mousePos.x = sdlEvent.motion.x / SCREEN_SIZE;
+				mousePos.y = sdlEvent.motion.y / SCREEN_SIZE;
+				//LOG("%u %u %u %u", mouseMotionX, mouseMotionY, mouseX, mouseY);
+				break;
+        }
+    }
+
+
 
     return UPDATE_CONTINUE;
 }

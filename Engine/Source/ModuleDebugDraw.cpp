@@ -617,6 +617,7 @@ update_status  ModuleDebugDraw::Update()
     
     Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->window->GetWidth(), App->window->GetHeight());
 
+
 	return UPDATE_CONTINUE;
 }
 

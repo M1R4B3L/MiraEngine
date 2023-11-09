@@ -28,7 +28,11 @@ bool MenuBarPanel::Draw(int windowFlags)
         if (ImGui::BeginMenu("Windows")) {
 
             if (ImGui::MenuItem("About", NULL, App->editor->about->IsOpen())) {
-                App->editor->about->OpenWindow();
+                
+                if (App->editor->about->IsOpen())
+                    App->editor->about->CloseWindow();
+                else
+                    App->editor->about->OpenWindow();
             }
             ImGui::EndMenu();
         }

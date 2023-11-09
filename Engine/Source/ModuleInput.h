@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "Math/float2.h"
+
 typedef unsigned __int8 Uint8;
 
 enum KeyState
@@ -20,7 +22,7 @@ public:
 	~ModuleInput() override;
 
 	bool Init();
-	update_status Update();
+	update_status PreUpdate();
 	bool CleanUp();
 
 	// Check key states (includes mouse and joy buttons)
@@ -34,8 +36,7 @@ private:
 	KeyState  mouseButtons[MAX_MOUSE_BUTTONS];
 
 public:
-	int mouseMotionX;
-	int mouseMotionY;
-	int mouseX;
-	int mouseY;
+
+	float2 mouseMotion;
+	float2 mousePos;
 };

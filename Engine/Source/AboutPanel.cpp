@@ -4,7 +4,7 @@
 
 #include "imgui.h"
 
-AboutPanel::AboutPanel() : EditorPanelManager("About", true)
+AboutPanel::AboutPanel() : EditorPanelManager("About", false)
 {
 }
 
