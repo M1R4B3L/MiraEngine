@@ -31,7 +31,9 @@ public:
 
 	void RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& view) ;
 
+	void PanCamera();
 	void Move();
+
 
 public:
 	Frustum frustum;

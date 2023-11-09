@@ -33,6 +33,7 @@ private:
 	KeyState* keyboard = nullptr;
 	KeyState  mouseButtons[MAX_MOUSE_BUTTONS];
 
+public:
 	int mouseMotionX;
 	int mouseMotionY;
 	int mouseX;

@@ -38,6 +38,7 @@ bool ModuleCamera::Init()
 update_status ModuleCamera::Update()
 {
     Move();
+    PanCamera();
 
     return UPDATE_CONTINUE;
 }
@@ -77,15 +78,16 @@ void ModuleCamera::RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& 
     view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
 }
 
+void ModuleCamera::PanCamera()
+{
+
+}
+
 void ModuleCamera::Move()
 {
     float3 front = frustum.front;
-
     float deltaTime = 0.2;
-
     float dot = frustum.pos.Dot(-frustum.front);
-
-    //TODO CAMERA ROTATION
 
     if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
     {
