@@ -44,5 +44,12 @@ private:
 	float4x4 projection;
 
 	float cameraSpeed = 2.0f;
+
+	float lastX;
+	float lastY;
+
+	float pitch = 0.0f;
+	float yaw = -90.0f;
+	float roll;
 };
 

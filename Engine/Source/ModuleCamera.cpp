@@ -32,6 +32,9 @@ bool ModuleCamera::Init()
     projection = frustum.ProjectionMatrix();
     view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
 
+    lastX = SCREEN_WIDTH / 2.0f;
+    lastY = SCREEN_HEIGHT / 2.0f;
+
     return ret;
 }
 
@@ -80,7 +83,10 @@ void ModuleCamera::RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& 
 
 void ModuleCamera::PanCamera()
 {
+    lastX = App->input->mouseX - lastX;
+    lastY = lastY - App->input->mouseMotionY;
 
+    frustum.front;
 }
 
 void ModuleCamera::Move()
@@ -89,34 +95,38 @@ void ModuleCamera::Move()
     float deltaTime = 0.2;
     float dot = frustum.pos.Dot(-frustum.front);
 
-    if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
+    if (App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
     {
-        frustum.pos += (frustum.front * (cameraSpeed * deltaTime));
-    }
-    if (App->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
-    {
-        frustum.pos += -(frustum.front * (cameraSpeed * deltaTime));
-    }
-    if (App->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
-    {
-        frustum.pos += (frustum.WorldRight() * (cameraSpeed * deltaTime));
-    }
-    if (App->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
-    {
-        frustum.pos += -(frustum.WorldRight() * (cameraSpeed * deltaTime));
-    }
-    LOG("%f", frustum.pos.x);
-    LOG("%f", frustum.pos.y);
-    LOG("%f", frustum.pos.z);
 
-    if (App->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
-    {
-        frustum.pos.y += cameraSpeed;
-    }
-    if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
-    {
-        frustum.pos.y -= cameraSpeed;
-    }
+        if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
+        {
+            frustum.pos += (frustum.front * (cameraSpeed * deltaTime));
+        }
+        if (App->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
+        {
+            frustum.pos += -(frustum.front * (cameraSpeed * deltaTime));
+        }
+        if (App->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
+        {
+            frustum.pos += (frustum.WorldRight() * (cameraSpeed * deltaTime));
+        }
+        if (App->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
+        {
+            frustum.pos += -(frustum.WorldRight() * (cameraSpeed * deltaTime));
+        }
+        LOG("%f", frustum.pos.x);
+        LOG("%f", frustum.pos.y);
+        LOG("%f", frustum.pos.z);
 
-    RecalculateMatrices(frustum.pos, projection, view);
+        if (App->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
+        {
+            frustum.pos.y += cameraSpeed;
+        }
+        if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
+        {
+            frustum.pos.y -= cameraSpeed;
+        }
+        RecalculateMatrices(frustum.pos, projection, view);
+    }
+  
 }
