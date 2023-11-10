@@ -87,17 +87,17 @@ void ModuleCamera::Rotate()
     int dx = -App->input->mouseMotion.x;
     int dy = -App->input->mouseMotion.y;
 
-    float sens = 1.0f * 0.002f;
+    float sens = 0.1f * 0.02f;
+
     if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_REPEAT)
     {
         if (dx != 0)
         {
-            float deltaX = (float)dx * sens;
 
-            Quat q = Quat::RotateY(deltaX);
+            Quat q = Quat::RotateY(dx * sens);
 
-            frustum.front = q.Mul(frustum.front).Normalized();
-            frustum.up = q.Mul(frustum.up).Normalized();
+            frustum.front = q.Mul(frustum.front);
+            //frustum.up = q.Mul(frustum.up).Normalized();
             
 
             /*X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
@@ -107,17 +107,16 @@ void ModuleCamera::Rotate()
 
         if (dy != 0)
         {
-           /* float DeltaY = (float)dy * sens;
+            Quat q = Quat::RotateX(dy * sens);
 
-            Quat q = Quat::RotateAxisAngle(frustum.WorldRight(), DeltaY);
+            frustum.up = q.Mul(frustum.up);
+            frustum.front = q.Mul(frustum.front);
 
-            float3 vecY = q.Mul(frustum.up.Normalized());
-
-            if (vecY.y > 0.0f)
-            {
-                frustum.up = vecY;
-                frustum.front = q.Mul(frustum.front).Normalized();
-            }*/
+            //TODO BLOCK ROTATION UP AND DOWN
+            //if (frustum.up.y > 1.0f)
+            //{
+            //    frustum.up = frustum.up;
+            //}
         }
 
         view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
@@ -131,7 +130,7 @@ void ModuleCamera::PanCamera()
     float3 x_pos = float3::zero;
     float3 y_pos = float3::zero;
 
-    float speed = 2.0f * 0.001f;
+    float speed = 2.0f * 0.02f;
 
     if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
     {
