@@ -7,8 +7,8 @@
 
 class ModuleOpenGL;
 class ModuleWindow;
-class ModuleTextures;
 class ModuleInput;
+class ModuleTexture;
 class ModuleProgram;
 class ModuleRenderExercise;
 class ModuleEditor;
@@ -39,11 +39,13 @@ public:
     ModuleOpenGL* render = nullptr;
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
+    ModuleTexture* texture = nullptr;
     ModuleProgram* program = nullptr;
     ModuleRenderExercise* renderExercise = nullptr;
     ModuleEditor* editor = nullptr;
     ModuleDebugDraw* debugDraw = nullptr;
     ModuleCamera* camera = nullptr;
+
 
 private:
     std::vector<Module*> modules;

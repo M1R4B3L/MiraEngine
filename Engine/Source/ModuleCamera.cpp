@@ -32,9 +32,6 @@ bool ModuleCamera::Init()
     projection = frustum.ProjectionMatrix();
     view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
 
-    oldPos.x = SCREEN_WIDTH / 2.0f;
-    oldPos.y = SCREEN_HEIGHT / 2.0f;
-
     return ret;
 }
 
@@ -50,6 +47,18 @@ update_status ModuleCamera::Update()
 bool ModuleCamera::CleanUp()
 {
     return false;
+}
+
+void ModuleCamera::SetFOV(float angle)
+{
+    frustum.horizontalFov = angle;
+    frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f) * aspectRatio);
+    
+    projection = frustum.ProjectionMatrix();
+}
+
+void ModuleCamera::SetAspectRatio(float newAspectRatio)
+{
 }
 
 float4x4 ModuleCamera::GetProjectionMatrix() const
@@ -78,7 +87,6 @@ float4x4 ModuleCamera::LookAtMatrix(float3 pos, float3 forward, float3 up)
 
 void ModuleCamera::RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& view)
 {
-    projection = frustum.ProjectionMatrix();
     view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
 }
 
@@ -120,7 +128,6 @@ void ModuleCamera::Rotate()
         }
 
         view = LookAtMatrix(frustum.pos, frustum.front, frustum.up);
-        RecalculateMatrices(frustum.pos, projection, view);
     }
 }
 
@@ -187,6 +194,4 @@ void ModuleCamera::Move()
     }
     
     RecalculateMatrices(frustum.pos, projection, view);
-    
-  
 }

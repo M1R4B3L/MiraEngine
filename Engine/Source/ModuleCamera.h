@@ -19,10 +19,10 @@ public:
 	void SetFOV(float newFOV);
 	void SetAspectRatio(float newAspectRatio);
 
-	void SetPlaneDistances();
+	void SetPlaneDistances(float near, float far);
 
-	void SetNearPlanePos();
-	void SetFarPlanePos();
+	void SetNearPlanePos(float near);
+	void SetFarPlanePos(float far);
 
 	void LookAt(float3 pos);
 
@@ -47,6 +47,5 @@ private:
 
 	float cameraSpeed = 2.0f;
 	
-	float2 oldPos;
 };
 

@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
+
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -81,6 +83,8 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 	glViewport(0, 0, width, height);
 	App->window->SetWidth(width);
 	App->window->SetHeight(height);
+
+	//TODO Handle FOV modification
 }
 
 

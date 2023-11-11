@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # Lib
 !/Engine/Source/External/SDL/lib/x64/
 !/Engine/Source/External/Glew/lib/x64/
+!/Engine/Source/External/DirectXTex/lib/x64/

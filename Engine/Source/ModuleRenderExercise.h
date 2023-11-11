@@ -14,9 +14,11 @@ public:
 	bool CleanUp() override;
 
 private:
-	unsigned CreateVAO();
-	unsigned CreateTriangleVBO();
-	unsigned CreateEBO();
+	unsigned CreateTexture();
+
+	void CreateVAO();
+	void CreateTriangleVBO();
+	void CreateEBO();
 
 	void RenderTriangle();//unsigned vao, unsigned vbo, unsigned ebo);
 
@@ -28,6 +30,8 @@ private:
 	unsigned vao;
 	unsigned vbo;
 	unsigned ebo;
+
+	unsigned baboon;
 
 public:
 	float4x4 model;
