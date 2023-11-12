@@ -32,7 +32,7 @@ private:
 	unsigned ebo;
 
 	unsigned baboon;
-	unsigned baboon2;
+	unsigned iobamium;
 
 public:
 	float4x4 model;

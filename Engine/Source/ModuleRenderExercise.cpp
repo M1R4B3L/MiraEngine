@@ -37,10 +37,12 @@ bool ModuleRenderExercise::Init()
     {
         0,1,2,
         2,3,0,
+        2,1,0,
+        0,3,2
     };
 
-    baboon = CreateTexture("Baboon.tga");
-    baboon2 = CreateTexture("3baboon.png");
+    baboon = CreateTexture("Textures/Baboon.tga");
+    iobamium = CreateTexture("Textures/iobamium.png");
     //
     CreateVAO(vao);
     CreateVBO(vbo);
@@ -57,7 +59,7 @@ bool ModuleRenderExercise::Init()
     glEnableVertexAttribArray(2);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, baboon);
+    //glBindTexture(GL_TEXTURE_2D, baboon);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -83,7 +85,15 @@ update_status ModuleRenderExercise::Update()
 
     glBindVertexArray(vao);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    for (int i = 0; i < 2; ++i)
+    {
+        if (i == 0)
+            glBindTexture(GL_TEXTURE_2D, baboon);
+        else
+            glBindTexture(GL_TEXTURE_2D, iobamium);
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
+    }
   
     return UPDATE_CONTINUE;
 }
