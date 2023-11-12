@@ -17,8 +17,6 @@ bool ModuleTexture::Init()
 {
     bool ret = true;
 
-    baboon = LoadTexture("Baboon.tga");
-
     LOG("Load image");
 
     return ret;
@@ -33,7 +31,6 @@ DirectX::ScratchImage ModuleTexture::LoadTexture(const char* path)
 {
     size_t size = strlen(path) + 1;
     wchar_t* portName = new wchar_t[size];
-
     size_t outSize;
     mbstowcs_s(&outSize, portName, size, path, size - 1);
 

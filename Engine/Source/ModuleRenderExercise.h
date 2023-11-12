@@ -14,17 +14,17 @@ public:
 	bool CleanUp() override;
 
 private:
-	unsigned CreateTexture();
+	unsigned CreateTexture(const char* path);
 
-	void CreateVAO();
-	void CreateTriangleVBO();
-	void CreateEBO();
+	void CreateVAO(unsigned& vao, unsigned num = 1);
+	void CreateVBO(unsigned& vbo, unsigned num = 1);
+	void CreateEBO(unsigned& ebo, unsigned num = 1);
 
 	void RenderTriangle();//unsigned vao, unsigned vbo, unsigned ebo);
 
-	void DestroyVAO();
-	void DestroyVBO();	
-	void DestroyEBO();
+	void DestroyVAO(unsigned& vao, unsigned num = 1);
+	void DestroyVBO(unsigned& vbo, unsigned num = 1);
+	void DestroyEBO(unsigned& ebo, unsigned num = 1);
 
 private:
 	unsigned vao;
@@ -32,6 +32,7 @@ private:
 	unsigned ebo;
 
 	unsigned baboon;
+	unsigned baboon2;
 
 public:
 	float4x4 model;

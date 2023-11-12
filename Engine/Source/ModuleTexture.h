@@ -3,6 +3,18 @@
 
 #include "DirectXTex.h"
 
+
+struct Texture
+{
+	int width;
+	int height;
+	int format;
+	int rowPitch;
+	int slicePitch;
+	const char* pixels;
+
+};
+
 class ModuleTexture : public Module
 {
 public:
