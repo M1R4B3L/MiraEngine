@@ -61,8 +61,11 @@ bool ModuleRenderExercise::Init()
     glActiveTexture(GL_TEXTURE0);
     //glBindTexture(GL_TEXTURE_2D, baboon);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 
     float4x4 view = App->camera->GetViewMatrix();
     float4x4 projection = App->camera->GetProjectionMatrix();
@@ -189,7 +192,7 @@ void ModuleRenderExercise::CreateEBO(unsigned& ebo, unsigned num)
 
 void ModuleRenderExercise::DestroyVAO(unsigned& vao, unsigned num)
 {
-    glDeleteBuffers(num, &vao);
+    glDeleteVertexArrays(num, &vao);
 }
 
 void ModuleRenderExercise::DestroyVBO(unsigned& vbo, unsigned num)
