@@ -432,6 +432,18 @@
     <ClInclude Include="ModuleModel.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="External\tinygltf-2.8.18\json.hpp">
+      <Filter>External\TinyGltf</Filter>
+    </ClInclude>
+    <ClInclude Include="External\tinygltf-2.8.18\stb_image.h">
+      <Filter>External\TinyGltf</Filter>
+    </ClInclude>
+    <ClInclude Include="External\tinygltf-2.8.18\stb_image_write.h">
+      <Filter>External\TinyGltf</Filter>
+    </ClInclude>
+    <ClInclude Include="External\tinygltf-2.8.18\tiny_gltf.h">
+      <Filter>External\TinyGltf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\MathGeolib\include\Math\Matrix.inl">
@@ -501,6 +513,9 @@
     </Filter>
     <Filter Include="External\DebugDraw">
       <UniqueIdentifier>{b8b88a09-aed4-4bb3-84b4-99212d4491c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\TinyGltf">
+      <UniqueIdentifier>{72d8ee4b-3b27-40c7-83e4-9f8bb342c823}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

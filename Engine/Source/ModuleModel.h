@@ -2,6 +2,24 @@
 
 #include "Module.h"
 
+namespace tinygltf
+{
+	struct Model;
+	struct Mesh;
+	struct Primitive;
+}
+
+
+
+struct Mesh
+{
+	unsigned vbo;
+	unsigned ebo;
+	unsigned mat;
+
+	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
+};
+
 class ModuleModel : public Module
 {public:
 
@@ -10,10 +28,8 @@ class ModuleModel : public Module
 
 	bool Init() override;
 	bool CleanUp() override;
-};
 
-class Mesh
-{
+	void LoadModel(const char* path);
 
 
 };

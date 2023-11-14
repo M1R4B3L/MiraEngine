@@ -276,6 +276,10 @@
     <ClInclude Include="External\MathGeolib\include\Math\sse_mathfun.h" />
     <ClInclude Include="External\MathGeolib\include\Math\TransformOps.h" />
     <ClInclude Include="External\MathGeolib\include\Time\Clock.h" />
+    <ClInclude Include="External\tinygltf-2.8.18\json.hpp" />
+    <ClInclude Include="External\tinygltf-2.8.18\stb_image.h" />
+    <ClInclude Include="External\tinygltf-2.8.18\stb_image_write.h" />
+    <ClInclude Include="External\tinygltf-2.8.18\tiny_gltf.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MenuBarPanel.h" />
     <ClInclude Include="Module.h" />
