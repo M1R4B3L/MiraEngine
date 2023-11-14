@@ -24,7 +24,7 @@ bool ModuleModel::Init()
 {
     bool ret = true;
 
-    //LoadModel("Models/BakerHouse/BakerHouse.gltf");
+    //LoadModel("Models/Triangle/TriangleWithoutIndices.gltf");
     return ret;
 }
 
@@ -70,6 +70,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
 
         glGenBuffers(1, &vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * posAcc.count, nullptr, GL_STATIC_DRAW);
+
         float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
         for (size_t i = 0; i < posAcc.count; ++i)
         {
