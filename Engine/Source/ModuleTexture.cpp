@@ -17,8 +17,6 @@ bool ModuleTexture::Init()
 {
     bool ret = true;
 
-    LOG("Load image");
-
     return ret;
 }
 

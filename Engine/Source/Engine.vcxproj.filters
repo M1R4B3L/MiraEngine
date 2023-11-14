@@ -163,6 +163,9 @@
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleModel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -424,6 +427,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTexture.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleModel.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

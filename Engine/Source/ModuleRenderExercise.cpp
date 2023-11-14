@@ -25,15 +25,15 @@ bool ModuleRenderExercise::Init()
 
     model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f),
         float4x4::RotateZ(0.0f),
-        float3(1.0f, 1.0f, 1.0f));
+        float3(5.0f));
 
-    float vertexData[] = { -5.5f,  5.5f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-                           -5.5f, -5.5f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-                            5.5f, -5.5f, 0.0f,  0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
-                            5.5f,  5.5f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f
+    float vertexData[] = { -1.0f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+                           -1.0f, -1.0f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
+                            1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
+                            1.0f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f
     };
 
-    unsigned indicesData[12] =
+    unsigned indicesData[] =
     {
         0,1,2,
         2,3,0,
@@ -59,7 +59,6 @@ bool ModuleRenderExercise::Init()
     glEnableVertexAttribArray(2);
 
     glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, baboon);
 
     glBindVertexArray(0);
 

@@ -20,8 +20,6 @@ private:
 	void CreateVBO(unsigned& vbo, unsigned num = 1);
 	void CreateEBO(unsigned& ebo, unsigned num = 1);
 
-	void RenderTriangle();//unsigned vao, unsigned vbo, unsigned ebo);
-
 	void DestroyVAO(unsigned& vao, unsigned num = 1);
 	void DestroyVBO(unsigned& vbo, unsigned num = 1);
 	void DestroyEBO(unsigned& ebo, unsigned num = 1);

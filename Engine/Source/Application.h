@@ -9,6 +9,7 @@ class ModuleOpenGL;
 class ModuleWindow;
 class ModuleInput;
 class ModuleTexture;
+class ModuleModel;
 class ModuleProgram;
 class ModuleRenderExercise;
 class ModuleEditor;
@@ -40,6 +41,7 @@ public:
     ModuleWindow* window = nullptr;
     ModuleInput* input = nullptr;
     ModuleTexture* texture = nullptr;
+    ModuleModel* model = nullptr;
     ModuleProgram* program = nullptr;
     ModuleRenderExercise* renderExercise = nullptr;
     ModuleEditor* editor = nullptr;
