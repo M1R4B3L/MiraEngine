@@ -10,14 +10,19 @@ namespace tinygltf
 }
 
 
-
 struct Mesh
 {
 	unsigned vbo;
 	unsigned ebo;
 	unsigned mat;
 
+	unsigned numVert = 0;
+	unsigned numInd = 0;
+
+	void CreateVAO();
+	void Draw(const std::vector<unsigned>& textures);
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
+	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 };
 
 class ModuleModel : public Module
@@ -27,9 +32,14 @@ class ModuleModel : public Module
 	~ModuleModel() override;
 
 	bool Init() override;
+	update_status Update() override;
 	bool CleanUp() override;
 
 	void LoadModel(const char* path);
+	void LoadMaterials(const tinygltf::Model& srcModel);
 
+	unsigned vao;
 
+	std::vector<unsigned> textures;
+	std::vector<Mesh*> meshes;
 };

@@ -23,4 +23,5 @@ public:
 private:
 	void* context = nullptr;
 	//unsigned vertexbuffer;
+
 };

@@ -611,12 +611,11 @@ bool ModuleDebugDraw::CleanUp()
 
 update_status  ModuleDebugDraw::Update()
 {
-    //Triangle does not work
+
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
     dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
     
     Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), App->window->GetWidth(), App->window->GetHeight());
-
 
 	return UPDATE_CONTINUE;
 }

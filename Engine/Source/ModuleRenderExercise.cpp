@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
+#include "ModuleModel.h"
 
 #include "DirectXTex.h"
 
@@ -25,7 +26,7 @@ bool ModuleRenderExercise::Init()
 
     model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f),
         float4x4::RotateZ(0.0f),
-        float3(5.0f));
+        float3(10.0f));
 
     float vertexData[] = { -1.0f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
                            -1.0f, -1.0f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
@@ -44,26 +45,26 @@ bool ModuleRenderExercise::Init()
     baboon = CreateTexture("Textures/Baboon.tga");
     iobamium = CreateTexture("Textures/iobamium.png");
     //
-    CreateVAO(vao);
-    CreateVBO(vbo);
-    CreateEBO(ebo);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesData), indicesData, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
-    glEnableVertexAttribArray(2);
-
-    glActiveTexture(GL_TEXTURE0);
-
-    glBindVertexArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    //CreateVAO(vao);
+    //CreateVBO(vbo);
+    //CreateEBO(ebo);
+    //
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesData), indicesData, GL_STATIC_DRAW);
+    //
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
+    //glEnableVertexAttribArray(0);
+    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
+    //glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
+    //glEnableVertexAttribArray(2);
+    //
+    //glActiveTexture(GL_TEXTURE0);
+    //
+    //glBindVertexArray(0);
+    //
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 
     float4x4 view = App->camera->GetViewMatrix();
@@ -85,17 +86,23 @@ update_status ModuleRenderExercise::Update()
     glUniformMatrix4fv(1, 1, GL_TRUE, (GLfloat*)&view);
     glUniformMatrix4fv(2, 1, GL_TRUE, (GLfloat*)&projection);
 
-    glBindVertexArray(vao);
-
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < App->model->meshes.size(); ++i)
     {
-        if (i == 0)
-            glBindTexture(GL_TEXTURE_2D, baboon);
-        else
-            glBindTexture(GL_TEXTURE_2D, iobamium);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
+        App->model->meshes[i]->Draw(App->model->textures);
     }
+
+
+    //glBindVertexArray(vao);
+    //
+    //for (int i = 0; i < 2; ++i)
+    //{
+    //    if (i == 0)
+    //        glBindTexture(GL_TEXTURE_2D, baboon);
+    //    else
+    //        glBindTexture(GL_TEXTURE_2D, iobamium);
+    //
+    //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
+    //}
   
     return UPDATE_CONTINUE;
 }
@@ -104,9 +111,9 @@ bool ModuleRenderExercise::CleanUp()
 {
     bool ret = true;
 
-    DestroyVAO(vao);
-    DestroyVBO(vbo);
-    DestroyEBO(ebo);
+    //DestroyVAO(vao);
+    //DestroyVBO(vbo);
+    //DestroyEBO(ebo);
 
     return ret;
 }
@@ -126,9 +133,9 @@ unsigned ModuleRenderExercise::CreateTexture(const char* path)
     int internalFormat;
     GLenum type;
 
-    DirectX::ScratchImage baboon = App->texture->LoadTexture(path);
+    DirectX::ScratchImage image = App->texture->LoadTexture(path);
 
-    switch (baboon.GetMetadata().format)
+    switch (image.GetMetadata().format)
     {
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
     case DXGI_FORMAT_R8G8B8A8_UNORM:
@@ -152,16 +159,16 @@ unsigned ModuleRenderExercise::CreateTexture(const char* path)
     }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, baboon.GetMetadata().mipLevels - 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, image.GetMetadata().mipLevels - 1);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, baboon.GetMetadata().width, baboon.GetMetadata().height, 0, format, type, baboon.GetPixels());
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.GetMetadata().width, image.GetMetadata().height, 0, format, type, image.GetPixels());
 
     //TODO Handle if Texture has mipmaps
-    if ((baboon.GetMetadata().mipLevels > 0) - 1)
+    if ((image.GetMetadata().mipLevels > 0) - 1)
     {
-        for (size_t i = 0; i < baboon.GetMetadata().mipLevels; ++i)
+        for (size_t i = 0; i < image.GetMetadata().mipLevels; ++i)
         {
-            const DirectX::Image* mip = baboon.GetImage(i, 0, 0);
+            const DirectX::Image* mip = image.GetImage(i, 0, 0);
             glTexImage2D(GL_TEXTURE_2D, i, internalFormat, mip->width, mip->height, 0, format, type, mip->pixels);
         }
     }
