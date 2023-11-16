@@ -128,29 +128,28 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         glUnmapBuffer(GL_ARRAY_BUFFER);
     }
 
-    //if (itTexCoord != primitive.attributes.end())
-    //{
-    //    const tinygltf::Accessor& texCoordAcc = model.accessors[itTexCoord->second];
-    //    assert(texCoordAcc.type == TINYGLTF_TYPE_VEC2);
-    //    assert(texCoordAcc.componentType == GL_FLOAT);
-    //    const tinygltf::BufferView& texCoordBufferView = model.bufferViews[texCoordAcc.bufferView];
-    //    const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordBufferView.buffer];
-    //
-    //    const float2* bufferTexCoord = reinterpret_cast<const float2*>(&texCoordBuffer.data[texCoordBufferView.byteOffset + texCoordAcc.byteOffset]);
-    //
-    //    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    //    glBufferData(GL_ARRAY_BUFFER, texCoordBufferView.byteLength, nullptr, GL_STATIC_DRAW);
-    //    float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-    //
-    //    for (unsigned i = 0; i < texCoordAcc.count; ++i)
-    //    {
-    //        ptr[i] = bufferTexCoord[i];
-    //        bufferTexCoord += texCoordBufferView.byteStride;
-    //
-    //        LOG("(%f,%f)", ptr[i].x, ptr[i].y);
-    //    }
-    //    glUnmapBuffer(GL_ARRAY_BUFFER);
-    //}
+    if (itTexCoord != primitive.attributes.end())
+    {
+        const tinygltf::Accessor& texCoordAcc = model.accessors[itTexCoord->second];
+        assert(texCoordAcc.type == TINYGLTF_TYPE_VEC2);
+        assert(texCoordAcc.componentType == GL_FLOAT);
+        const tinygltf::BufferView& texCoordBufferView = model.bufferViews[texCoordAcc.bufferView];
+        const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordBufferView.buffer];
+    
+        const float2* bufferTexCoord = reinterpret_cast<const float2*>(&texCoordBuffer.data[texCoordBufferView.byteOffset + texCoordAcc.byteOffset]);
+    
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, texCoordBufferView.byteLength, nullptr, GL_STATIC_DRAW);
+        float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+    
+        for (unsigned i = 0; i < texCoordAcc.count; ++i)
+        {
+            ptr[i] = bufferTexCoord[i];
+           
+            LOG("(%f,%f)", ptr[i].x, ptr[i].y);
+        }
+        glUnmapBuffer(GL_ARRAY_BUFFER);
+    }
 }
 
 
@@ -197,9 +196,10 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
     }
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 * numVert, (void*)0);
     glEnableVertexAttribArray(0);
-
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 * numVert, (void*) (sizeof(float) * 3));
+    glEnableVertexAttribArray(2);
 }
 
 void Mesh::CreateVAO()
