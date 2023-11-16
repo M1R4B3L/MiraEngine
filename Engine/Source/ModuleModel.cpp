@@ -30,7 +30,7 @@ bool ModuleModel::Init()
 {
     bool ret = true;
 
-    LoadModel("Models/Box/Box.gltf");
+    LoadModel("Models/BoxTextured/BoxTextured.gltf");
     return ret;
 }
 
@@ -85,7 +85,7 @@ void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel)
         {
             const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
             const tinygltf::Image& image = srcModel.images[texture.source];
-            std::string temp = "Models/BakerHouse/";
+            std::string temp = "Models/BoxTextured/";
             temp = temp + image.uri.c_str();
             textureId = App->renderExercise->CreateTexture(temp.c_str());
         }
@@ -123,7 +123,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
             ptr[i] = bufferPos[i];
             //bufferPos += posBufferView.byteStride * 3;
 
-            LOG("(%f,%f,%f)", ptr[i].x, ptr[i].y, ptr[i].z);
+            LOG("N:%u (%f,%f,%f)", i, ptr[i].x, ptr[i].y, ptr[i].z);
         }
         glUnmapBuffer(GL_ARRAY_BUFFER);
     }
@@ -196,9 +196,9 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
     }
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 * numVert, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);                               //Positions stored Separated (Continuous) start at 0
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 * numVert, (void*) (sizeof(float) * 3));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVert ));  //TexCoord stored Separated (Continuous) start at float3 * vertices count
     glEnableVertexAttribArray(2);
 }
 
