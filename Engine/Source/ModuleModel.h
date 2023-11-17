@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Module.h"
+#include "Math/float3.h"
 
 namespace tinygltf
 {
@@ -9,15 +10,19 @@ namespace tinygltf
 	struct Primitive;
 }
 
-
 struct Mesh
 {
+
 	unsigned vbo;
 	unsigned ebo;
 	unsigned mat;
 
 	unsigned numVert = 0;
 	unsigned numInd = 0;
+
+	const float* bufferPos = nullptr;
+	const float* bufferTexCoord = nullptr;
+	unsigned buffSize = 0;
 
 	void CreateVAO();
 	void Draw(const std::vector<unsigned>& textures);
@@ -39,7 +44,6 @@ class ModuleModel : public Module
 	void LoadMaterials(const tinygltf::Model& srcModel);
 
 	unsigned vao;
-
 	std::vector<unsigned> textures;
 	std::vector<Mesh*> meshes;
 };

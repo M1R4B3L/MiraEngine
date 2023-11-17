@@ -50,12 +50,17 @@ bool ModuleOpenGL::Init()
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
 #endif
 
+	glEnable(GL_DEPTH_TEST); // Enable depth test
+	glEnable(GL_CULL_FACE); // Enable cull backward faces
+	glFrontFace(GL_CCW); // Front faces will be counter clockwise
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	return true;
 }
 
 update_status ModuleOpenGL::PreUpdate()
 {
-
 	//Need to be changed for different shder passes.
 	glEnable(GL_DEPTH_TEST); // Enable depth test
 	glEnable(GL_CULL_FACE); // Enable cull backward faces

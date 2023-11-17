@@ -30,7 +30,7 @@ bool ModuleModel::Init()
 {
     bool ret = true;
 
-    LoadModel("Models/BoxTextured/BoxTextured.gltf");
+    LoadModel("Models/BakerHouse/BakerHouse.gltf");
     return ret;
 }
 
@@ -41,6 +41,14 @@ update_status ModuleModel::Update()
 
 bool ModuleModel::CleanUp()
 {
+    glDeleteVertexArrays(1, &vao);
+
+    for (int i = 0; i < App->model->meshes.size(); ++i)
+    {
+        glDeleteBuffers(1, &meshes[i]->vbo);
+        glDeleteBuffers(1, &meshes[i]->ebo);
+    }
+
     return true;
 }
 
@@ -59,7 +67,7 @@ void ModuleModel::LoadModel(const char* path)
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            Mesh* mesh = new Mesh;
+            Mesh* mesh = new Mesh();
             mesh->CreateVAO();
             mesh->LoadMesh(model, srcMesh, primitive);
             mesh->LoadEBO(model, srcMesh, primitive);
@@ -69,11 +77,6 @@ void ModuleModel::LoadModel(const char* path)
 
     if(model.materials.size() > 0)
         LoadMaterials(model);
-
-    glBindVertexArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel)
@@ -85,7 +88,7 @@ void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel)
         {
             const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
             const tinygltf::Image& image = srcModel.images[texture.source];
-            std::string temp = "Models/BoxTextured/";
+            std::string temp = "Models/BakerHouse/";
             temp = temp + image.uri.c_str();
             textureId = App->renderExercise->CreateTexture(temp.c_str());
         }
@@ -100,8 +103,6 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
     const auto& itTang = primitive.attributes.find("TANGENT");
     const auto& itTexCoord = primitive.attributes.find("TEXCOORD_0");
 
-    glGenBuffers(1, &vbo);
-
     if (itPos != primitive.attributes.end())
     {
         const tinygltf::Accessor& posAcc = model.accessors[itPos->second];
@@ -112,20 +113,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
 
         numVert = posAcc.count;
 
-        const float3* bufferPos = reinterpret_cast<const float3*>(&posBuffer.data[posBufferView.byteOffset + posAcc.byteOffset]);
-
-        glBindBuffer(GL_ARRAY_BUFFER,vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * numVert, nullptr, GL_STATIC_DRAW);
-        float3* ptr = reinterpret_cast<float3*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-
-        for (unsigned i = 0; i < numVert; ++i)
-        {
-            ptr[i] = bufferPos[i];
-            //bufferPos += posBufferView.byteStride * 3;
-
-            LOG("N:%u (%f,%f,%f)", i, ptr[i].x, ptr[i].y, ptr[i].z);
-        }
-        glUnmapBuffer(GL_ARRAY_BUFFER);
+        bufferPos = reinterpret_cast<const float*>(&posBuffer.data[posBufferView.byteOffset + posAcc.byteOffset]);  
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -135,21 +123,48 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         assert(texCoordAcc.componentType == GL_FLOAT);
         const tinygltf::BufferView& texCoordBufferView = model.bufferViews[texCoordAcc.bufferView];
         const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordBufferView.buffer];
-    
-        const float2* bufferTexCoord = reinterpret_cast<const float2*>(&texCoordBuffer.data[texCoordBufferView.byteOffset + texCoordAcc.byteOffset]);
-    
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, texCoordBufferView.byteLength, nullptr, GL_STATIC_DRAW);
-        float2* ptr = reinterpret_cast<float2*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-    
-        for (unsigned i = 0; i < texCoordAcc.count; ++i)
-        {
-            ptr[i] = bufferTexCoord[i];
-           
-            LOG("(%f,%f)", ptr[i].x, ptr[i].y);
-        }
-        glUnmapBuffer(GL_ARRAY_BUFFER);
+
+        bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordBufferView.byteOffset + texCoordAcc.byteOffset]);
     }
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);   
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    if (bufferPos != nullptr)
+    {
+        buffSize = sizeof(float) * 3 * numVert;
+    }
+    if (bufferTexCoord != nullptr)
+    {
+        buffSize = (sizeof(float) * 3 + sizeof(float) * 2) * numVert;
+    }
+
+    glBufferData(GL_ARRAY_BUFFER, buffSize, nullptr, GL_STATIC_DRAW);
+    float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+    for (size_t i = 0; i < numVert * 5; i += 5)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            ptr[i + j] = *(bufferPos);
+            LOG("Pos %f", ptr[i + j]);
+            ++bufferPos;
+        }
+
+        if (bufferTexCoord != nullptr)
+        {
+            for (int j = 3; j < 5; ++j)
+            {
+                ptr[i + j] = *(bufferTexCoord);
+                LOG("Tc %f", ptr[i + j]);
+                ++bufferTexCoord;
+            }
+        }
+    }
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+
 }
 
 
@@ -163,8 +178,6 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 
         numInd = indAcc.count;
 
-        glGenBuffers(1, &ebo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indAcc.count, nullptr, GL_STATIC_DRAW);
         unsigned int* ptr = reinterpret_cast<unsigned int*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 
@@ -174,7 +187,7 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (uint32_t i = 0; i < indAcc.count; ++i)
                 ptr[i] = bufferInd[i];
         }
-        /* TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT*/
+        // TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
         {
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
@@ -182,10 +195,9 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             {
                 ptr[i] = bufferInd[i];
                 LOG("%u", bufferInd[i]);
-            }
-             
+            }          
         }
-        /* TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE*/
+        //TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
         {
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
@@ -196,10 +208,13 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
     }
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);                               //Positions stored Separated (Continuous) start at 0
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVert ));  //TexCoord stored Separated (Continuous) start at float3 * vertices count
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
+
+
+    glBindVertexArray(0);
 }
 
 void Mesh::CreateVAO()
@@ -210,13 +225,15 @@ void Mesh::CreateVAO()
 
 void Mesh::Draw(const std::vector<unsigned>& textures)
 {
+    glBindVertexArray(App->model->vao);
+
     glUseProgram(App->program->programId);
     if (!textures.empty())
     {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textures[0]);
     }
-    glBindVertexArray(App->model->vao);
+ 
     if(numInd > 0)
         glDrawElements(GL_TRIANGLES, numInd, GL_UNSIGNED_INT, nullptr);
     else

@@ -61,28 +61,28 @@ update_status ModuleEditor::Update()
 
     static bool docking = true;
     
-    if (CreateDockWindow("Root Window", true, ImGuiWindowFlags_MenuBar))
-    {
-        //TODO Change to handle if is active
-      
-        bool draw = true;
-        for (unsigned i = 0; i < editorPanels.size(); ++i)
-        {
-            if (editorPanels[i]->IsOpen())
-            {
-                draw = editorPanels[i]->Draw();
-
-                if (!draw)
-                {
-                    ret = update_status::UPDATE_STOP;
-                    LOG("[EDITOR] Exited through %s Panel", editorPanels[i]->GetName());
-                    break;
-                }
-            }
-        }
-
-        ImGui::End();
-    }
+    //if (CreateDockWindow("Root Window", true, ImGuiWindowFlags_MenuBar))
+    //{
+    //    //TODO Change to handle if is active
+    //  
+    //    bool draw = true;
+    //    for (unsigned i = 0; i < editorPanels.size(); ++i)
+    //    {
+    //        if (editorPanels[i]->IsOpen())
+    //        {
+    //            draw = editorPanels[i]->Draw();
+    //
+    //            if (!draw)
+    //            {
+    //                ret = update_status::UPDATE_STOP;
+    //                LOG("[EDITOR] Exited through %s Panel", editorPanels[i]->GetName());
+    //                break;
+    //            }
+    //        }
+    //    }
+    //
+    //    ImGui::End();
+    //}
 
     //ImGui::ShowDemoWindow();
 
