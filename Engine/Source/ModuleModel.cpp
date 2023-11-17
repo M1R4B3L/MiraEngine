@@ -144,6 +144,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
     glBufferData(GL_ARRAY_BUFFER, buffSize, nullptr, GL_STATIC_DRAW);
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
+    //Position(float3) + TexCoords(float2) 
     for (size_t i = 0; i < numVert * 5; i += 5)
     {
         for (int j = 0; j < 3; ++j)
