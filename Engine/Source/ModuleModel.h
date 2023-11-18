@@ -22,6 +22,7 @@ struct Mesh
 
 	const float* bufferPos = nullptr;
 	const float* bufferTexCoord = nullptr;
+	const float* bufferNorm = nullptr;
 	unsigned buffSize = 0;
 
 	void CreateVAO();

@@ -28,14 +28,14 @@ public:
 
 	float4x4 GetProjectionMatrix() const;
 	float4x4 GetViewMatrix() const; 
-	float4x4 LookAtMatrix(float3 pos, float3 forward, float3 up);
 
-	void RecalculateMatrices(float3 newPos, float4x4& proj, float4x4& view) ;
+	float4x4 LookAtMatrix(float3 pos, float3 forward, float3 up);
+	void UpdateFrustumVectors();
+
 
 	void Rotate();
 	void PanCamera();
 	void Move();
-
 
 public:
 	Frustum frustum;
@@ -45,7 +45,11 @@ private:
 	float4x4 view;
 	float4x4 projection;
 
-	float cameraSpeed = 2.0f;
+	float cameraSpeed = 2.0f;	
 	
+	float2 lastMousePos;
+
+	float yaw;
+	float pitch;
 };
 

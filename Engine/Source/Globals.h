@@ -15,7 +15,6 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH 640 //1280	
 #define SCREEN_HEIGHT 480 //720
-#define SCREEN_SIZE 1
 #define MAX_KEYBOARD_BUTTONS 300
 #define MAX_MOUSE_BUTTONS 300
 #define FULLSCREEN false

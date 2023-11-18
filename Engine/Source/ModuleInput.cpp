@@ -57,7 +57,7 @@ update_status ModuleInput::PreUpdate()
 		}
 	}
 
-	//Uint32 buttons = SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	//Uint32 buttons = SDL_GetMouseState((int*)&mousePos.x, (int*)&mousePos.y);
 
 	for (int i = 0; i < MAX_MOUSE_BUTTONS; ++i)
 	{
@@ -91,11 +91,11 @@ update_status ModuleInput::PreUpdate()
 				mouseButtons[sdlEvent.button.button - 1] = KEY_UP;
 				break;
 			case SDL_MOUSEMOTION:
-				mouseMotion.x = sdlEvent.motion.xrel / SCREEN_SIZE;
-				mouseMotion.y = sdlEvent.motion.yrel / SCREEN_SIZE;
-				mousePos.x = sdlEvent.motion.x / SCREEN_SIZE;
-				mousePos.y = sdlEvent.motion.y / SCREEN_SIZE;
-				//LOG("%u %u %u %u", mouseMotionX, mouseMotionY, mouseX, mouseY);
+				mouseMotion.x = sdlEvent.motion.xrel;
+				mouseMotion.y = sdlEvent.motion.yrel;
+				mousePos.x = sdlEvent.motion.x;
+				mousePos.y = sdlEvent.motion.y;
+				//LOG("%f %f %f %f", mouseMotion.x, mouseMotion.y, mousePos.x, mousePos.y);
 				break;
         }
     }

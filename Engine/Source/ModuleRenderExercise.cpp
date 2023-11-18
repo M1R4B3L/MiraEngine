@@ -26,7 +26,7 @@ bool ModuleRenderExercise::Init()
 
     model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f),
         float4x4::RotateZ(0.0f),
-        float3(10.0f));
+        float3(100.0f));
 
     float vertexData[] = { -1.0f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
                            -1.0f, -1.0f, 0.0f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
@@ -54,9 +54,9 @@ bool ModuleRenderExercise::Init()
     
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
     glEnableVertexAttribArray(2);
     
     glActiveTexture(GL_TEXTURE0);
@@ -91,18 +91,17 @@ update_status ModuleRenderExercise::Update()
         App->model->meshes[i]->Draw(App->model->textures);
     }
 
-
-    glBindVertexArray(vao);
-    
-    for (int i = 0; i < 2; ++i)
-    {
-        if (i == 0)
-            glBindTexture(GL_TEXTURE_2D, baboon);
-        else
-            glBindTexture(GL_TEXTURE_2D, iobamium);
-    
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
-    }
+    //glBindVertexArray(vao);
+    //
+    //for (int i = 0; i < 2; ++i)
+    //{
+    //    if (i == 0)
+    //        glBindTexture(GL_TEXTURE_2D, baboon);
+    //    else
+    //        glBindTexture(GL_TEXTURE_2D, iobamium);
+    //
+    //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
+    //}
   
     return UPDATE_CONTINUE;
 }

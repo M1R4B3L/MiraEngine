@@ -127,6 +127,17 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordBufferView.byteOffset + texCoordAcc.byteOffset]);
     }
 
+    if (itNorm != primitive.attributes.end())
+    {
+        const tinygltf::Accessor& normAcc = model.accessors[itNorm->second];
+        assert(normAcc.type == TINYGLTF_TYPE_VEC3);
+        assert(normAcc.componentType == GL_FLOAT);
+        const tinygltf::BufferView& normBufferView = model.bufferViews[normAcc.bufferView];
+        const tinygltf::Buffer& normBuffer = model.buffers[normBufferView.buffer];
+
+        bufferNorm = reinterpret_cast<const float*>(&normBuffer.data[normBufferView.byteOffset + normAcc.byteOffset]);
+    }
+
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);   
     glGenBuffers(1, &ebo);
@@ -134,35 +145,55 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
 
     if (bufferPos != nullptr)
     {
-        buffSize = sizeof(float) * 3 * numVert;
+        buffSize = sizeof(float) * 3;
+    }
+    if (bufferNorm != nullptr)
+    {
+        buffSize += sizeof(float) * 3;
     }
     if (bufferTexCoord != nullptr)
     {
-        buffSize = (sizeof(float) * 3 + sizeof(float) * 2) * numVert;
-    }
+        buffSize += sizeof(float) * 2;
+    }    
+
+    buffSize *= numVert;
+
 
     glBufferData(GL_ARRAY_BUFFER, buffSize, nullptr, GL_STATIC_DRAW);
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
     //Position(float3) + TexCoords(float2) 
-    for (size_t i = 0; i < numVert * 5; i += 5)
+    for (size_t i = 0; i < numVert; ++i)
     {
         for (int j = 0; j < 3; ++j)
         {
-            ptr[i + j] = *(bufferPos);
-            LOG("Pos %f", ptr[i + j]);
+            *(ptr)= *(bufferPos);
+            LOG("Pos %f", *(ptr));
             ++bufferPos;
+            ++ptr;
+        }
+
+        if (bufferNorm != nullptr)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                *(ptr) = *(bufferNorm);
+                LOG("N %f", *(ptr));
+                ++bufferNorm;
+                ++ptr;
+            }
         }
 
         if (bufferTexCoord != nullptr)
         {
-            for (int j = 3; j < 5; ++j)
+            for (int j = 0; j < 2; ++j)
             {
-                ptr[i + j] = *(bufferTexCoord);
-                LOG("Tc %f", ptr[i + j]);
+                *(ptr) = *(bufferTexCoord);
+                LOG("Tc %f", *(ptr));
                 ++bufferTexCoord;
+                ++ptr;
             }
-        }
+        }     
     }
     glUnmapBuffer(GL_ARRAY_BUFFER);
 
@@ -210,10 +241,11 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
     }
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
-
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 6));
 
     glBindVertexArray(0);
 }

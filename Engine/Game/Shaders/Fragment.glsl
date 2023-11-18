@@ -10,5 +10,5 @@ layout(binding=0) uniform sampler2D oTexture;
 void main()
 {
 	//fragColor = oColor;
-	fragColor = texture2D(oTexture, texCoord);// * oColor;
+	fragColor = texture2D(oTexture, texCoord); //* oColor;
 }
