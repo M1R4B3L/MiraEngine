@@ -2,6 +2,7 @@
 #include "Module.h"
 
 #include "Math/float4x4.h"
+#include "Math/float3.h"
 
 class ModuleRenderExercise : public Module
 {
@@ -34,6 +35,6 @@ private:
 
 public:
 	float4x4 model;
-
+	float3 lightDir;
 };
 

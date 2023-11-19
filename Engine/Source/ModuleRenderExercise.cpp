@@ -42,6 +42,8 @@ bool ModuleRenderExercise::Init()
         0,3,2
     };
 
+    lightDir = float3(1.0f).Normalized();
+
     baboon = CreateTexture("Textures/Baboon.tga");
     iobamium = CreateTexture("Textures/iobamium.png");
     //
@@ -163,7 +165,7 @@ unsigned ModuleRenderExercise::CreateTexture(const char* path)
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.GetMetadata().width, image.GetMetadata().height, 0, format, type, image.GetPixels());
 
     //TODO Handle if Texture has mipmaps
-    if ((image.GetMetadata().mipLevels > 0) - 1)
+    if ((image.GetMetadata().mipLevels > -1))
     {
         for (size_t i = 0; i < image.GetMetadata().mipLevels; ++i)
         {
