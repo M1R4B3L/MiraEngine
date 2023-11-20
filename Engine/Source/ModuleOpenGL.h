@@ -17,7 +17,9 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
+
 	void WindowResized(unsigned width, unsigned height);
+	void WindowSizeChanged(unsigned width, unsigned height);
 	
 	void* GetContext() { return context; }
 

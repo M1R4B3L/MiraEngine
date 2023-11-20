@@ -89,15 +89,21 @@ const int ModuleWindow::GetHeight() const
 	return windowSize.y;
 }
 
+void ModuleWindow::SetWindowSize(float2 winSize)
+{
+	windowSize = winSize;
+	App->render->WindowSizeChanged(windowSize.x, windowSize.y);
+}
+
 void ModuleWindow::SetWidth(int width)
 {
-	windowSize.x = width; 
-	//SDL_SetWindowSize(window, windowSize.x, windowSize.y);
+	windowSize.x = width;
+	App->render->WindowSizeChanged(windowSize.x, windowSize.y);
 }
 
 void ModuleWindow::SetHeight(int height)
 {	
 	windowSize.y = height; 
-	//SDL_SetWindowSize(window, windowSize.x, windowSize.y);
+	App->render->WindowSizeChanged(windowSize.x, windowSize.y);
 }
 

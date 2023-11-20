@@ -31,12 +31,11 @@ public:
 	float4x4 GetViewMatrix() const; 
 
 	float4x4 LookAtMatrix(float3 pos, float3 forward, float3 up);
-	void UpdateFrustumVectors();
-
 
 	void Rotate();
 	void PanCamera();
 	void Move();
+	void Zoom();
 
 public:
 	Frustum frustum;
@@ -49,8 +48,5 @@ private:
 	float cameraSpeed = 2.0f;	
 	
 	float2 lastMousePos;
-
-	float yaw;
-	float pitch;
 };
 

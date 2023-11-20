@@ -24,6 +24,7 @@ public:
 	const int GetWidth() const;
 	const int GetHeight() const; 
 
+	void SetWindowSize(float2 winSize);
 	void SetWidth(int width); 
 	void SetHeight(int height);
 

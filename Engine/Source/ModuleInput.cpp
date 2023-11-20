@@ -68,6 +68,7 @@ update_status ModuleInput::PreUpdate()
 	}
 
 	mouseMotion = float2::zero;
+	yWheel = 0;
 
 	static int id;
     SDL_Event sdlEvent;
@@ -79,13 +80,8 @@ update_status ModuleInput::PreUpdate()
             case SDL_QUIT:
                 return UPDATE_STOP;
             case SDL_WINDOWEVENT:
-				id = sdlEvent.window.windowID;
-				if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED && id == 1)
-				{
-					//TODO RESIZE WINDOW
-				}
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED)
-                    App->render->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+				if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED)
+					App->render->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
                     return UPDATE_STOP;
                 break;
@@ -104,10 +100,9 @@ update_status ModuleInput::PreUpdate()
 				break;
 			case SDL_MOUSEWHEEL:
 				yWheel = sdlEvent.wheel.y;
+				break;
         }
     }
-
-
 
     return UPDATE_CONTINUE;
 }

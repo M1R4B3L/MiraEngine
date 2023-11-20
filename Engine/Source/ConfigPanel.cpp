@@ -27,11 +27,15 @@ bool ConfigPanel::Draw(int windowFlags)
 			static int width = App->window->GetWidth();
 			static int height = App->window->GetHeight();
 
-			ImGui::DragInt("Width", &width, 1, 640, 3840, "%d", ImGuiSliderFlags_AlwaysClamp);
-			ImGui::DragInt("Height", &height, 1, 480, 2160, "%d", ImGuiSliderFlags_AlwaysClamp);
+			if (ImGui::DragInt("Width", &width, 1, 640, 3840, "%d"))
+			{
+				App->window->SetWidth(width);
+			}
+			if (ImGui::DragInt("Height", &height, 1, 480, 2160, "%d"))
+			{
+				App->window->SetHeight(height);
+			}
 
-			App->window->SetWidth(width);
-			App->window->SetHeight(height);
 		}
 	}
 	ImGui::End();

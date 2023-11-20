@@ -36,9 +36,6 @@ bool ModuleCamera::Init()
     lastMousePos.x = SCREEN_WIDTH / 2;
     lastMousePos.y = SCREEN_HEIGHT / 2;
 
-    yaw = -90;
-    pitch = 0;
-
     return ret;
 }
 
@@ -47,8 +44,7 @@ update_status ModuleCamera::Update()
     Move();
     PanCamera();
     Rotate();
-
-    SetFOV(90.0);
+    Zoom();
 
     view = LookAtMatrix(frustum.pos, frustum.pos + frustum.front, frustum.up).Inverted();
 
@@ -103,18 +99,6 @@ float4x4 ModuleCamera::LookAtMatrix(float3 pos, float3 target, float3 up)
     return cameraMatrix;
 }
 
-void ModuleCamera::UpdateFrustumVectors()
-{
-    frustum.front.x = math::Cos(math::DegToRad(yaw)) * math::Cos(math::DegToRad(pitch));
-    frustum.front.y = math::Sin(math::DegToRad(pitch));
-    frustum.front.z = math::Sin(math::DegToRad(yaw)) * math::Cos(math::DegToRad(pitch));
-
-    frustum.front = frustum.front.Normalized();
-    float3 right = frustum.front.Cross(float3::unitY).Normalized();
-    frustum.up = right.Cross(frustum.front).Normalized();
-}
-
-
 void ModuleCamera::Rotate()
 {
     int dx = -App->input->mouseMotion.x;
@@ -125,30 +109,24 @@ void ModuleCamera::Rotate()
     {
         if (dx != 0)
         {       
-            //float deltaX = App->input->mousePos.x - lastMousePos.x;
-            //float3x3 rotationDeltaMatrix = float3x3::RotateY(math::DegToRad(-(deltaX * sens))); // = some rotation delta value
-            //
-            //float3 oldFront = frustum.front.Normalized();
-            //frustum.front = rotationDeltaMatrix.MulDir(oldFront);
-            //float3 oldUp = frustum.up.Normalized();
-            //frustum.up = rotationDeltaMatrix.MulDir(oldUp);
-
             float deltaX = App->input->mousePos.x - lastMousePos.x;
-            deltaX *= sens;
-            yaw += deltaX;
-
+            float3x3 rotationMatrix = float3x3::RotateY(math::DegToRad(-(deltaX * sens))); 
+            
+            float3 oldFront = frustum.front.Normalized();
+            frustum.front = rotationMatrix.MulDir(oldFront);
+            float3 oldUp = frustum.up.Normalized();
+            frustum.up = rotationMatrix.MulDir(oldUp);
         }
         if (dy != 0)
         {
-            float deltaY = lastMousePos.y - App->input->mousePos.y;
-            deltaY *= sens;
-            pitch += deltaY;
-            
+            float deltaY = App->input->mousePos.y - lastMousePos.y;
+            float3x3 rotationMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-(deltaY * sens))); 
+
+            float3 oldFront = frustum.front.Normalized();
+            frustum.front = rotationMatrix.MulDir(oldFront);
+            float3 oldUp = frustum.up.Normalized();
+            frustum.up = rotationMatrix.MulDir(oldUp);           
         }
-
-        UpdateFrustumVectors();
-
-        view = LookAtMatrix(frustum.pos, frustum.front.Normalized(), frustum.up.Normalized()).Inverted();
     }
 
     lastMousePos.x = App->input->mousePos.x;
@@ -207,6 +185,24 @@ void ModuleCamera::Move()
     if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
     {
         cameraPos += frustum.up * (cameraSpeed * deltaTime);
+    }
+
+    frustum.pos = cameraPos;
+}
+
+void ModuleCamera::Zoom()
+{
+    float deltaTime = 0.02;
+
+    float3 cameraPos = frustum.pos;
+
+    if (App->input->yWheel > 0)
+    {
+        cameraPos += frustum.front * (cameraSpeed * deltaTime);
+    }
+    if (App->input->yWheel < 0)
+    {
+        cameraPos -= frustum.front * (cameraSpeed * deltaTime);
     }
 
     frustum.pos = cameraPos;
