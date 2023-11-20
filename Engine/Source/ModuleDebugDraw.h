@@ -1,5 +1,4 @@
-#ifndef _MODULE_DEBUGDRAW_H_
-#define _MODULE_DEBUGDRAW_H_
+#pragma once
 
 #include "Module.h"
 
@@ -26,4 +25,4 @@ private:
     static DDRenderInterfaceCoreGL* implementation;
 };
 
-#endif /* _MODULE_DEBUGDRAW_H_ */
+

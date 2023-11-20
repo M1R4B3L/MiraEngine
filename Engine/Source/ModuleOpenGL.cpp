@@ -102,6 +102,7 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 	App->window->SetHeight(height);
 
 	//TODO Handle FOV modification
+	App->camera->SetAspectRatio((float)width/(float)height);
 }
 
 void GLAPIENTRY OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
@@ -132,5 +133,5 @@ void GLAPIENTRY OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenu
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	//LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }

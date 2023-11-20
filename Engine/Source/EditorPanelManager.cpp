@@ -38,24 +38,27 @@ bool EditorPanelManager::IsHovered() const
     return hovered;
 }
 
-bool EditorPanelManager::isSelected() const
+bool EditorPanelManager::IsSelected() const
 {
     return selected;
 }
-void 
-EditorPanelManager::OpenWindow()
+
+bool EditorPanelManager::Open()
 {
-    if (!open)
+    if (open == false)
     {
         open = true;
     }
+
+	return open;
 }
 
-void EditorPanelManager::CloseWindow()
+bool EditorPanelManager::Close()
 {
-    if (open)
+    if (open == true)
     {
         open = false;
     }
-}
 
+    return open;
+}

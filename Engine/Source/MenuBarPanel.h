@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EditorPanelManager.h"
 
 class MenuBarPanel : public EditorPanelManager

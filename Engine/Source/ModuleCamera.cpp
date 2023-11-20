@@ -17,7 +17,8 @@ bool ModuleCamera::Init()
 {
     bool ret = true;
 
-    aspectRatio = (float)App->window->GetWidth() / (float)App->window->GetHeight();
+    float2 winSize = App->window->GetWindowSize();
+    aspectRatio = winSize.x / winSize.y;
 
     frustum.type = FrustumType::PerspectiveFrustum;
     frustum.pos = float3(0.0f, 1.0f, 15.0f);
@@ -47,6 +48,8 @@ update_status ModuleCamera::Update()
     PanCamera();
     Rotate();
 
+    SetFOV(90.0);
+
     view = LookAtMatrix(frustum.pos, frustum.pos + frustum.front, frustum.up).Inverted();
 
     return UPDATE_CONTINUE;
@@ -59,14 +62,18 @@ bool ModuleCamera::CleanUp()
 
 void ModuleCamera::SetFOV(float angle)
 {
-    frustum.horizontalFov = angle;
-    frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f) * aspectRatio);
-    
+    frustum.horizontalFov = math::DegToRad(angle);
+    frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f) * (1.0f / aspectRatio));
+
     projection = frustum.ProjectionMatrix();
 }
 
 void ModuleCamera::SetAspectRatio(float newAspectRatio)
 {
+    aspectRatio = newAspectRatio;
+    frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f) * (1.0f / aspectRatio));
+
+    projection = frustum.ProjectionMatrix();
 }
 
 float4x4 ModuleCamera::GetProjectionMatrix() const
@@ -103,8 +110,8 @@ void ModuleCamera::UpdateFrustumVectors()
     frustum.front.z = math::Sin(math::DegToRad(yaw)) * math::Cos(math::DegToRad(pitch));
 
     frustum.front = frustum.front.Normalized();
-    frustum.WorldRight() = frustum.front.Cross(float3::unitY).Normalized(); 
-    frustum.up = frustum.WorldRight().Cross(frustum.front).Normalized();
+    float3 right = frustum.front.Cross(float3::unitY).Normalized();
+    frustum.up = right.Cross(frustum.front).Normalized();
 }
 
 
@@ -150,29 +157,23 @@ void ModuleCamera::Rotate()
 
 void ModuleCamera::PanCamera()
 {
-    float3 newPos = float3::zero;
-    float3 x_pos = float3::zero;
-    float3 y_pos = float3::zero;
-    
-    float speed = 2.0f * 0.02f;
+    float deltaTime = 0.02;
+    float3 cameraPos = frustum.pos;
     
     if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
-    {
-    
+    {  
         if (App->input->mouseMotion.x != 0)
         {
-            x_pos = -App->input->mouseMotion.x * frustum.WorldRight() * speed;
+            cameraPos -= App->input->mouseMotion.x * frustum.WorldRight() * (cameraSpeed * deltaTime);
         }
     
         if (App->input->mouseMotion.y != 0)
         {
-            y_pos = App->input->mouseMotion.y * frustum.up * speed;
+            cameraPos += App->input->mouseMotion.y * frustum.up * (cameraSpeed * deltaTime);
         }
     }
     
-    newPos = x_pos + y_pos;
-    
-    frustum.pos = frustum.pos + newPos;
+    frustum.pos = cameraPos;
 }
 
 void ModuleCamera::Move()

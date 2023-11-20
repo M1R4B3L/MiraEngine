@@ -4,8 +4,8 @@
 
 ModuleWindow::ModuleWindow()
 {
-	width = SCREEN_WIDTH;
-	height = SCREEN_HEIGHT;
+	windowSize.x = SCREEN_WIDTH;
+	windowSize.y = SCREEN_HEIGHT;
 }
 
 // Destructor
@@ -34,7 +34,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowSize.x, windowSize.y, flags);
 
 		if(window == NULL)
 		{
@@ -66,5 +66,35 @@ bool ModuleWindow::CleanUp()
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
+}
+
+SDL_Window* ModuleWindow::GetWindow()
+{
+	return window;
+}
+
+const float2 ModuleWindow::GetWindowSize() const
+{
+	return windowSize;
+}
+
+const int ModuleWindow::GetWidth() const
+{
+	return windowSize.x;
+}
+
+const int ModuleWindow::GetHeight() const
+{
+	return windowSize.y;
+}
+
+void ModuleWindow::SetWidth(int width)
+{
+	windowSize.x = width; 
+}
+
+void ModuleWindow::SetHeight(int height)
+{
+	windowSize.y = height; 
 }
 

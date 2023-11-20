@@ -4,7 +4,7 @@
 
 #include "imgui.h"
 
-AboutPanel::AboutPanel() : EditorPanelManager("About", false)
+AboutPanel::AboutPanel() : EditorPanelManager("About##", false)
 {
 }
 
@@ -17,11 +17,8 @@ bool AboutPanel::Draw(int windowFlags)
 	bool ret = true;
 
 	if (ImGui::Begin(GetName(), &open, windowFlags))
-	{
-		if (!open)
-			CloseWindow();
-
-
+	{		
+		ImGui::Text("Nabo");
 	}
 	ImGui::End();
 

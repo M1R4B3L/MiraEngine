@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Module.h"
 #include "Globals.h"
 
@@ -39,4 +40,5 @@ public:
 
 	float2 mouseMotion;
 	float2 mousePos;
+	float yWheel;
 };

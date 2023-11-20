@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdio.h>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
@@ -16,7 +17,7 @@ enum update_status
 #define SCREEN_WIDTH 640 //1280	
 #define SCREEN_HEIGHT 480 //720
 #define MAX_KEYBOARD_BUTTONS 300
-#define MAX_MOUSE_BUTTONS 300
+#define MAX_MOUSE_BUTTONS 5
 #define FULLSCREEN false
 #define VSYNC false
 #define TITLE "Yes Darling"

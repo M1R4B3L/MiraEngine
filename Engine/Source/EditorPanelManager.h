@@ -12,10 +12,11 @@ public:
 	const char* GetName()const;
 	bool IsOpen()const;
 	bool IsHovered()const;
-	bool isSelected()const;
+	bool IsSelected()const;
 
-	void OpenWindow();
-	void CloseWindow();
+	bool Open();
+	bool Close();
+
 
 	void SetIsHovered();
 	void SetIsSelected();

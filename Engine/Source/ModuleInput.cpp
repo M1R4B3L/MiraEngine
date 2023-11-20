@@ -9,14 +9,13 @@
 ModuleInput::ModuleInput()
 {
 	keyboard = new KeyState[MAX_KEYBOARD_BUTTONS];
-	memset(keyboard, 0, sizeof(KeyState) * MAX_KEYBOARD_BUTTONS);
-
-	memset(mouseButtons, 0, sizeof(KeyState) * MAX_MOUSE_BUTTONS);
 }
 
 // Destructor
 ModuleInput::~ModuleInput()
-{}
+{
+	delete keyboard;
+}
 
 // Called before render is available
 bool ModuleInput::Init()
@@ -97,6 +96,8 @@ update_status ModuleInput::PreUpdate()
 				mousePos.y = sdlEvent.motion.y;
 				//LOG("%f %f %f %f", mouseMotion.x, mouseMotion.y, mousePos.x, mousePos.y);
 				break;
+			case SDL_MOUSEWHEEL:
+				yWheel = sdlEvent.wheel.y;
         }
     }
 

@@ -1,8 +1,9 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#pragma once
 
 #include "Module.h"
 #include "SDL.h"
+
+#include "Math/float2.h"
 
 class Application;
 
@@ -17,20 +18,18 @@ public:
 
 	bool CleanUp() override;
 
-	SDL_Window* GetWindow() { return window; }
+	SDL_Window* GetWindow();
 
-	const int GetWidth() const { return width; }
-	const int GetHeight() const { return height; }
+	const float2 GetWindowSize() const;
+	const int GetWidth() const;
+	const int GetHeight() const; 
 
-	void SetWidth(int _width) { width = _width; }
-	void SetHeight(int _height) { height = _height; }
+	void SetWidth(int width); 
+	void SetHeight(int height);
 
 private:
 	SDL_Window* window = nullptr;
 	SDL_Surface* screen_surface = nullptr;
 
-	int width;
-	int height;
+	float2 windowSize;
 };
-
-#endif // __ModuleWindow_H__

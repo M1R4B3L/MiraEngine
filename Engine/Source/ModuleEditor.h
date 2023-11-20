@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 
 #include "Module.h"
@@ -23,9 +24,12 @@ public:
 
 private:
 
+	void embraceTheDarkness();
 	bool CreateDockWindow(const char* name, bool open, int windowFlags);
 
 public:
+	bool demo;
+
 	std::vector<EditorPanelManager*> editorPanels;
 
 	AboutPanel* about;
