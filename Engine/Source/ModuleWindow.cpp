@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleOpengl.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -91,10 +92,12 @@ const int ModuleWindow::GetHeight() const
 void ModuleWindow::SetWidth(int width)
 {
 	windowSize.x = width; 
+	//SDL_SetWindowSize(window, windowSize.x, windowSize.y);
 }
 
 void ModuleWindow::SetHeight(int height)
-{
+{	
 	windowSize.y = height; 
+	//SDL_SetWindowSize(window, windowSize.x, windowSize.y);
 }
 

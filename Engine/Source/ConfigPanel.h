@@ -3,13 +3,14 @@
 #include "EditorPanelManager.h"
 
 
-class MenuBarPanel : public EditorPanelManager
+class ConfigPanel : public EditorPanelManager
 {
 public:
-	MenuBarPanel();
-	~MenuBarPanel();
+	ConfigPanel();
+	~ConfigPanel();
 
 	bool Draw(int windowFlags) override;
 
+	unsigned flags;
 };
 

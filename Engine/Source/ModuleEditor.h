@@ -11,6 +11,7 @@ class EditorPanelManager;
 
 class AboutPanel;
 class MenuBarPanel;
+class ConfigPanel;
 
 class ModuleEditor : public Module
 {
@@ -25,6 +26,8 @@ public:
 private:
 
 	void embraceTheDarkness();
+	void drakula();
+
 	bool CreateDockWindow(const char* name, bool open, int windowFlags);
 
 public:
@@ -34,8 +37,7 @@ public:
 
 	AboutPanel* about;
 	MenuBarPanel* menuBar;
-
-	bool aboutOpen;
+	ConfigPanel* config;
 
 private:
 	ImGuiIO* io = nullptr;

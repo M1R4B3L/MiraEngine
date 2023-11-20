@@ -69,6 +69,7 @@ update_status ModuleInput::PreUpdate()
 
 	mouseMotion = float2::zero;
 
+	static int id;
     SDL_Event sdlEvent;
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
@@ -78,7 +79,12 @@ update_status ModuleInput::PreUpdate()
             case SDL_QUIT:
                 return UPDATE_STOP;
             case SDL_WINDOWEVENT:
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED) //|| sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+				id = sdlEvent.window.windowID;
+				if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED && id == 1)
+				{
+					//TODO RESIZE WINDOW
+				}
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED)
                     App->render->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
                     return UPDATE_STOP;

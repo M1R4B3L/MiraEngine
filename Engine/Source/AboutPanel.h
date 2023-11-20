@@ -3,7 +3,6 @@
 #include "EditorPanelManager.h"
 
 
-
 class AboutPanel : public EditorPanelManager
 {
 public: 
