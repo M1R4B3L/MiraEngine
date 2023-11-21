@@ -92,6 +92,15 @@ void ModuleCamera::SetFarPlanePos(float farPos)
     projection = frustum.ProjectionMatrix();
 }
 
+void ModuleCamera::RotateAxisAngle(float3 axis, float angle)
+{
+    float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, math::DegToRad((angle)));
+    float3 oldFront = frustum.front.Normalized();
+    frustum.front = rotationMatrix.MulDir(oldFront);
+    float3 oldUp = frustum.up.Normalized();
+    frustum.up = rotationMatrix.MulDir(oldUp);
+}
+
 void ModuleCamera::LookAt(float3 pos)
 {
     float3 dir = float3(pos - frustum.front).Normalized();

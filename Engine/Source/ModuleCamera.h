@@ -25,6 +25,8 @@ public:
 	void SetNearPlanePos(float near);
 	void SetFarPlanePos(float far);
 
+	void RotateAxisAngle(float3 axis, float angle);
+
 	void LookAt(float3 pos);
 
 	float4x4 GetProjectionMatrix() const;
