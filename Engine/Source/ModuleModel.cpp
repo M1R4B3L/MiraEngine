@@ -139,7 +139,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         assert(normAcc.componentType == GL_FLOAT);
         const tinygltf::BufferView& normBufferView = model.bufferViews[normAcc.bufferView];
         const tinygltf::Buffer& normBuffer = model.buffers[normBufferView.buffer];
-
+        normBufferView.byteStride;
         bufferNorm = reinterpret_cast<const float*>(&normBuffer.data[normBufferView.byteOffset + normAcc.byteOffset]);
     }
 
@@ -161,10 +161,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         buffSize += sizeof(float) * 2;
     }    
 
-    buffSize *= numVert;
-
-
-    glBufferData(GL_ARRAY_BUFFER, buffSize, nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, buffSize * numVert, nullptr, GL_STATIC_DRAW);
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
     //Position(float3) + TexCoords(float2) 
@@ -246,11 +243,11 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
     }
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2, (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 3));
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 3 + sizeof(float) * 3 + sizeof(float) * 2, (void*)(sizeof(float) * 6));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)0);
+    glEnableVertexAttribArray(1);                   
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 3));
+    glEnableVertexAttribArray(2);                   
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 6));
 
     glBindVertexArray(0);
 }
