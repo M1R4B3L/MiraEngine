@@ -36,6 +36,7 @@ public:
 	void PanCamera();
 	void Move();
 	void Zoom();
+	void Orbit();
 
 public:
 	Frustum frustum;

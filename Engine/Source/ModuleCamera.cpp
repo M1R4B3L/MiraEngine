@@ -42,8 +42,8 @@ bool ModuleCamera::Init()
 update_status ModuleCamera::Update()
 {
     Move();
-    PanCamera();
     Rotate();
+    PanCamera();  
     Zoom();
 
     view = LookAtMatrix(frustum.pos, frustum.pos + frustum.front, frustum.up).Inverted();
@@ -70,6 +70,36 @@ void ModuleCamera::SetAspectRatio(float newAspectRatio)
     frustum.verticalFov = 2.f * atanf(tanf(frustum.horizontalFov * 0.5f) * (1.0f / aspectRatio));
 
     projection = frustum.ProjectionMatrix();
+}
+
+void ModuleCamera::SetPlaneDistances(float nearDist, float farDist)
+{
+    frustum.nearPlaneDistance = nearDist;
+    frustum.farPlaneDistance = farDist;
+
+    projection = frustum.ProjectionMatrix();
+}
+
+void ModuleCamera::SetNearPlanePos(float nearPos)
+{
+    frustum.nearPlaneDistance = nearPos;
+    projection = frustum.ProjectionMatrix();
+}
+
+void ModuleCamera::SetFarPlanePos(float farPos)
+{
+    frustum.farPlaneDistance = farPos;
+    projection = frustum.ProjectionMatrix();
+}
+
+void ModuleCamera::LookAt(float3 pos)
+{
+    float3 dir = float3(pos - frustum.front).Normalized();
+
+    float3x3 lookAtMatrix = float3x3::LookAt(frustum.front, dir, frustum.up, float3::unitY);
+
+    frustum.front = lookAtMatrix.MulDir(frustum.front).Normalized();
+    frustum.up = lookAtMatrix.MulDir(frustum.up).Normalized();
 }
 
 float4x4 ModuleCamera::GetProjectionMatrix() const
@@ -101,17 +131,17 @@ float4x4 ModuleCamera::LookAtMatrix(float3 pos, float3 target, float3 up)
 
 void ModuleCamera::Rotate()
 {
-    int dx = -App->input->mouseMotion.x;
-    int dy = -App->input->mouseMotion.y;
+    int dx = App->input->mouseMotion.x;
+    int dy = App->input->mouseMotion.y;
     float sens = 10.0f * 0.02f;
 
     if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_REPEAT)
     {
         if (dx != 0)
-        {       
-            float deltaX = App->input->mousePos.x - lastMousePos.x;
-            float3x3 rotationMatrix = float3x3::RotateY(math::DegToRad(-(deltaX * sens))); 
-            
+        {
+            float deltaX = lastMousePos.x - App->input->mousePos.x;
+            float3x3 rotationMatrix = float3x3::RotateY(math::DegToRad((deltaX * sens)));
+
             float3 oldFront = frustum.front.Normalized();
             frustum.front = rotationMatrix.MulDir(oldFront);
             float3 oldUp = frustum.up.Normalized();
@@ -119,16 +149,16 @@ void ModuleCamera::Rotate()
         }
         if (dy != 0)
         {
-            float deltaY = App->input->mousePos.y - lastMousePos.y;
-            float3x3 rotationMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-(deltaY * sens))); 
+            float deltaY = lastMousePos.y - App->input->mousePos.y;
+
+            float3x3 rotationMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), math::DegToRad((deltaY * sens)));
 
             float3 oldFront = frustum.front.Normalized();
             frustum.front = rotationMatrix.MulDir(oldFront);
             float3 oldUp = frustum.up.Normalized();
-            frustum.up = rotationMatrix.MulDir(oldUp);           
+            frustum.up = rotationMatrix.MulDir(oldUp);
         }
     }
-
     lastMousePos.x = App->input->mousePos.x;
     lastMousePos.y = App->input->mousePos.y;
 }
@@ -137,20 +167,19 @@ void ModuleCamera::PanCamera()
 {
     float deltaTime = 0.02;
     float3 cameraPos = frustum.pos;
-    
+
     if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KeyState::KEY_REPEAT)
-    {  
+    {
         if (App->input->mouseMotion.x != 0)
         {
             cameraPos -= App->input->mouseMotion.x * frustum.WorldRight() * (cameraSpeed * deltaTime);
         }
-    
+
         if (App->input->mouseMotion.y != 0)
         {
             cameraPos += App->input->mouseMotion.y * frustum.up * (cameraSpeed * deltaTime);
         }
     }
-    
     frustum.pos = cameraPos;
 }
 
@@ -160,33 +189,35 @@ void ModuleCamera::Move()
 
     float3 cameraPos = frustum.pos;
 
-    if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
+    if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KeyState::KEY_REPEAT)
     {
-        cameraPos += frustum.front * (cameraSpeed * deltaTime);
-    }
-    if (App->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
-    {
-        cameraPos -= frustum.front * (cameraSpeed * deltaTime);
-    }
+        if (App->input->GetKey(SDL_SCANCODE_W) == KeyState::KEY_REPEAT)
+        {
+            cameraPos += frustum.front * (cameraSpeed * deltaTime);
+        }
+        if (App->input->GetKey(SDL_SCANCODE_S) == KeyState::KEY_REPEAT)
+        {
+            cameraPos -= frustum.front * (cameraSpeed * deltaTime);
+        }
 
-    if (App->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
-    {
-        cameraPos += frustum.WorldRight() * (cameraSpeed * deltaTime);
-    }
-    if (App->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
-    {
-        cameraPos -= frustum.WorldRight() * (cameraSpeed * deltaTime);
-    }
+        if (App->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_REPEAT)
+        {
+            cameraPos += frustum.WorldRight() * (cameraSpeed * deltaTime);
+        }
+        if (App->input->GetKey(SDL_SCANCODE_A) == KeyState::KEY_REPEAT)
+        {
+            cameraPos -= frustum.WorldRight() * (cameraSpeed * deltaTime);
+        }
 
-    if (App->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
-    {
-        cameraPos -= frustum.up * (cameraSpeed * deltaTime);
+        if (App->input->GetKey(SDL_SCANCODE_Q) == KeyState::KEY_REPEAT)
+        {
+            cameraPos -= frustum.up * (cameraSpeed * deltaTime);
+        }
+        if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
+        {
+            cameraPos += frustum.up * (cameraSpeed * deltaTime);
+        }
     }
-    if (App->input->GetKey(SDL_SCANCODE_E) == KeyState::KEY_REPEAT)
-    {
-        cameraPos += frustum.up * (cameraSpeed * deltaTime);
-    }
-
     frustum.pos = cameraPos;
 }
 
@@ -206,4 +237,17 @@ void ModuleCamera::Zoom()
     }
 
     frustum.pos = cameraPos;
+}
+
+void ModuleCamera::Orbit()
+{
+    float deltaTime = 0.02;
+    int dx = App->input->mouseMotion.x;
+
+    if (((App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)) && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT))
+    {
+       
+    }
+
+    lastMousePos.x = App->input->mousePos.x;
 }
