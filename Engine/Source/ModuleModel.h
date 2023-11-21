@@ -10,9 +10,16 @@ namespace tinygltf
 	struct Primitive;
 }
 
+//TODO GAMEOBJECT 
+/*
+float4x4 Model 
+unsigned textureId // array for each texture diffuse,normals,etc
+unsigned vao
+*/
+
 struct Mesh
 {
-
+	unsigned vao;
 	unsigned vbo;
 	unsigned ebo;
 	unsigned mat;
@@ -29,6 +36,7 @@ struct Mesh
 	void Draw(const std::vector<unsigned>& textures);
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
+	void LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath);
 };
 
 class ModuleModel : public Module
@@ -42,9 +50,7 @@ class ModuleModel : public Module
 	bool CleanUp() override;
 
 	void LoadModel(const char* path);
-	void LoadMaterials(const tinygltf::Model& srcModel);
 
-	unsigned vao;
 	std::vector<unsigned> textures;
 	std::vector<Mesh*> meshes;
 };

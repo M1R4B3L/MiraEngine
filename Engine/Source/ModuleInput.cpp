@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleOpenGL.h"
+#include "ModuleModel.h"
 #include "SDL.h"
 
 #include "backends/imgui_impl_sdl2.h"
+#include <algorithm>
 
 ModuleInput::ModuleInput()
 {
@@ -100,6 +102,11 @@ update_status ModuleInput::PreUpdate()
 				break;
 			case SDL_MOUSEWHEEL:
 				yWheel = sdlEvent.wheel.y;
+				break;
+			case SDL_DROPFILE:
+				std::string temp = sdlEvent.drop.file;
+				std::replace(temp.begin(), temp.end(), '\\', '/');
+				App->model->LoadModel(temp.c_str());
 				break;
         }
     }

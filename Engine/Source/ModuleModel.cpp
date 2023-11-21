@@ -41,10 +41,9 @@ update_status ModuleModel::Update()
 
 bool ModuleModel::CleanUp()
 {
-    glDeleteVertexArrays(1, &vao);
-
     for (int i = 0; i < App->model->meshes.size(); ++i)
     {
+        glDeleteVertexArrays(1, &meshes[i]->vao);
         glDeleteBuffers(1, &meshes[i]->vbo);
         glDeleteBuffers(1, &meshes[i]->ebo);
     }
@@ -71,15 +70,18 @@ void ModuleModel::LoadModel(const char* path)
             mesh->CreateVAO();
             mesh->LoadMesh(model, srcMesh, primitive);
             mesh->LoadEBO(model, srcMesh, primitive);
+           
+
+            if (model.materials.size() > 0)
+                mesh->LoadMaterials(model, path);
+
             meshes.push_back(mesh);
         }
     }
 
-    if(model.materials.size() > 0)
-        LoadMaterials(model);
 }
 
-void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel)
+void Mesh::LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath)
 {
     for (const auto& srcMaterial : srcModel.materials)
     {
@@ -88,11 +90,14 @@ void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel)
         {
             const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
             const tinygltf::Image& image = srcModel.images[texture.source];
-            std::string temp = "Models/BakerHouse/";
+            std::string temp = imagePath;
+            unsigned cutPos = temp.find_last_of('/');
+            temp.erase(++cutPos);
             temp = temp + image.uri.c_str();
             textureId = App->renderExercise->CreateTexture(temp.c_str());
         }
-        textures.push_back(textureId);
+        mat = textureId;
+        App->model->textures.push_back(textureId);     
     }
 }
 
@@ -252,19 +257,19 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 
 void Mesh::CreateVAO()
 {
-    glGenVertexArrays(1, &App->model->vao);
-    glBindVertexArray(App->model->vao);
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 }
 
 void Mesh::Draw(const std::vector<unsigned>& textures)
 {
-    glBindVertexArray(App->model->vao);
+    glBindVertexArray(vao);
 
     glUseProgram(App->program->programId);
     if (!textures.empty())
     {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[0]);
+        glBindTexture(GL_TEXTURE_2D, mat);
     }
  
     if(numInd > 0)
