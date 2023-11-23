@@ -50,7 +50,7 @@ bool ModuleEditor::Init()
     ImGui_ImplSDL2_InitForOpenGL(App->window->GetWindow(), App->render->GetContext());
     ImGui_ImplOpenGL3_Init("#version 460");
 
-    drakula();
+    embraceTheDarkness();
 
     return true;
 }

@@ -65,18 +65,17 @@ void ModuleModel::LoadModel(const char* path)
         for (const auto& primitive : srcMesh.primitives)
         {
             Mesh* mesh = new Mesh();
-            mesh->LoadMesh(model, srcMesh, primitive);         
-
-            if (model.materials.size() > 0)
-                mesh->LoadMaterials(model, path);
+            mesh->LoadMesh(model, srcMesh, primitive);      
 
             meshes.push_back(mesh);
         }
     }
 
+    if (model.materials.size() > 0)
+        LoadMaterials(model, path);
 }
 
-void Mesh::LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath)
+void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath)
 {
     for (const auto& srcMaterial : srcModel.materials)
     {
@@ -90,7 +89,6 @@ void Mesh::LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath)
             temp.erase(++cutPos);
             temp = temp + image.uri.c_str();
             textureId = App->texture->LoadTexture(temp.c_str());
-            disffuseMat = textureId;
         }
     }
 }
@@ -259,7 +257,7 @@ void Mesh::Draw(const std::vector<unsigned>& textures)
     if (!textures.empty())
     {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, disffuseMat);
+        glBindTexture(GL_TEXTURE_2D, textures[disffuseMat]);
     }
  
     if(numInd > 0)
@@ -270,6 +268,9 @@ void Mesh::Draw(const std::vector<unsigned>& textures)
 
 void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
+
+    disffuseMat = primitive.material;
+
     CreateVAO();
 
     LoadVBO(model, mesh, primitive);

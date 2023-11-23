@@ -42,7 +42,6 @@ struct Mesh
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
-	void LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath);
 };
 
 class ModuleModel : public Module
@@ -56,6 +55,7 @@ class ModuleModel : public Module
 	bool CleanUp() override;
 
 	void LoadModel(const char* path);
+	void LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath);
 
 	std::vector<unsigned> textures;
 	std::vector<Mesh*> meshes;
