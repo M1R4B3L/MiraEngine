@@ -3,6 +3,7 @@
 #include "ModuleModel.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleProgram.h"
+#include "ModuleTexture.h"
 
 #include "GL/glew.h"
 #include "Math/float3.h"
@@ -13,7 +14,6 @@
 #define TINYGLTF_NO_STB_IMAGE_WRITE
 #define TINYGLTF_NO_STB_IMAGE
 #define TINYGLTF_NO_EXTERNAL_IMAGE
-
 
 #include "External/tinygltf-2.8.18/tiny_gltf.h"
 
@@ -29,8 +29,6 @@ ModuleModel::~ModuleModel()
 bool ModuleModel::Init()
 {
     bool ret = true;
-
-    LoadModel("Models/BakerHouse/BakerHouse.gltf");
     return ret;
 }
 
@@ -67,10 +65,7 @@ void ModuleModel::LoadModel(const char* path)
         for (const auto& primitive : srcMesh.primitives)
         {
             Mesh* mesh = new Mesh();
-            mesh->CreateVAO();
-            mesh->LoadMesh(model, srcMesh, primitive);
-            mesh->LoadEBO(model, srcMesh, primitive);
-           
+            mesh->LoadMesh(model, srcMesh, primitive);         
 
             if (model.materials.size() > 0)
                 mesh->LoadMaterials(model, path);
@@ -94,14 +89,13 @@ void Mesh::LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath)
             unsigned cutPos = temp.find_last_of('/');
             temp.erase(++cutPos);
             temp = temp + image.uri.c_str();
-            textureId = App->renderExercise->CreateTexture(temp.c_str());
+            textureId = App->texture->LoadTexture(temp.c_str());
+            disffuseMat = textureId;
         }
-        mat = textureId;
-        App->model->textures.push_back(textureId);     
     }
 }
 
-void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
+void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
     const auto& itPos = primitive.attributes.find("POSITION");
     const auto& itNorm = primitive.attributes.find("NORMAL");
@@ -113,12 +107,14 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         const tinygltf::Accessor& posAcc = model.accessors[itPos->second];
         assert(posAcc.type == TINYGLTF_TYPE_VEC3);
         assert(posAcc.componentType == GL_FLOAT);
-        const tinygltf::BufferView& posBufferView = model.bufferViews[posAcc.bufferView];
-        const tinygltf::Buffer& posBuffer = model.buffers[posBufferView.buffer];
+        const tinygltf::BufferView& posView = model.bufferViews[posAcc.bufferView];
+        const tinygltf::Buffer& posBuffer = model.buffers[posView.buffer];
 
         numVert = posAcc.count;
+        stridePos = posView.byteStride;
+        //TODO Handle if data is Interleaved bufferPos = 
 
-        bufferPos = reinterpret_cast<const float*>(&posBuffer.data[posBufferView.byteOffset + posAcc.byteOffset]);  
+        bufferPos = reinterpret_cast<const float*>(&posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -126,10 +122,10 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         const tinygltf::Accessor& texCoordAcc = model.accessors[itTexCoord->second];
         assert(texCoordAcc.type == TINYGLTF_TYPE_VEC2);
         assert(texCoordAcc.componentType == GL_FLOAT);
-        const tinygltf::BufferView& texCoordBufferView = model.bufferViews[texCoordAcc.bufferView];
-        const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordBufferView.buffer];
+        const tinygltf::BufferView& texCoordView = model.bufferViews[texCoordAcc.bufferView];
+        const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordView.buffer];
 
-        bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordBufferView.byteOffset + texCoordAcc.byteOffset]);
+        bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
     }
 
     if (itNorm != primitive.attributes.end())
@@ -137,10 +133,12 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         const tinygltf::Accessor& normAcc = model.accessors[itNorm->second];
         assert(normAcc.type == TINYGLTF_TYPE_VEC3);
         assert(normAcc.componentType == GL_FLOAT);
-        const tinygltf::BufferView& normBufferView = model.bufferViews[normAcc.bufferView];
-        const tinygltf::Buffer& normBuffer = model.buffers[normBufferView.buffer];
-        normBufferView.byteStride;
-        bufferNorm = reinterpret_cast<const float*>(&normBuffer.data[normBufferView.byteOffset + normAcc.byteOffset]);
+        const tinygltf::BufferView& normView = model.bufferViews[normAcc.bufferView];
+        const tinygltf::Buffer& normBuffer = model.buffers[normView.buffer];
+
+        strideNorm = normView.byteStride;
+
+        bufferNorm = reinterpret_cast<const float*>(&normBuffer.data[normView.byteOffset + normAcc.byteOffset]);
     }
 
     glGenBuffers(1, &vbo);
@@ -169,11 +167,13 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
     {
         for (int j = 0; j < 3; ++j)
         {
-            *(ptr)= *(bufferPos);
+            *(ptr) = *(bufferPos);
             LOG("Pos %f", *(ptr));
             ++bufferPos;
             ++ptr;
         }
+        if (stridePos > 0)     //TODO do something with the bufferSize
+            bufferPos += (stridePos/sizeof(float)) - 3; // We Substract 3 because we already had into account the 3 "Position" floats
 
         if (bufferNorm != nullptr)
         {
@@ -184,6 +184,8 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
                 ++bufferNorm;
                 ++ptr;
             }
+            if (strideNorm > 0)
+                bufferNorm += (strideNorm / sizeof(float)) - 3; // We Substract 3 because we already had into account the 3 "Normal" floats
         }
 
         if (bufferTexCoord != nullptr)
@@ -194,7 +196,7 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
                 LOG("Tc %f", *(ptr));
                 ++bufferTexCoord;
                 ++ptr;
-            }
+            }                       
         }     
     }
     glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -241,15 +243,6 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 
         glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
     }
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)0);
-    glEnableVertexAttribArray(1);                   
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 3));
-    glEnableVertexAttribArray(2);                   
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 6));
-
-    glBindVertexArray(0);
 }
 
 void Mesh::CreateVAO()
@@ -266,11 +259,28 @@ void Mesh::Draw(const std::vector<unsigned>& textures)
     if (!textures.empty())
     {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, mat);
+        glBindTexture(GL_TEXTURE_2D, disffuseMat);
     }
  
     if(numInd > 0)
         glDrawElements(GL_TRIANGLES, numInd, GL_UNSIGNED_INT, nullptr);
     else
         glDrawArrays(GL_TRIANGLES, 0, numVert);
+}
+
+void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
+{
+    CreateVAO();
+
+    LoadVBO(model, mesh, primitive);
+    LoadEBO(model, mesh, primitive);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 3));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 6));
+
+    glBindVertexArray(0);
 }

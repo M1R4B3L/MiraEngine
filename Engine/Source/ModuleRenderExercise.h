@@ -15,7 +15,6 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	unsigned CreateTexture(const char* path);
 private:
 	
 	void CreateVAO(unsigned& vao, unsigned num = 1);

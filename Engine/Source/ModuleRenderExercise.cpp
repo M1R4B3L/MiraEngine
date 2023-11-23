@@ -44,8 +44,10 @@ bool ModuleRenderExercise::Init()
 
     lightDir = float3(1.0f).Normalized();
 
-    baboon = CreateTexture("Textures/Baboon.tga");
-    iobamium = CreateTexture("Textures/iobamium.png");
+    App->model->LoadModel("Models/BakerHouse/BakerHouse.gltf");
+
+    baboon = App->texture->LoadTexture("Textures/Baboon.tga");
+    iobamium = App->texture->LoadTexture("Textures/mipmaps.png");
     //
     CreateVAO(vao);
     CreateVBO(vbo);
@@ -93,17 +95,17 @@ update_status ModuleRenderExercise::Update()
         App->model->meshes[i]->Draw(App->model->textures);
     }
 
-    //glBindVertexArray(vao);
-    //
-    //for (int i = 0; i < 2; ++i)
-    //{
-    //    if (i == 0)
-    //        glBindTexture(GL_TEXTURE_2D, baboon);
-    //    else
-    //        glBindTexture(GL_TEXTURE_2D, iobamium);
-    //
-    //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
-    //}
+    glBindVertexArray(vao);
+    
+    for (int i = 0; i < 2; ++i)
+    {
+        if (i == 0)
+            glBindTexture(GL_TEXTURE_2D, App->model->textures[App->model->textures.size() - 1]);
+        else
+            glBindTexture(GL_TEXTURE_2D, baboon);
+    
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
+    }
   
     return UPDATE_CONTINUE;
 }
@@ -115,68 +117,11 @@ bool ModuleRenderExercise::CleanUp()
     DestroyVAO(vao);
     DestroyVBO(vbo);
     DestroyEBO(ebo);
+    
+    glDeleteTextures(1, (GLuint*) &baboon);
+    glDeleteTextures(1, (GLuint*) &iobamium);
 
     return ret;
-}
-
-unsigned ModuleRenderExercise::CreateTexture(const char* path)
-{
-    unsigned texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    int format;
-    int internalFormat;
-    GLenum type;
-
-    DirectX::ScratchImage image = App->texture->LoadTexture(path);
-
-    switch (image.GetMetadata().format)
-    {
-    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-    case DXGI_FORMAT_R8G8B8A8_UNORM:
-        internalFormat = GL_RGBA8;
-        format = GL_RGBA;
-        type = GL_UNSIGNED_BYTE;
-        break;
-    case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-    case DXGI_FORMAT_B8G8R8A8_UNORM:
-        internalFormat = GL_RGBA8;
-        format = GL_BGRA;
-        type = GL_UNSIGNED_BYTE;
-        break;
-    case DXGI_FORMAT_B5G6R5_UNORM:
-        internalFormat = GL_RGB8;
-        format = GL_BGR;
-        type = GL_UNSIGNED_BYTE;
-        break;
-    default:
-        assert(false && "Unsupported format");
-    }
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, image.GetMetadata().mipLevels - 1);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.GetMetadata().width, image.GetMetadata().height, 0, format, type, image.GetPixels());
-
-    //TODO Handle if Texture has mipmaps
-    if ((image.GetMetadata().mipLevels > -1))
-    {
-        for (size_t i = 0; i < image.GetMetadata().mipLevels; ++i)
-        {
-            const DirectX::Image* mip = image.GetImage(i, 0, 0);
-            glTexImage2D(GL_TEXTURE_2D, i, internalFormat, mip->width, mip->height, 0, format, type, mip->pixels);
-        }
-    }
-    else
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-    return texture;
 }
 
 void ModuleRenderExercise::CreateVAO(unsigned& vao, unsigned num)

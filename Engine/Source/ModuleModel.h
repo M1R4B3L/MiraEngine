@@ -5,7 +5,7 @@
 
 namespace tinygltf
 {
-	struct Model;
+	class Model;
 	struct Mesh;
 	struct Primitive;
 }
@@ -22,7 +22,6 @@ struct Mesh
 	unsigned vao;
 	unsigned vbo;
 	unsigned ebo;
-	unsigned mat;
 
 	unsigned numVert = 0;
 	unsigned numInd = 0;
@@ -30,11 +29,18 @@ struct Mesh
 	const float* bufferPos = nullptr;
 	const float* bufferTexCoord = nullptr;
 	const float* bufferNorm = nullptr;
+
+	unsigned stridePos = 0;
+	unsigned strideNorm = 0;
+
 	unsigned buffSize = 0;
+
+	unsigned disffuseMat;
 
 	void CreateVAO();
 	void Draw(const std::vector<unsigned>& textures);
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
+	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath);
 };

@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleOpenGL.h"
 #include "ModuleModel.h"
+#include "ModuleTexture.h"
 #include "SDL.h"
 
 #include "backends/imgui_impl_sdl2.h"
@@ -106,7 +107,14 @@ update_status ModuleInput::PreUpdate()
 			case SDL_DROPFILE:
 				std::string temp = sdlEvent.drop.file;
 				std::replace(temp.begin(), temp.end(), '\\', '/');
-				App->model->LoadModel(temp.c_str());
+				if (strstr(temp.c_str(), ".gltf") != NULL)
+				{
+					App->model->LoadModel(temp.c_str());
+				}
+				if ((strstr(temp.c_str(), ".dds") != NULL) || (strstr(temp.c_str(), ".tga") != NULL) || (strstr(temp.c_str(), ".png") != NULL) || (strstr(temp.c_str(), ".jpg") != NULL))
+				{
+					App->texture->LoadTexture(temp.c_str());
+				}
 				break;
         }
     }

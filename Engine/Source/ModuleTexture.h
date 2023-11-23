@@ -26,9 +26,9 @@ public:
 	bool Init() override;
 	bool CleanUp() override;
 
-	DirectX::ScratchImage LoadTexture(const char* path);
+	unsigned LoadTexture(const char* path);
 
 public: 
-	DirectX::ScratchImage baboon;
+
 };
 

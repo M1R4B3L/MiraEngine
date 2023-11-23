@@ -11,6 +11,8 @@
 
 #pragma once
 
+#define NOMINMAX 
+
 #include <cstddef>
 #include <cstdint>
 #include <functional>

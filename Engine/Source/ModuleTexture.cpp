@@ -1,8 +1,11 @@
-#define _CRT_SECURE_NO_WARNINGS
-
+#include "Application.h"
 #include "ModuleTexture.h"
+#include "ModuleModel.h"
 
+#include "GL/glew.h"
 #include "DirectXTex.h"
+
+
 #include <cstdlib>
 
 ModuleTexture::ModuleTexture()
@@ -25,7 +28,7 @@ bool ModuleTexture::CleanUp()
     return true;
 }
 
-DirectX::ScratchImage ModuleTexture::LoadTexture(const char* path)
+unsigned ModuleTexture::LoadTexture(const char* path)
 {
     size_t size = strlen(path) + 1;
     wchar_t* portName = new wchar_t[size];
@@ -33,40 +36,96 @@ DirectX::ScratchImage ModuleTexture::LoadTexture(const char* path)
     mbstowcs_s(&outSize, portName, size, path, size - 1);
 
     long err;
-    long err2;
-    long err3;
-
     DirectX::ScratchImage newImage; 
 
     err = DirectX::LoadFromDDSFile(portName, DirectX::DDS_FLAGS_NONE, nullptr, newImage);
-    if (FAILED(err))
+    if (SUCCEEDED(err))
     {
-        LOG("Failed DDS Don't know why");
+        LOG("Loading DDS image");
     }
     else
     {
-        LOG("Succes Loading DDS image");
-        return newImage;
+        LOG("Fail unable to load DDS image");
+
+        err = DirectX::LoadFromTGAFile(portName, DirectX::TGA_FLAGS_NONE, nullptr, newImage);
+        if (SUCCEEDED(err))
+        {
+            LOG("Loading TGA image");
+        }
+        else
+        {
+            LOG("Fail unable to load TGA image");
+
+            err = DirectX::LoadFromWICFile(portName, DirectX::WIC_FLAGS_NONE, nullptr, newImage);
+            if (SUCCEEDED(err))
+            {
+                LOG("Loading WIC image");
+            }
+            else
+            {
+                LOG("Fail unable to load WIC image");
+            }
+        }
     }
-    err2 = DirectX::LoadFromTGAFile(portName, DirectX::TGA_FLAGS_NONE, nullptr, newImage);
-    if (FAILED(err2))
+
+    if (newImage.GetPixels() != nullptr)
     {
-        LOG("Failed TGA Don't know why");
+        unsigned texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        int format;
+        int internalFormat;
+        GLenum type;
+
+        switch (newImage.GetMetadata().format)
+        {
+        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+        case DXGI_FORMAT_R8G8B8A8_UNORM:
+            internalFormat = GL_RGBA8;
+            format = GL_RGBA;
+            type = GL_UNSIGNED_BYTE;
+            break;
+        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+        case DXGI_FORMAT_B8G8R8A8_UNORM:
+            internalFormat = GL_RGBA8;
+            format = GL_BGRA;
+            type = GL_UNSIGNED_BYTE;
+            break;
+        case DXGI_FORMAT_B5G6R5_UNORM:
+            internalFormat = GL_RGB8;
+            format = GL_BGR;
+            type = GL_UNSIGNED_BYTE;
+            break;
+        default:
+            assert(false && "Unsupported format");
+        }
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, newImage.GetMetadata().mipLevels - 1);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, newImage.GetMetadata().width, newImage.GetMetadata().height, 0, format, type, newImage.GetPixels());
+
+        //TODO Handle if Texture has mipmaps
+        if ((newImage.GetMetadata().mipLevels > 1))
+        {
+            for (size_t i = 1; i < newImage.GetMetadata().mipLevels; ++i)
+            {
+                const DirectX::Image* mip = newImage.GetImage(i, 0, 0);
+                glTexImage2D(GL_TEXTURE_2D, i, internalFormat, mip->width, mip->height, 0, format, type, mip->pixels);
+            }
+        }
+        else
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+        App->model->textures.push_back(texture);
+        return texture;
     }
-    else
-    {
-        LOG("Succes Loading TGA image");
-        return newImage;
-    }
-    err3 = DirectX::LoadFromWICFile(portName, DirectX::WIC_FLAGS_NONE, nullptr, newImage);
-    if (FAILED(err3))
-    {
-        LOG("Failed ALL Don't know why");
-    }
-    else
-    {
-        LOG("Succes Loading WIC image");
-        return newImage;
-    }
-   
+
+    return -1;
 }
