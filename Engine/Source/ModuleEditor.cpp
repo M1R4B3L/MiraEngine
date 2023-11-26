@@ -7,6 +7,7 @@
 #include "AboutPanel.h"
 #include "MenuBarPanel.h"
 #include "ConfigPanel.h"
+#include "ConsolePanel.h"
 
 #include "backends/imgui_impl_sdl2.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -15,11 +16,12 @@
 
 ModuleEditor::ModuleEditor()
 {
-    editorPanels.reserve(3);
+    editorPanels.reserve(4);
 
     editorPanels.push_back(menuBar = new MenuBarPanel());
     editorPanels.push_back(about = new AboutPanel());
     editorPanels.push_back(config = new ConfigPanel());
+    editorPanels.push_back(console = new ConsolePanel());
 
     demo = false;
 }

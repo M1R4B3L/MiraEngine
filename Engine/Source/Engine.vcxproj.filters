@@ -169,6 +169,9 @@
     <ClCompile Include="ConfigPanel.cpp">
       <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ConsolePanel.cpp">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -448,6 +451,9 @@
       <Filter>External\TinyGltf</Filter>
     </ClInclude>
     <ClInclude Include="ConfigPanel.h">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsolePanel.h">
       <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClInclude>
   </ItemGroup>

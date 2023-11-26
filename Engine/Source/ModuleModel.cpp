@@ -166,7 +166,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         for (int j = 0; j < 3; ++j)
         {
             *(ptr) = *(bufferPos);
-            LOG("Pos %f", *(ptr));
+            //LOG("Pos %f", *(ptr));
             ++bufferPos;
             ++ptr;
         }
@@ -178,7 +178,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (int j = 0; j < 3; ++j)
             {
                 *(ptr) = *(bufferNorm);
-                LOG("N %f", *(ptr));
+                //LOG("N %f", *(ptr));
                 ++bufferNorm;
                 ++ptr;
             }
@@ -191,7 +191,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (int j = 0; j < 2; ++j)
             {
                 *(ptr) = *(bufferTexCoord);
-                LOG("Tc %f", *(ptr));
+                //LOG("Tc %f", *(ptr));
                 ++bufferTexCoord;
                 ++ptr;
             }                       
@@ -228,7 +228,7 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (uint16_t i = 0; i < indAcc.count; ++i)
             {
                 ptr[i] = bufferInd[i];
-                LOG("%u", bufferInd[i]);
+                //LOG("%u", bufferInd[i]);
             }          
         }
         //TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE
