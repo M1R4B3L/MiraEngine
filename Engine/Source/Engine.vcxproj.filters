@@ -4,9 +4,6 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -172,12 +169,15 @@
     <ClCompile Include="ConsolePanel.cpp">
       <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalTimer.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Dummy.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
@@ -456,6 +456,12 @@
     <ClInclude Include="ConsolePanel.h">
       <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalTimer.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\MathGeolib\include\Math\Matrix.inl">
@@ -528,6 +534,9 @@
     </Filter>
     <Filter Include="External\TinyGltf">
       <UniqueIdentifier>{72d8ee4b-3b27-40c7-83e4-9f8bb342c823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{f71f0949-3208-4ce1-981a-1c34efc1c635}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

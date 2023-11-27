@@ -23,7 +23,7 @@ bool AboutPanel::Draw(int windowFlags)
 		ImGui::Separator();
 		ImGui::TextUnformatted("Mira is a 3D Engine developed for the first Assigment of\nthe 2023 UPC Master Advanced Programing for AAA Videogames");
 		ImGui::Spacing();
-		ImGui::Text("SDL v2.0");
+		ImGui::Text("SDL v2.0.16");
 		ImGui::Text("GLew v2.1.0");
 		ImGui::Text("ImGui v1.89.9");
 		ImGui::Text("MathGeoLib v1.5");

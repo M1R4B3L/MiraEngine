@@ -201,6 +201,7 @@
     <ClCompile Include="ModuleRenderExercise.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="NormalTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
@@ -297,6 +298,7 @@
     <ClInclude Include="ModuleRenderExercise.h" />
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="NormalTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Shaders\Fragment.glsl" />
