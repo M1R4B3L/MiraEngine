@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ConfigPanel.h"
 
@@ -23,6 +24,10 @@ bool ConfigPanel::Draw(int windowFlags)
 
 	if (ImGui::Begin(GetName(), &open, windowFlags))
 	{
+		if (ImGui::CollapsingHeader("OpenGl", flags))
+		{
+			ImGui::Text("Hi");
+		}
 		if (ImGui::CollapsingHeader("Window", flags))
 		{
 			int width = App->window->GetWidth();
@@ -37,6 +42,13 @@ bool ConfigPanel::Draw(int windowFlags)
 				App->window->SetHeight(height);
 			}
 
+		}
+
+		if (ImGui::CollapsingHeader("Input", flags))
+		{	
+			ImGui::Text("Mouse Pos: ");
+			ImGui::SameLine();
+			ImGui::Text("(%.0f,%.0f)", App->input->mousePos.x, App->input->mousePos.y);
 		}
 		if (ImGui::CollapsingHeader("Camera", flags))
 		{

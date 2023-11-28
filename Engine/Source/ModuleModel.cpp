@@ -268,9 +268,6 @@ void Mesh::Draw(const std::vector<unsigned>& textures)
 
 void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
-
-    disffuseMat = primitive.material;
-
     CreateVAO();
 
     LoadVBO(model, mesh, primitive);
