@@ -6,7 +6,7 @@ class ModuleProgram : public Module
 {
 public:
 	ModuleProgram();
-	~ModuleProgram() override;
+	~ModuleProgram();
 
 	bool Init() override;
 	update_status Update() override;

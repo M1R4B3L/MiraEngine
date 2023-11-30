@@ -156,6 +156,8 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
+    //Asserts better than If statements for pointers
+    assert(bufferNorm != nullptr);
     if (bufferPos != nullptr)
     {
         buffSize = sizeof(float) * 3;

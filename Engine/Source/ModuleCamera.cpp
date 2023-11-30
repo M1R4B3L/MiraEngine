@@ -17,6 +17,8 @@ bool ModuleCamera::Init()
 {
     bool ret = true;
 
+    cameraSpeed = 2.0f;
+
     float2 winSize = App->window->GetWindowSize();
     aspectRatio = winSize.x / winSize.y;
 
@@ -31,7 +33,7 @@ bool ModuleCamera::Init()
     frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 
     projection = frustum.ProjectionMatrix();
-    view = LookAtMatrix(frustum.pos, float3(0.0f), frustum.up).Inverted();
+    view = CameraMatrix(frustum.pos, float3(0.0f), frustum.up).Inverted();
 
     lastMousePos.x = SCREEN_WIDTH / 2;
     lastMousePos.y = SCREEN_HEIGHT / 2;
@@ -46,7 +48,7 @@ update_status ModuleCamera::Update()
     PanCamera();  
     Zoom();
 
-    view = LookAtMatrix(frustum.pos, frustum.pos + frustum.front, frustum.up).Inverted();
+    view = CameraMatrix(frustum.pos, frustum.pos + frustum.front, frustum.up).Inverted();
 
     return UPDATE_CONTINUE;
 }
@@ -54,6 +56,26 @@ update_status ModuleCamera::Update()
 bool ModuleCamera::CleanUp()
 {
     return false;
+}
+
+const float4x4 ModuleCamera::GetProjectionMatrix() const
+{
+    return projection;
+}
+
+const float4x4 ModuleCamera::GetViewMatrix() const
+{
+    return view;
+}
+
+const Frustum ModuleCamera::GetFrustum() const
+{
+    return frustum;
+}
+
+void ModuleCamera::SetFrustumPos(const float3& pos)
+{
+    frustum.pos = pos;
 }
 
 void ModuleCamera::SetFOV(float angle)
@@ -92,7 +114,7 @@ void ModuleCamera::SetFarPlanePos(float farPos)
     projection = frustum.ProjectionMatrix();
 }
 
-void ModuleCamera::RotateAxisAngle(float3 axis, float angle)
+void ModuleCamera::RotateAxisAngle(const float3& axis, const float& angle)
 {
     float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis, math::DegToRad((angle)));
     float3 oldFront = frustum.front.Normalized();
@@ -101,7 +123,7 @@ void ModuleCamera::RotateAxisAngle(float3 axis, float angle)
     frustum.up = rotationMatrix.MulDir(oldUp);
 }
 
-void ModuleCamera::LookAt(float3 pos)
+void ModuleCamera::LookAt(const float3& pos)
 {
     float3 dir = float3(pos - frustum.front).Normalized();
 
@@ -111,17 +133,7 @@ void ModuleCamera::LookAt(float3 pos)
     frustum.up = lookAtMatrix.MulDir(frustum.up).Normalized();
 }
 
-float4x4 ModuleCamera::GetProjectionMatrix() const
-{
-    return projection;
-}
-
-float4x4 ModuleCamera::GetViewMatrix() const
-{
-    return view;
-}
-
-float4x4 ModuleCamera::LookAtMatrix(float3 pos, float3 target, float3 up)
+float4x4 ModuleCamera::CameraMatrix(float3 pos, float3 target, float3 up)
 {
     float3 forward = (target - pos).Normalized();
     float3 right = forward.Cross(up).Normalized();

@@ -52,13 +52,13 @@ bool ConfigPanel::Draw(int windowFlags)
 		}
 		if (ImGui::CollapsingHeader("Camera", flags))
 		{
-			Frustum frustum = App->camera->frustum;
+			Frustum frustum = App->camera->GetFrustum();
 			float3 cameraPos = frustum.pos;
 			ImGui::Text("Pos");
 			ImGui::SameLine();
 			if (ImGui::DragFloat3("##Pos",(float*) &cameraPos, 1))
 			{
-				App->camera->frustum.pos = cameraPos;
+				App->camera->SetFrustumPos(cameraPos);
 			}
 
 			//TODO DO IT PROPERLY 

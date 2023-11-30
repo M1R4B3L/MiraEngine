@@ -9,7 +9,7 @@ class ModuleRenderExercise : public Module
 {
 public:
 	ModuleRenderExercise();
-	~ModuleRenderExercise() override;
+	~ModuleRenderExercise();
 
 	bool Init() override;
 	update_status Update() override;

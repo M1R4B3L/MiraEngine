@@ -50,7 +50,7 @@ class ModuleModel : public Module
 {public:
 
 	ModuleModel();
-	~ModuleModel() override;
+	~ModuleModel();
 
 	bool Init() override;
 	update_status Update() override;

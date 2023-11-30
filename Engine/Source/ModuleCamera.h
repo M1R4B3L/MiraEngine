@@ -17,6 +17,12 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
+	const float4x4 GetProjectionMatrix() const;
+	const float4x4 GetViewMatrix() const;
+	const Frustum GetFrustum() const;
+
+	void SetFrustumPos(const float3& pos);
+
 	void SetFOV(float newFOV);
 	void SetAspectRatio(float newAspectRatio);
 
@@ -25,14 +31,11 @@ public:
 	void SetNearPlanePos(float near);
 	void SetFarPlanePos(float far);
 
-	void RotateAxisAngle(float3 axis, float angle);
+	void RotateAxisAngle(const float3& axis, const float& angle);
 
-	void LookAt(float3 pos);
+	void LookAt(const float3& pos);
 
-	float4x4 GetProjectionMatrix() const;
-	float4x4 GetViewMatrix() const; 
-
-	float4x4 LookAtMatrix(float3 pos, float3 forward, float3 up);
+	float4x4 CameraMatrix(float3 pos, float3 forward, float3 up);
 
 	void Rotate();
 	void PanCamera();
@@ -41,14 +44,15 @@ public:
 	void Orbit();
 
 public:
-	Frustum frustum;
-	float aspectRatio;
+
 
 private:
+	Frustum frustum;
+	float aspectRatio;
 	float4x4 view;
 	float4x4 projection;
 
-	float cameraSpeed = 2.0f;	
+	float cameraSpeed;	
 	
 	float2 lastMousePos;
 };

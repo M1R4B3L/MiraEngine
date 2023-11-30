@@ -12,7 +12,7 @@ class ModuleWindow : public Module
 public:
 
 	ModuleWindow();
-	~ModuleWindow() override;
+	~ModuleWindow();
 
 	bool Init() override;
 

@@ -18,7 +18,7 @@ class ModuleEditor : public Module
 {
 public:
 	ModuleEditor();
-	~ModuleEditor() override;
+	~ModuleEditor();
 
 	bool Init() override;
 	update_status Update() override;

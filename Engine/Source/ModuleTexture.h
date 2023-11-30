@@ -22,7 +22,7 @@ class ModuleTexture : public Module
 public:
 
 	ModuleTexture();
-	~ModuleTexture() override;
+	~ModuleTexture();
 
 	bool Init() override;
 	bool CleanUp() override;

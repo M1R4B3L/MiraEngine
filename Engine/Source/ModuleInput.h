@@ -20,7 +20,7 @@ class ModuleInput : public Module
 public:
 	
 	ModuleInput();
-	~ModuleInput() override;
+	~ModuleInput();
 
 	bool Init();
 	update_status PreUpdate();
