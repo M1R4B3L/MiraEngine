@@ -43,6 +43,8 @@ public:
 	void Zoom();
 	void Orbit();
 
+	//Center to 0,0,0 / Focus to GameObject / Move Camera to accept model Size  arctang(vfov/2 / maxAABB height point)/ Camera Speed
+
 public:
 
 

@@ -29,7 +29,7 @@ ModuleModel::~ModuleModel()
 bool ModuleModel::Init()
 {
     bool ret = true;
-    LoadModel("Model/Triangle.gltf");
+    //LoadModel("Models/Triangle/Triangle.gltf");
     return ret;
 }
 
@@ -96,6 +96,7 @@ void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel, const char* ima
         {
             const tinygltf::Texture& texture = srcModel.textures[srcMaterial.pbrMetallicRoughness.baseColorTexture.index];
             const tinygltf::Image& image = srcModel.images[texture.source];
+            //TODO: Define amb relative paths
             std::string temp = imagePath;
             unsigned cutPos = temp.find_last_of('/');
             temp.erase(++cutPos);
@@ -122,7 +123,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 
         numVert = posAcc.count;
         stridePos = posView.byteStride;
-        //TODO Handle if data is Interleaved bufferPos = 
+        buffSize = 3;
 
         bufferPos = reinterpret_cast<const float*>(&posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
     }
@@ -134,6 +135,8 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         assert(texCoordAcc.componentType == GL_FLOAT);
         const tinygltf::BufferView& texCoordView = model.bufferViews[texCoordAcc.bufferView];
         const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordView.buffer];
+
+        buffSize += 2;
 
         bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
     }
@@ -147,31 +150,15 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         const tinygltf::Buffer& normBuffer = model.buffers[normView.buffer];
 
         strideNorm = normView.byteStride;
+        buffSize += 3;
 
         bufferNorm = reinterpret_cast<const float*>(&normBuffer.data[normView.byteOffset + normAcc.byteOffset]);
     }
 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);   
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-    //Asserts better than If statements for pointers
-    assert(bufferNorm != nullptr);
-    if (bufferPos != nullptr)
-    {
-        buffSize = sizeof(float) * 3;
-    }
-    if (bufferNorm != nullptr)
-    {
-        buffSize += sizeof(float) * 3;
-    }
-    if (bufferTexCoord != nullptr)
-    {
-        buffSize += sizeof(float) * 2;
-    }    
-
-    glBufferData(GL_ARRAY_BUFFER, buffSize * numVert, nullptr, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffSize * numVert, nullptr, GL_STATIC_DRAW);
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
     //Position(float3) + TexCoords(float2) 
@@ -225,6 +212,9 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         const unsigned char* buffer = &(model.buffers[indView.buffer].data[indAcc.byteOffset + indView.byteOffset]);
 
         numInd = indAcc.count;
+
+        glGenBuffers(1, &ebo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indAcc.count, nullptr, GL_STATIC_DRAW);
         unsigned int* ptr = reinterpret_cast<unsigned int*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
@@ -294,11 +284,11 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
     LoadEBO(model, mesh, primitive);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, (void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 3));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, (void*)(sizeof(float) * 3));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, buffSize, (void*)(sizeof(float) * 6));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, (void*)(sizeof(float) * 6));
 
     glBindVertexArray(0);
 }
