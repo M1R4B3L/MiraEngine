@@ -21,8 +21,8 @@ mono_crash.*
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
+x64/*
+x86/*
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
@@ -400,4 +400,5 @@ FodyWeavers.xsd
 # Lib
 !/Engine/Source/External/SDL/lib/x64/
 !/Engine/Source/External/Glew/lib/x64/
-!/Engine/Source/External/DirectXTex/lib/x64/
+!/Engine/Source/External/DirectXTex/lib/x64/Debug/
+!/Engine/Source/External/DirectXTex/lib/x64/Release/

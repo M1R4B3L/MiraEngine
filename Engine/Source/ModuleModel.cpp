@@ -29,6 +29,7 @@ ModuleModel::~ModuleModel()
 bool ModuleModel::Init()
 {
     bool ret = true;
+    LoadModel("Model/Triangle.gltf");
     return ret;
 }
 
@@ -39,11 +40,23 @@ update_status ModuleModel::Update()
 
 bool ModuleModel::CleanUp()
 {
-    for (int i = 0; i < App->model->meshes.size(); ++i)
+    for (int i = 0; i < meshes.size(); ++i)
     {
         glDeleteVertexArrays(1, &meshes[i]->vao);
         glDeleteBuffers(1, &meshes[i]->vbo);
         glDeleteBuffers(1, &meshes[i]->ebo);
+    }
+
+    for (int i = 0; i < meshes.size(); ++i)
+    {
+        delete meshes[i];
+        meshes[i] = nullptr;
+    }
+
+    for (int i = 0; i < textures.size(); ++i)
+    {
+        delete textures[i];
+        textures[i] = nullptr;
     }
 
     return true;
@@ -66,7 +79,6 @@ void ModuleModel::LoadModel(const char* path)
         {
             Mesh* mesh = new Mesh();
             mesh->LoadMesh(model, srcMesh, primitive);      
-
             meshes.push_back(mesh);
         }
     }
@@ -249,7 +261,7 @@ void Mesh::CreateVAO()
     glBindVertexArray(vao);
 }
 
-void Mesh::Draw(const std::vector<unsigned>& textures)
+void Mesh::Draw(const std::vector<Texture*>& textures)
 {
     glBindVertexArray(vao);
 
@@ -257,7 +269,7 @@ void Mesh::Draw(const std::vector<unsigned>& textures)
     if (!textures.empty())
     {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[disffuseMat]);
+        glBindTexture(GL_TEXTURE_2D, textures[disffuseMat]->id);
     }
  
     if(numInd > 0)
@@ -268,6 +280,12 @@ void Mesh::Draw(const std::vector<unsigned>& textures)
 
 void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
+
+    if (App->model->textures.size() <= 0)
+        disffuseMat = 0;
+    else
+        disffuseMat = App->model->textures.size();
+
     CreateVAO();
 
     LoadVBO(model, mesh, primitive);

@@ -100,7 +100,7 @@ update_status ModuleRenderExercise::Update()
     for (int i = 0; i < 2; ++i)
     {
         if (i == 0)
-            glBindTexture(GL_TEXTURE_2D, App->model->textures[App->model->textures.size() - 1]);
+            glBindTexture(GL_TEXTURE_2D, App->model->textures[App->model->textures.size() - 1]->id);
         else
             glBindTexture(GL_TEXTURE_2D, baboon);
     

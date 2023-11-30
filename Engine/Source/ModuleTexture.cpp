@@ -68,11 +68,16 @@ unsigned ModuleTexture::LoadTexture(const char* path)
         }
     }
 
-    if (newImage.GetPixels() != nullptr)
+    Texture* texture = new Texture;
+
+    texture->pixels = newImage.GetPixels();
+    
+    //TODO: Need a way to compare 2 textures to skip already loaded textures
+
+    if (texture->pixels != nullptr)
     {
-        unsigned texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glGenTextures(1, &texture->id);
+        glBindTexture(GL_TEXTURE_2D, texture->id);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -124,7 +129,7 @@ unsigned ModuleTexture::LoadTexture(const char* path)
             glGenerateMipmap(GL_TEXTURE_2D);
 
         App->model->textures.push_back(texture);
-        return texture;
+        return texture->id;
     }
 
     return -1;

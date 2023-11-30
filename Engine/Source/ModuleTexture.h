@@ -7,13 +7,14 @@
 
 struct Texture
 {
+	unsigned id;
 	int width;
 	int height;
 	int format;
-	int rowPitch;
-	int slicePitch;
-	const char* pixels;
 
+	const char* name;
+
+	uint8_t* pixels;
 };
 
 class ModuleTexture : public Module

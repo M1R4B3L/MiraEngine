@@ -10,6 +10,8 @@ namespace tinygltf
 	struct Primitive;
 }
 
+struct Texture;
+
 //TODO GAMEOBJECT 
 /*
 float4x4 Model 
@@ -38,7 +40,7 @@ struct Mesh
 	unsigned disffuseMat;
 
 	void CreateVAO();
-	void Draw(const std::vector<unsigned>& textures);
+	void Draw(const std::vector<Texture*>& textures);
 	void LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
 	void LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive);
@@ -57,6 +59,6 @@ class ModuleModel : public Module
 	void LoadModel(const char* path);
 	void LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath);
 
-	std::vector<unsigned> textures;
+	std::vector<Texture*> textures;
 	std::vector<Mesh*> meshes;
 };
