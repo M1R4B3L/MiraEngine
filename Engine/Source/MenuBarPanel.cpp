@@ -122,6 +122,13 @@ bool MenuBarPanel::Draw(int windowFlags)
 			ImGui::PopItemFlag();
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Quit"))
+		{
+			ret = false;
+
+			ImGui::EndMenu();
+		}
 	}
 	ImGui::EndMainMenuBar();
 

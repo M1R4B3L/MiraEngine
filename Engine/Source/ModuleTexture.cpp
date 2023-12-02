@@ -41,29 +41,29 @@ unsigned ModuleTexture::LoadTexture(const char* path)
     err = DirectX::LoadFromDDSFile(portName, DirectX::DDS_FLAGS_NONE, nullptr, newImage);
     if (SUCCEEDED(err))
     {
-        LOG("Loading DDS image");
+        LOG("[TEXTURE] Loading DDS image %s", path);
     }
     else
     {
-        LOG("Fail unable to load DDS image");
+        LOG("[TEXTURE] Fail unable to load DDS image %s", path);
 
         err = DirectX::LoadFromTGAFile(portName, DirectX::TGA_FLAGS_NONE, nullptr, newImage);
         if (SUCCEEDED(err))
         {
-            LOG("Loading TGA image");
+            LOG("[TEXTURE] Loading TGA image %s", path);
         }
         else
         {
-            LOG("Fail unable to load TGA image");
+            LOG("[TEXTURE] Fail unable to load TGA image %s", path);
 
             err = DirectX::LoadFromWICFile(portName, DirectX::WIC_FLAGS_NONE, nullptr, newImage);
             if (SUCCEEDED(err))
             {
-                LOG("Loading WIC image");
+                LOG("[TEXTURE] Loading WIC image %s", path);
             }
             else
             {
-                LOG("Fail unable to load WIC image");
+                LOG("[TEXTURE] Fail unable to load WIC image %s", path);
             }
         }
     }

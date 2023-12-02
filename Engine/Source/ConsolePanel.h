@@ -14,5 +14,8 @@ public:
 	void ClearLog();
 
 	std::vector<const char*> logs;
+
+private:
+	bool autoScroll;
 };
 

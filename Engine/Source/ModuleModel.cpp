@@ -70,21 +70,31 @@ void ModuleModel::LoadModel(const char* path)
     bool loadOk = gltfContext.LoadASCIIFromFile(&model, &error, &warning, path);
     if (!loadOk)
     {
-        LOG("Error loading %s: %s", path, error.c_str());
+        LOG("[MODEL] Error loading %s: %s", path, error.c_str());
     }
+
+    std::string modelName = path;
+    unsigned pos = modelName.find_last_of('/');
+    std::string name = modelName.substr(++pos);
+
+    LOG("[MODEL] Starting Loading %s", name.c_str());
 
     for (const auto& srcMesh : model.meshes)
     {
         for (const auto& primitive : srcMesh.primitives)
         {
-            Mesh* mesh = new Mesh();
+            Mesh* mesh = new Mesh();    
+            LOG("[MESH] Starting Loading %s", srcMesh.name.c_str());
             mesh->LoadMesh(model, srcMesh, primitive);      
             meshes.push_back(mesh);
+            LOG("[MESH] -------------- Finished Loading %s ------------------------", srcMesh.name.c_str());
         }
     }
 
     if (model.materials.size() > 0)
         LoadMaterials(model, path);
+
+    LOG("[MODEL] -------------- Finished Loading %s ------------------------", name.c_str());
 }
 
 void ModuleModel::LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath)
@@ -126,6 +136,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         buffSize = 3;
 
         bufferPos = reinterpret_cast<const float*>(&posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
+        LOG("[MESH] Reading gltf Positions");
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -139,6 +150,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         buffSize += 2;
 
         bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
+        LOG("[MESH] Reading gltf TexCoords");
     }
 
     if (itNorm != primitive.attributes.end())
@@ -153,12 +165,15 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         buffSize += 3;
 
         bufferNorm = reinterpret_cast<const float*>(&normBuffer.data[normView.byteOffset + normAcc.byteOffset]);
+        LOG("[MESH] Reading gltf Normals");
     }
 
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);   
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * buffSize * numVert, nullptr, GL_STATIC_DRAW);
+    LOG("[MESH] Creating VBO %u, reserved %u memory", vbo, (sizeof(float) * buffSize * numVert));
+
     float* ptr = (float*)(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
     //Position(float3) + TexCoords(float2) 
@@ -199,7 +214,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         }     
     }
     glUnmapBuffer(GL_ARRAY_BUFFER);
-
+    LOG("[MESH] Finish VBO map buffer");
 }
 
 
@@ -217,6 +232,8 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indAcc.count, nullptr, GL_STATIC_DRAW);
+        LOG("[MESH] Creating EBO %u, reserved %u memory", ebo, (sizeof(unsigned int) * indAcc.count));
+
         unsigned int* ptr = reinterpret_cast<unsigned int*>(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)
@@ -229,11 +246,8 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
         {
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
-            for (uint16_t i = 0; i < indAcc.count; ++i)
-            {
+            for (uint16_t i = 0; i < indAcc.count; ++i)    
                 ptr[i] = bufferInd[i];
-                //LOG("%u", bufferInd[i]);
-            }          
         }
         //TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
@@ -244,6 +258,7 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         }
 
         glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+        LOG("[MESH] Finish EBO map buffer");
     }
 }
 
@@ -251,6 +266,7 @@ void Mesh::CreateVAO()
 {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
+    LOG("[MESH] Creting VAO %u", vao);
 }
 
 void Mesh::Draw(const std::vector<Texture*>& textures)
@@ -272,7 +288,6 @@ void Mesh::Draw(const std::vector<Texture*>& textures)
 
 void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
-
     if (App->model->textures.size() <= 0)
         disffuseMat = 0;
     else

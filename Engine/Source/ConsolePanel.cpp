@@ -8,6 +8,7 @@
 
 ConsolePanel::ConsolePanel() : EditorPanelManager("Console##", true)
 {
+	autoScroll = true;
 }
 
 ConsolePanel::~ConsolePanel()
@@ -24,10 +25,11 @@ bool ConsolePanel::Draw(int windowFlags)
 		for (int i = 0; i < logs.size(); ++i)
 		{
 			//TODO add color, error tags, filters, search, input,etc.
-			ImGui::Text("%d",i);
-			ImGui::SameLine();
 			ImGui::TextUnformatted(logs[i]);
 		}
+
+		if(autoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+			ImGui::SetScrollHereY(1.0f);
 
 		ImGui::End();
 	}

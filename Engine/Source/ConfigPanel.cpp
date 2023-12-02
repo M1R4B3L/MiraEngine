@@ -103,8 +103,6 @@ bool ConfigPanel::Draw(int windowFlags)
 			}
 			ImGui::PushItemWidth(100);
 			ImGui::DragFloat("Vertical", &vFov,1.0f, 0.0f, 0.0f, "%.3f", ImGuiSliderFlags_NoInput);
-
-
 		}
 	}
 	ImGui::End();
