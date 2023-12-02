@@ -56,11 +56,11 @@ bool ModuleRenderExercise::Init()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesData), indicesData, GL_STATIC_DRAW);
     
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>((sizeof(float) * 3)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>((sizeof(float) * 6)));
     glEnableVertexAttribArray(2);
     
     glActiveTexture(GL_TEXTURE0);
@@ -75,9 +75,9 @@ bool ModuleRenderExercise::Init()
     float4x4 projection = App->camera->GetProjectionMatrix();
 
     glUseProgram(App->program->programId);
-    glUniformMatrix4fv(0, 1, GL_TRUE, (GLfloat*)&model);
-    glUniformMatrix4fv(1, 1, GL_TRUE, (GLfloat*)&view);
-    glUniformMatrix4fv(2, 1, GL_TRUE, (GLfloat*)&projection);
+    glUniformMatrix4fv(0, 1, GL_TRUE, static_cast<GLfloat*>(&model[0][0]));
+    glUniformMatrix4fv(1, 1, GL_TRUE, static_cast<GLfloat*>(&view[0][0]));
+    glUniformMatrix4fv(2, 1, GL_TRUE, static_cast<GLfloat*>(&projection[0][0]));
 
     return ret;
 }
@@ -87,8 +87,8 @@ update_status ModuleRenderExercise::Update()
     glUseProgram(App->program->programId);
     float4x4 view = App->camera->GetViewMatrix();
     float4x4 projection = App->camera->GetProjectionMatrix();
-    glUniformMatrix4fv(1, 1, GL_TRUE, (GLfloat*)&view);
-    glUniformMatrix4fv(2, 1, GL_TRUE, (GLfloat*)&projection);
+    glUniformMatrix4fv(1, 1, GL_TRUE, static_cast<GLfloat*>(&view[0][0]));
+    glUniformMatrix4fv(2, 1, GL_TRUE, static_cast<GLfloat*>(&projection[0][0]));
 
     for (int i = 0; i < App->model->meshes.size(); ++i)
     {
@@ -104,7 +104,7 @@ update_status ModuleRenderExercise::Update()
         else
             glBindTexture(GL_TEXTURE_2D, baboon);
     
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(sizeof(unsigned int) * 6 * i));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void*>((sizeof(unsigned int) * 6 * i)));
     }
   
     return UPDATE_CONTINUE;
@@ -118,8 +118,8 @@ bool ModuleRenderExercise::CleanUp()
     DestroyVBO(vbo);
     DestroyEBO(ebo);
     
-    glDeleteTextures(1, (GLuint*) &baboon);
-    glDeleteTextures(1, (GLuint*) &iobamium);
+    glDeleteTextures(1, static_cast<GLuint*>(&baboon));
+    glDeleteTextures(1, static_cast<GLuint*>(&iobamium));
 
     return ret;
 }

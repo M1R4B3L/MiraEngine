@@ -47,7 +47,8 @@ struct Mesh
 };
 
 class ModuleModel : public Module
-{public:
+{
+public:
 
 	ModuleModel();
 	~ModuleModel();

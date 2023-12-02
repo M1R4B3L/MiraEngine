@@ -35,7 +35,7 @@ public:
 
 	void LookAt(const float3& pos);
 
-	float4x4 CameraMatrix(float3 pos, float3 forward, float3 up);
+	float4x4 CameraMatrix(float3 pos, float3 forward, float3 up) const;
 
 	void Rotate();
 	void PanCamera();

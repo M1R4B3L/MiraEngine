@@ -284,11 +284,11 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
     LoadEBO(model, mesh, primitive);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, (void*)(sizeof(float) * 3));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 3)));
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, (void*)(sizeof(float) * 6));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 6)));
 
     glBindVertexArray(0);
 }

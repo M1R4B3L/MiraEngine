@@ -12,9 +12,9 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	char* LoadShaderSource(const char* shaderFileName);
-	unsigned CompileShader(unsigned shaderType, const char* shaderSource);
-	unsigned CreateProgram(unsigned vertexShader, unsigned fragmentShader);
+	const char* LoadShaderSource(const char* shaderFileName) const;
+	const unsigned CompileShader(unsigned shaderType, const char* shaderSource) const;
+	const unsigned CreateProgram(unsigned vertexShader, unsigned fragmentShader) const;
 
 public:
 	unsigned programId;

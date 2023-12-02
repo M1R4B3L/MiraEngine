@@ -139,3 +139,18 @@ const KeyState ModuleInput::GetMouseButtonDown(int id) const
 {
 	return mouseButtons[id - 1];
 }
+
+const float2 ModuleInput::GetMousePos() const
+{
+	return mousePos;
+}
+
+const float2 ModuleInput::GetMouseMotion() const
+{
+	return mouseMotion;
+}
+
+const float ModuleInput::GetWheelScrollY() const
+{
+	return yWheel;
+}

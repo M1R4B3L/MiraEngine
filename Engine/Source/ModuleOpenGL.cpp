@@ -99,14 +99,19 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
 	App->window->SetWindowSize(float2(width, height));
-	App->camera->SetAspectRatio((float)width / (float)height);
+	App->camera->SetAspectRatio(static_cast<float>(width) / static_cast<float>(height));
 }
 
 void ModuleOpenGL::WindowSizeChanged(unsigned width, unsigned height)
 {
 	glViewport(0, 0, width, height);
 	SDL_SetWindowSize(App->window->GetWindow(), width, height);
-	App->camera->SetAspectRatio((float)width / (float)height);
+	App->camera->SetAspectRatio(static_cast<float>(width) / static_cast<float>(height));
+}
+
+void* ModuleOpenGL::GetContext()
+{
+	return context;
 }
 
 void GLAPIENTRY OpenGLErrorFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)

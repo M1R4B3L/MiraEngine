@@ -48,7 +48,7 @@ bool ConfigPanel::Draw(int windowFlags)
 		{	
 			ImGui::Text("Mouse Pos: ");
 			ImGui::SameLine();
-			ImGui::Text("(%.0f,%.0f)", App->input->mousePos.x, App->input->mousePos.y);
+			ImGui::Text("(%.0f,%.0f)", App->input->GetMousePos().x, App->input->GetMousePos().y);
 		}
 		if (ImGui::CollapsingHeader("Camera", flags))
 		{
@@ -79,7 +79,7 @@ bool ConfigPanel::Draw(int windowFlags)
 				App->camera->SetNearPlanePos(nearPlane);
 			}
 			ImGui::PushItemWidth(100);
-			if (ImGui::DragFloat("Far", (float*)&farPlane, 1.0f, 1.0f, NULL, "%.1f"));
+			if (ImGui::DragFloat("Far", (float*)&farPlane, 1.0f, 1.0f, NULL, "%.1f"))
 			{
 				App->camera->SetFarPlanePos(farPlane);
 			}

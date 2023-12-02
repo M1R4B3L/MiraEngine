@@ -26,8 +26,8 @@ public:
 
 private:
 
-	void embraceTheDarkness();
-	void drakula();
+	void embraceTheDarkness() const;
+	void drakula() const;
 
 	bool CreateDockWindow(const char* name, bool open, int windowFlags);
 
@@ -36,10 +36,10 @@ public:
 
 	std::vector<EditorPanelManager*> editorPanels;
 
-	AboutPanel* about;
-	MenuBarPanel* menuBar;
-	ConfigPanel* config;
-	ConsolePanel* console;
+	AboutPanel* about = nullptr;
+	MenuBarPanel* menuBar = nullptr;
+	ConfigPanel* config = nullptr;
+	ConsolePanel* console = nullptr;
 
 private:
 	ImGuiIO* io = nullptr;

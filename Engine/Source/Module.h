@@ -16,7 +16,7 @@ public:
     {
     }
 
-	virtual bool Init() 
+	virtual bool Init()
 	{
 		return true; 
 	}

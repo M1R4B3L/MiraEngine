@@ -120,7 +120,7 @@ bool ModuleEditor::CleanUp()
     return true;
 }
 
-void ModuleEditor::embraceTheDarkness()
+void ModuleEditor::embraceTheDarkness() const
 {
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -204,7 +204,7 @@ void ModuleEditor::embraceTheDarkness()
     style.TabRounding = 4;
 }
 
-void ModuleEditor::drakula()
+void ModuleEditor::drakula() const
 {
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.1f, 0.13f, 1.0f };

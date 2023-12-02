@@ -21,7 +21,7 @@ public:
 	void WindowResized(unsigned width, unsigned height);
 	void WindowSizeChanged(unsigned width, unsigned height);
 	
-	void* GetContext() { return context; }
+	void* GetContext();
 
 private:
 	void* context = nullptr;

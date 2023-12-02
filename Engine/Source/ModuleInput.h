@@ -22,23 +22,25 @@ public:
 	ModuleInput();
 	~ModuleInput();
 
-	bool Init();
-	update_status PreUpdate();
-	bool CleanUp();
+	bool Init() override;
+	update_status PreUpdate() override;
+	bool CleanUp() override; 
 
 	// Check key states (includes mouse and joy buttons)
 	const KeyState GetKey(int id) const;
-
 	const KeyState GetMouseButtonDown(int id) const;
+	const float2 GetMousePos() const;
+	const float2 GetMouseMotion() const;
+	const float GetWheelScrollY() const;
+	
 
 private:
 
 	KeyState* keyboard = nullptr;
 	KeyState  mouseButtons[MAX_MOUSE_BUTTONS];
 
-public:
-
 	float2 mouseMotion;
 	float2 mousePos;
 	float yWheel;
+
 };
