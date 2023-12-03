@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Module.h"
-#include "Math/float3.h"
 
 namespace tinygltf
 {
