@@ -6,6 +6,8 @@
 #include "AboutPanel.h"
 #include "ConfigPanel.h"
 
+#include <Windows.h>
+
 #include "imgui.h"
 #include "imgui_internal.h"
 
@@ -111,6 +113,10 @@ bool MenuBarPanel::Draw(int windowFlags)
 					App->editor->about->Open();
 				else
 					App->editor->about->Close();
+			}
+			if (ImGui::MenuItem("Github"))
+			{
+				ShellExecute(NULL,"open", "https://github.com/M1R4B3L", NULL, NULL, SW_SHOWNORMAL);
 			}
 			if (ImGui::MenuItem("ImGui Demo", NULL, App->editor->demo))
 			{

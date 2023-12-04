@@ -8,8 +8,6 @@ in vec3 surfaceNormal;
 
 in vec2 uv;
 
-
-
 layout(binding=0) uniform sampler2D oTexture;
 
 void main()
