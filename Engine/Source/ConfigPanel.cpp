@@ -65,9 +65,9 @@ bool ConfigPanel::Draw(int windowFlags)
 			float3 angles = float3::zero;
 			if (ImGui::DragFloat3("Rot", (float*)&angles, 1))
 			{
-				App->camera->RotateAxisAngle(float3::unitX, angles.x);
-				App->camera->RotateAxisAngle(float3::unitY, angles.y);
-				App->camera->RotateAxisAngle(float3::unitZ, angles.z);
+				App->camera->Rotate(float3::unitX, angles.x);
+				App->camera->Rotate(float3::unitY, angles.y);
+				App->camera->Rotate(float3::unitZ, angles.z);
 			}
 			
 			float nearPlane = frustum.nearPlaneDistance;

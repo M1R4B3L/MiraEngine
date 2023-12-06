@@ -267,6 +267,18 @@ void Mesh::CreateVAO()
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     LOG("[MESH] Creting VAO %u", vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>(0));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 3)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 6)));
+
+    glBindVertexArray(0);
 }
 
 void Mesh::Draw(const std::vector<Texture*>& textures)
@@ -293,17 +305,8 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
     else
         disffuseMat = App->model->textures.size();
 
-    CreateVAO();
-
     LoadVBO(model, mesh, primitive);
     LoadEBO(model, mesh, primitive);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>(0));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 3)));
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 6)));
-
-    glBindVertexArray(0);
+    CreateVAO();
 }

@@ -31,18 +31,15 @@ public:
 	void SetNearPlanePos(float near);
 	void SetFarPlanePos(float far);
 
-	void RotateAxisAngle(const float3& axis, const float& angle);
-
 	void LookAt(const float3& pos);
 
 	float4x4 CameraMatrix(float3 pos, float3 forward, float3 up) const;
 
-	void Rotate();
-	void PanCamera();
-	void Move();
 	void Zoom();
 	void Orbit();
 
+	void Translate(const float3& axis, const float& speed);
+	void Rotate(const float3& axis, const float& angle);
 	//Center to 0,0,0 / Focus to GameObject / Move Camera to accept model Size  arctang(vfov/2 / maxAABB height point)/ Camera Speed
 
 public:
@@ -51,8 +48,6 @@ public:
 private:
 	Frustum frustum;
 	float aspectRatio;
-	float4x4 view;
-	float4x4 projection;
 
 	float cameraSpeed;	
 	
