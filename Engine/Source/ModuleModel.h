@@ -33,6 +33,7 @@ struct Mesh
 
 	unsigned stridePos = 0;
 	unsigned strideNorm = 0;
+	unsigned strideTexCoord = 0;
 
 	unsigned buffSize = 0;
 

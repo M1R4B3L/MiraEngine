@@ -8,6 +8,9 @@
 #include "GL/glew.h"
 #include "Math/float3.h"
 #include "Math/float2.h"
+#include "MathGeoLib.h"
+
+#include "ModuleCamera.h"
 
 #define TINYGLTF_IMPLEMENTATION
 
@@ -136,7 +139,23 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         buffSize = 3;
 
         bufferPos = reinterpret_cast<const float*>(&posBuffer.data[posView.byteOffset + posAcc.byteOffset]);
+
         LOG("[MESH] Reading gltf Positions");
+
+        AABB aabb;
+        aabb.SetFrom(reinterpret_cast<const float3*>(bufferPos), numVert);
+        Sphere sphere = aabb.MinimalEnclosingSphere();
+
+        Frustum frustum = App->camera->GetFrustum();
+
+        float3 dir = sphere.Centroid();
+
+        dir.z += sphere.Diameter();
+
+        frustum.pos = dir;
+
+        App->camera->SetFrustumPos(frustum.pos);
+        App->camera->LookAt(float3(0.0f));
     }
 
     if (itTexCoord != primitive.attributes.end())
@@ -147,6 +166,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
         const tinygltf::BufferView& texCoordView = model.bufferViews[texCoordAcc.bufferView];
         const tinygltf::Buffer& texCoordBuffer = model.buffers[texCoordView.buffer];
 
+        strideTexCoord = texCoordView.byteStride;
         buffSize += 2;
 
         bufferTexCoord = reinterpret_cast<const float*>(&texCoordBuffer.data[texCoordView.byteOffset + texCoordAcc.byteOffset]);
@@ -207,10 +227,12 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (int j = 0; j < 2; ++j)
             {
                 *(ptr) = *(bufferTexCoord);
-                //LOG("Tc %f", *(ptr));
+                LOG("Tc %u %f", i, *(ptr));
                 ++bufferTexCoord;
                 ++ptr;
-            }                       
+            }         
+            if (strideTexCoord > 0)
+                bufferTexCoord += (strideTexCoord / sizeof(float)) - 2;
         }     
     }
     glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -271,6 +293,8 @@ void Mesh::CreateVAO()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
+    //TODO: RECALCULATE OFFSET IF DONT HAVE ATTRIBUTES
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(1);
@@ -286,7 +310,7 @@ void Mesh::Draw(const std::vector<Texture*>& textures)
     glBindVertexArray(vao);
 
     glUseProgram(App->program->programId);
-    if (!textures.empty())
+    if (!textures.empty() && bufferTexCoord != nullptr)
     {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textures[disffuseMat]->id);

@@ -30,9 +30,6 @@ private:
 	unsigned vbo;
 	unsigned ebo;
 
-	unsigned baboon;
-	unsigned iobamium;
-
 public:
 	float4x4 model;
 	float3 lightDir;

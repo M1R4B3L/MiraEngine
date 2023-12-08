@@ -28,7 +28,7 @@ bool ModuleCamera::Init()
     frustum.up = float3::unitY;
 
     frustum.nearPlaneDistance = 0.1f;
-    frustum.farPlaneDistance = 100.0f;
+    frustum.farPlaneDistance = 10000.0f;
     frustum.verticalFov = math::pi / 4.0f;
     frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
 
@@ -209,6 +209,6 @@ void ModuleCamera::Translate(const float3& axis, const float& speed)
 void ModuleCamera::Rotate(const float3& axis, const float& angle)
 {
     float3x3 rotationMatrix = float3x3::RotateAxisAngle(axis,math::DegToRad(angle));
-    frustum.front = rotationMatrix.MulDir(frustum.front.Normalized());
-    frustum.up = rotationMatrix.MulDir(frustum.up.Normalized());
+    frustum.front = rotationMatrix.MulDir(frustum.front.Normalized()).Normalized();
+    frustum.up = rotationMatrix.MulDir(frustum.up.Normalized()).Normalized();
 }
