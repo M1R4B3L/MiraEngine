@@ -27,7 +27,7 @@ bool ModuleCamera::Init()
     frustum.front = -float3::unitZ;
     frustum.up = float3::unitY;
 
-    frustum.nearPlaneDistance = 0.1f;
+    frustum.nearPlaneDistance = 0.01f;
     frustum.farPlaneDistance = 10000.0f;
     frustum.verticalFov = math::pi / 4.0f;
     frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspectRatio);
@@ -94,7 +94,13 @@ update_status ModuleCamera::Update()
 
     if (((App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)) && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT))
     {
-        
+        //TODO ORBIT
+    }
+
+    if (App->input->GetKey(SDL_SCANCODE_F) == KeyState::KEY_REPEAT)
+    {
+        frustum.pos = frustum.pos;
+        LookAt(float3(0.0f));
     }
 
     lastMousePos = App->input->GetMousePos();

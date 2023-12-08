@@ -30,7 +30,7 @@ bool ModuleRenderExercise::Init()
 
     lightDir = float3(1.0f).Normalized();
 
-    App->model->LoadModel("Models/Fox/fox.gltf");
+    App->model->LoadModel("Models/BakerHouse/BakerHouse.gltf");
 
     float4x4 view = App->camera->GetViewMatrix();
     float4x4 projection = App->camera->GetProjectionMatrix();
@@ -51,10 +51,9 @@ update_status ModuleRenderExercise::Update()
     glUniformMatrix4fv(1, 1, GL_TRUE, static_cast<GLfloat*>(&view[0][0]));
     glUniformMatrix4fv(2, 1, GL_TRUE, static_cast<GLfloat*>(&projection[0][0]));
 
-    for (int i = 0; i < App->model->meshes.size(); ++i)
-    {
-        App->model->meshes[i]->Draw(App->model->textures);
-    }
+
+    App->model->meshes[App->model->meshes.size() - 1]->Draw(App->model->textures);
+    
 
     return UPDATE_CONTINUE;
 }

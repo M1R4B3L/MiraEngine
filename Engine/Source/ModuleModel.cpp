@@ -148,9 +148,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 
         Frustum frustum = App->camera->GetFrustum();
 
-        float3 dir = sphere.Centroid();
-
-        dir.z += sphere.Diameter();
+        float3 dir = sphere.Centroid() + float3(sphere.Diameter());
 
         frustum.pos = dir;
 
@@ -227,7 +225,7 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (int j = 0; j < 2; ++j)
             {
                 *(ptr) = *(bufferTexCoord);
-                LOG("Tc %u %f", i, *(ptr));
+                //LOG("Tc %u %f", i, *(ptr));
                 ++bufferTexCoord;
                 ++ptr;
             }         
@@ -264,14 +262,12 @@ void Mesh::LoadEBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
             for (uint32_t i = 0; i < indAcc.count; ++i)
                 ptr[i] = bufferInd[i];
         }
-        // TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)
         {
             const uint16_t* bufferInd = reinterpret_cast<const uint16_t*>(buffer);
             for (uint16_t i = 0; i < indAcc.count; ++i)    
                 ptr[i] = bufferInd[i];
         }
-        //TODO indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE
         if (indAcc.componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)
         {
             const uint8_t* bufferInd = reinterpret_cast<const uint8_t*>(buffer);
@@ -294,13 +290,19 @@ void Mesh::CreateVAO()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
     //TODO: RECALCULATE OFFSET IF DONT HAVE ATTRIBUTES
+    unsigned offset = 0;
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>(offset));
+    offset += 3;
+
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 3)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * offset)));
+    if (bufferNorm != nullptr)
+        offset += 3;
+
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * 6)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * buffSize, reinterpret_cast<void*>((sizeof(float) * offset)));
 
     glBindVertexArray(0);
 }
@@ -313,7 +315,7 @@ void Mesh::Draw(const std::vector<Texture*>& textures)
     if (!textures.empty() && bufferTexCoord != nullptr)
     {
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[disffuseMat]->id);
+        glBindTexture(GL_TEXTURE_2D, textures[App->model->textures.size() - 1]->id);
     }
  
     if(numInd > 0)
