@@ -175,6 +175,9 @@
     <ClCompile Include="NormalTimer.cpp">
       <Filter>Source\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="InspectorPanel.cpp">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -461,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="NormalTimer.h">
       <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Source\Editor UI\Editor Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

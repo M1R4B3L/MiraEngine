@@ -2,6 +2,8 @@
 
 #include "Module.h"
 
+#include <string>
+
 namespace tinygltf
 {
 	class Model;
@@ -20,6 +22,8 @@ unsigned vao
 
 struct Mesh
 {
+	std::string name;
+
 	unsigned vao;
 	unsigned vbo;
 	unsigned ebo;

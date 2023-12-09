@@ -49,6 +49,10 @@ bool ConfigPanel::Draw(int windowFlags)
 			ImGui::Text("Mouse Pos: ");
 			ImGui::SameLine();
 			ImGui::Text("(%.0f,%.0f)", App->input->GetMousePos().x, App->input->GetMousePos().y);
+
+			ImGui::Text("Mouse Motion: ");
+			ImGui::SameLine();
+			ImGui::Text("(%.0f,%.0f)", App->input->GetMouseMotion().x, App->input->GetMouseMotion().y);
 		}
 		if (ImGui::CollapsingHeader("Camera", flags))
 		{
@@ -74,21 +78,16 @@ bool ConfigPanel::Draw(int windowFlags)
 			float farPlane = frustum.farPlaneDistance;
 			ImGui::Text("Camera Planes");
 			ImGui::PushItemWidth(100);
-			if (ImGui::DragFloat("Near", (float*)&nearPlane, 1.0f, 1.0f, NULL, "%.1f"))
+			if (ImGui::DragFloat("Near", (float*)&nearPlane, 1.0f, 1.0f, NULL, "%.2f"))
 			{
 				App->camera->SetNearPlanePos(nearPlane);
 			}
 			ImGui::PushItemWidth(100);
-			if (ImGui::DragFloat("Far", (float*)&farPlane, 1.0f, 1.0f, NULL, "%.1f"))
+			if (ImGui::DragFloat("Far", (float*)&farPlane, 1.0f, 1.0f, NULL, "%.2f"))
 			{
 				App->camera->SetFarPlanePos(farPlane);
 			}
 
-			ImGui::Separator();
-			ImGui::Dummy(ImVec2(0.0f, 20.0f));
-			ImGui::Separator();
-			ImGui::Spacing();
-			ImGui::Separator();
 			ImGui::Separator();
 
 			float vFov = math::RadToDeg(frustum.verticalFov);
@@ -97,12 +96,18 @@ bool ConfigPanel::Draw(int windowFlags)
 			ImGui::Text("Horitzontal");
 			ImGui::SameLine();
 			ImGui::PushItemWidth(100);
-			if (ImGui::DragFloat("##H", &hFov,1.0f))
+			if (ImGui::DragFloat("##H", &hFov, 1.0f))
 			{
 				App->camera->SetFOV(hFov);
 			}
 			ImGui::PushItemWidth(100);
-			ImGui::DragFloat("Vertical", &vFov,1.0f, 0.0f, 0.0f, "%.3f", ImGuiSliderFlags_NoInput);
+			ImGui::DragFloat("Vertical", &vFov, 1.0f, 0.0f, 0.0f, "%.3f", ImGuiSliderFlags_NoInput);
+
+			ImGui::Dummy(ImVec2(0.0f, 20.0f));
+			ImGui::Separator();
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Separator();
 		}
 	}
 	ImGui::End();

@@ -148,9 +148,8 @@ void Mesh::LoadVBO(const tinygltf::Model& model, const tinygltf::Mesh& mesh, con
 
         Frustum frustum = App->camera->GetFrustum();
 
-        float3 dir = sphere.Centroid() + float3(sphere.Diameter());
-
-        frustum.pos = dir;
+        float3 pos = sphere.Centroid() + float3(sphere.Diameter());
+        frustum.pos = pos;
 
         App->camera->SetFrustumPos(frustum.pos);
         App->camera->LookAt(float3(0.0f));
@@ -330,6 +329,8 @@ void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, co
         disffuseMat = 0;
     else
         disffuseMat = App->model->textures.size();
+
+    name = mesh.name;
 
     LoadVBO(model, mesh, primitive);
     LoadEBO(model, mesh, primitive);

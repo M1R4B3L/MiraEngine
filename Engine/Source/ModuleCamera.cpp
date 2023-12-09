@@ -92,15 +92,30 @@ update_status ModuleCamera::Update()
 
     Zoom();
 
-    if (((App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)) && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT))
+    if ((App->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT) && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT))
     {
         //TODO ORBIT
+        float3 focusVec = frustum.pos;
+
+        if (motion.x != 0)
+        {
+            float3x3 rotationMatrixX = float3x3::RotateAxisAngle(frustum.up, math::DegToRad(((lastMousePos.x - App->input->GetMousePos().x) * cameraSpeed * 0.2)));
+            focusVec = rotationMatrixX.Mul(focusVec);
+        }
+        if (motion.y != 0)
+        {
+            float3x3 rotationMatrixY = float3x3::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(((lastMousePos.y - App->input->GetMousePos().y) * cameraSpeed * 0.2)));
+            focusVec = rotationMatrixY.Mul(focusVec);
+        }
+
+        frustum.pos = focusVec;
+        LookAt(float3(0.0f));
     }
 
-    if (App->input->GetKey(SDL_SCANCODE_F) == KeyState::KEY_REPEAT)
+    if (App->input->GetKey(SDL_SCANCODE_O) == KeyState::KEY_REPEAT)
     {
-        frustum.pos = frustum.pos;
-        LookAt(float3(0.0f));
+        frustum.pos = float3(0.0f);
+        LookAt(frustum.pos + frustum.front);
     }
 
     lastMousePos = App->input->GetMousePos();

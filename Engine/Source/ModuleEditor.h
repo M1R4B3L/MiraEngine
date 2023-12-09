@@ -13,6 +13,7 @@ class AboutPanel;
 class MenuBarPanel;
 class ConfigPanel;
 class ConsolePanel;
+class InspectorPanel;
 
 class ModuleEditor : public Module
 {
@@ -40,6 +41,7 @@ public:
 	MenuBarPanel* menuBar = nullptr;
 	ConfigPanel* config = nullptr;
 	ConsolePanel* console = nullptr;
+	InspectorPanel* inspector = nullptr;
 
 private:
 	ImGuiIO* io = nullptr;
