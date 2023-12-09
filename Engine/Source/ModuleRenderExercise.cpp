@@ -51,7 +51,6 @@ update_status ModuleRenderExercise::Update()
     glUniformMatrix4fv(1, 1, GL_TRUE, static_cast<GLfloat*>(&view[0][0]));
     glUniformMatrix4fv(2, 1, GL_TRUE, static_cast<GLfloat*>(&projection[0][0]));
 
-
     for (int i = 0; i < App->model->meshes.size(); ++i)
     {
         App->model->meshes[i]->Draw(App->model->textures);

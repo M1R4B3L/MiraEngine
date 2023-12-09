@@ -61,9 +61,13 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
+	const void CleanModel();
+
 	void LoadModel(const char* path);
 	void LoadMaterials(const tinygltf::Model& srcModel, const char* imagePath);
 
 	std::vector<Texture*> textures;
 	std::vector<Mesh*> meshes;
+
+	bool toDelete = false;
 };

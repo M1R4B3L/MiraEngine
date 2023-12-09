@@ -48,21 +48,41 @@ bool ModuleModel::CleanUp()
         glDeleteVertexArrays(1, &meshes[i]->vao);
         glDeleteBuffers(1, &meshes[i]->vbo);
         glDeleteBuffers(1, &meshes[i]->ebo);
-    }
 
-    for (int i = 0; i < meshes.size(); ++i)
-    {
         delete meshes[i];
         meshes[i] = nullptr;
     }
 
     for (int i = 0; i < textures.size(); ++i)
     {
+        glDeleteTextures(1, &textures[i]->id);
         delete textures[i];
         textures[i] = nullptr;
     }
 
     return true;
+}
+
+const void ModuleModel::CleanModel()
+{
+    for (int i = 0; i < meshes.size(); ++i)
+    {
+        glDeleteVertexArrays(1, &meshes[i]->vao);
+        glDeleteBuffers(1, &meshes[i]->vbo);
+        glDeleteBuffers(1, &meshes[i]->ebo);
+
+        delete meshes[i];
+        meshes[i] = nullptr;
+    }
+    meshes.clear();
+
+    for (int i = 0; i < textures.size(); ++i)
+    {
+        glDeleteTextures(1, &textures[i]->id);
+        delete textures[i];
+        textures[i] = nullptr;
+    }
+    textures.clear();
 }
 
 void ModuleModel::LoadModel(const char* path)
@@ -325,10 +345,7 @@ void Mesh::Draw(const std::vector<Texture*>& textures)
 
 void Mesh::LoadMesh(const tinygltf::Model& model, const tinygltf::Mesh& mesh, const tinygltf::Primitive& primitive)
 {
-    if (App->model->textures.size() <= 0)
-        disffuseMat = 0;
-    else
-        disffuseMat = App->model->textures.size();
+    disffuseMat = 0;
 
     name = mesh.name;
 

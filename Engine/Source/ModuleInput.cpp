@@ -104,11 +104,12 @@ update_status ModuleInput::PreUpdate()
 			case SDL_MOUSEWHEEL:
 				yWheel = sdlEvent.wheel.y;
 				break;
-			case SDL_DROPFILE:
+			case SDL_DROPFILE:	
 				std::string temp = sdlEvent.drop.file;
 				std::replace(temp.begin(), temp.end(), '\\', '/');
 				if (strstr(temp.c_str(), ".gltf") != NULL)
 				{
+					App->model->CleanModel();
 					App->model->LoadModel(temp.c_str());
 				}
 				if ((strstr(temp.c_str(), ".dds") != NULL) || (strstr(temp.c_str(), ".tga") != NULL) || (strstr(temp.c_str(), ".png") != NULL) || (strstr(temp.c_str(), ".jpg") != NULL))
