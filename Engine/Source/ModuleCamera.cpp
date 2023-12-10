@@ -143,6 +143,11 @@ const Frustum ModuleCamera::GetFrustum() const
     return frustum;
 }
 
+const float ModuleCamera::GetCameraSpeed() const
+{
+    return cameraSpeed;
+}
+
 void ModuleCamera::SetFrustumPos(const float3& pos)
 {
     frustum.pos = pos;
@@ -174,6 +179,11 @@ void ModuleCamera::SetNearPlanePos(float nearPos)
 void ModuleCamera::SetFarPlanePos(float farPos)
 {
     frustum.farPlaneDistance = farPos;
+}
+
+void ModuleCamera::SetCameraSpeed(float speed)
+{
+    cameraSpeed = speed;
 }
 
 void ModuleCamera::LookAt(const float3& pos)

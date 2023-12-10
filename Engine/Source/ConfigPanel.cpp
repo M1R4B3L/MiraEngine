@@ -2,6 +2,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
+#include "ModuleOpenGL.h"
 #include "ConfigPanel.h"
 
 #include "imgui.h"
@@ -26,7 +27,9 @@ bool ConfigPanel::Draw(int windowFlags)
 	{
 		if (ImGui::CollapsingHeader("OpenGl", flags))
 		{
-			ImGui::Text("Hi");
+			ImGui::Text("CPUs: ");
+			ImGui::Text("GPU: ");
+			ImGui::Text("Brand: ");
 		}
 		if (ImGui::CollapsingHeader("Window", flags))
 		{
@@ -56,6 +59,14 @@ bool ConfigPanel::Draw(int windowFlags)
 		}
 		if (ImGui::CollapsingHeader("Camera", flags))
 		{
+			float camSpeed = App->camera->GetCameraSpeed();
+			ImGui::Text("Camera Speed");
+			if (ImGui::DragFloat("##Speed", (float*)&camSpeed, 0.01))
+			{
+				App->camera->SetCameraSpeed(camSpeed);
+			}
+			ImGui::Separator();
+
 			Frustum frustum = App->camera->GetFrustum();
 			float3 cameraPos = frustum.pos;
 			ImGui::Text("Pos");
@@ -64,7 +75,6 @@ bool ConfigPanel::Draw(int windowFlags)
 			{
 				App->camera->SetFrustumPos(cameraPos);
 			}
-
 			//TODO DO IT PROPERLY 
 			float3 angles = float3::zero;
 			if (ImGui::DragFloat3("Rot", (float*)&angles, 1))

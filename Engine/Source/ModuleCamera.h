@@ -20,6 +20,7 @@ public:
 	const float4x4 GetProjectionMatrix() const;
 	const float4x4 GetViewMatrix() const;
 	const Frustum GetFrustum() const;
+	const float GetCameraSpeed() const;
 
 	void SetFrustumPos(const float3& pos);
 
@@ -30,6 +31,8 @@ public:
 
 	void SetNearPlanePos(float near);
 	void SetFarPlanePos(float far);
+
+	void SetCameraSpeed(float speed);
 
 	void LookAt(const float3& pos);
 
