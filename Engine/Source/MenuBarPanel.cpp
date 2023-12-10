@@ -114,13 +114,17 @@ bool MenuBarPanel::Draw(int windowFlags)
 				else
 					App->editor->about->Close();
 			}
-			if (ImGui::MenuItem("Engine Github"))
+			if (ImGui::MenuItem("Mira Github"))
 			{
 				ShellExecute(NULL,"open", "https://github.com/M1R4B3L/MiraEngine", NULL, NULL, SW_SHOWNORMAL);
 			}
-			if (ImGui::MenuItem("Engine Releases"))
+			if (ImGui::MenuItem("Mira Releases"))
 			{
 				ShellExecute(NULL, "open", "https://github.com/M1R4B3L/MiraEngine/releases", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::MenuItem("Dev. Github"))
+			{
+				ShellExecute(NULL, "open", "https://github.com/M1R4B3L", NULL, NULL, SW_SHOWNORMAL);
 			}
 			if (ImGui::MenuItem("ImGui Demo", NULL, App->editor->demo))
 			{
