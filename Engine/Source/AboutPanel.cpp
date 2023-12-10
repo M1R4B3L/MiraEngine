@@ -21,6 +21,7 @@ bool AboutPanel::Draw(int windowFlags)
 	{		
 		ImGui::Text("Mira by: M1R4B3L (Adrian Mirabel)");
 		ImGui::Separator();
+		ImGui::Spacing();
 		ImGui::TextUnformatted("Mira is a 3D Engine developed for the first Assigment of\nthe 2023 UPC Master Advanced Programing for AAA Videogames");
 		ImGui::Spacing();
 		ImGui::Text("SDL v2.0.16");
@@ -29,11 +30,9 @@ bool AboutPanel::Draw(int windowFlags)
 		ImGui::Text("MathGeoLib v1.5");
 		ImGui::Text("DirectXTex v2.0.1");
 		ImGui::Text("TinyGltf v2.8.10");
-		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
-		const char* license = App->program->LoadShaderSource("../../LICENSE");
-		ImGui::Text(license);
+		ImGui::Text("MIT License - Copyright(c) 2023 M1R4B3L");
 	}
 	ImGui::End();
 
