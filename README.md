@@ -21,6 +21,6 @@ Configuration Menu to change some parameter of the Editor
 Inspector Menu showing some information about the drawn meshes
 
 ## LINKS
-[M1R4B3L] https://github.com/M1R4B3L
-[Mira Engine] https://github.com/M1R4B3L/MiraEngine
-[Release] https://github.com/M1R4B3L/MiraEngine/releases
+[M1R4B3L](https://github.com/M1R4B3L)
+[Mira Engine](https://github.com/M1R4B3L/MiraEngine)
+[Release](https://github.com/M1R4B3L/MiraEngine/releases)
